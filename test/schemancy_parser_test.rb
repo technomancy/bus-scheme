@@ -5,6 +5,10 @@ class SchemancyParserTest < Test::Unit::TestCase
     assert_parses_to "99", 99
   end
 
+  def test_parses_strings
+    assert_parses_to "\"hello world\"", "hello world"
+  end
+
   def test_parse_list_of_numbers
     assert_parses_to "(2 2)", [[2, 2]]
   end
@@ -21,9 +25,44 @@ class SchemancyParserTest < Test::Unit::TestCase
     assert_parses_to "(+ 2 (+ 2))", [[:+, 2, [:+, 2]]]
   end
 
+  def test_parse_list_of_deeply_nested_sexprs
+    assert_parses_to "(+ 2 (+ 2 (+ 2 2)))", [[:+, 2, [:+, 2, [:+, 2, 2]]]]
+  end
+
+  def test_parse_two_consecutive_parens_simple
+    assert_parses_to "(let ((foo 2)))", [[:let, [[:foo, 2]]]]
+  end
+
+  def test_parse_two_consecutive_parens
+    assert_parses_to "(let ((foo 2)) (+ foo 2))", [[:let, [[:foo, 2]], [:+, :foo, 2]]]
+  end
+
+#   def test_whitespace_indifferent
+#     assert_parses_equal "(+ 2 2)", "(+ 2  \n \t    2)"
+#   end
+
+  # great way to find edge cases:
+#   def test_parse_random_elisp_form
+#     lisp = "(let ((system-specific-config
+#        (concat \"~/.emacs.d/\"
+#                (shell-command-to-string \"hostname\"))))
+#   (if (file-exists-p system-specific-config)
+#       (load system-specific-config)))"
+#     assert_parses_to(lisp,
+#                      [[:let, [[:'system-specific-config',
+#                                [:concat, "~/.emacs.d/",
+#                                 [:'shell-command-to-string', "hostname"]]]],
+#                        [:if, [:'file-exists-p', :'system-specific-config'],
+#                        [:load, :'system-specific-config']]]])
+#   end
+
   private
 
   def assert_parses_to(actual_string, expected)
     assert_equal expected, Schemancy.parse(actual_string)
+  end
+
+  def assert_parses_equal(one, two)
+    assert_equal Schemancy.parse(one), Schemancy.parse(two)
   end
 end

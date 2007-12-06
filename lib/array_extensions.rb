@@ -1,4 +1,12 @@
 class Array
+  def cons(item)
+    if item.is_a? Array
+      self + item
+    else
+      self << item
+    end
+  end
+
   def shallow_flatten
     new = []
     self.each do |x|
