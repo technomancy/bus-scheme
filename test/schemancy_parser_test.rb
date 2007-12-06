@@ -1,10 +1,6 @@
-require 'rubygems'
-gem 'miniunit'
-require 'test/unit'
-$LOAD_PATH << File.dirname(__FILE__) + '/../lib/'
-require 'schemancy'
+require 'test_helper'
 
-class SchemancyTest < Test::Unit::TestCase
+class SchemancyParserTest < Test::Unit::TestCase
   def test_parse_numbers
     assert_parses_to "99", 99
   end
@@ -28,6 +24,6 @@ class SchemancyTest < Test::Unit::TestCase
   private
 
   def assert_parses_to(actual_string, expected)
-    assert_equal Schemancy.parse(actual_string), expected
+    assert_equal expected, Schemancy.parse(actual_string)
   end
 end
