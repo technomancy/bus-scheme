@@ -20,7 +20,7 @@ class Schemancy
         [parse(token)].cons(parse(rest))
       when /^([^ \)]+)\)/ # token at the end of a list
         token, rest = Regexp.last_match[1 .. 2]
-        [parse(token)]
+        parse(token)
       else
         string.intern
       end
