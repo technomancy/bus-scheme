@@ -1,10 +1,5 @@
 require 'object_extensions'
 require 'array_extensions'
-require 'yaml'
-
-# TODO:
-# parse cons cells
-# quote function
 
 class BusScheme
   class ParseError < StandardError; end
@@ -15,7 +10,14 @@ class BusScheme
       :sub1 => lambda { |x| x - 1 },
       :define => lambda { |sym, definition| SYMBOL_TABLE[x] = definition },
       :quote => lambda { |*form| form },
-      :+ => lambda { |x, y| x + y }, # redefine outside primitives
+
+      :+ => lambda { |x, y| x + y },
+      :- => lambda { |x, y| x - y },
+      :'/' => lambda { |x, y| x / y },
+      :* => lambda { |x, y| x * y },
+      :intern => lambda { |x| x.intern },
+      :concat => lambda { |x, y| x + y },
+      :substring => lambda { |x, from, to| x[from .. to] }
     }
 
     SYMBOL_TABLE = {}.merge(PRIMITIVES)
@@ -62,11 +64,11 @@ class BusScheme
     end
 
     def tokenize(input)
-      tokens = []
-      while token = pop_token(input)
-        tokens << token
+      [].returning do tokens
+        while token = pop_token(input)
+          tokens << token
+        end
       end
-      return tokens
     end
 
     def pop_token(input)
