@@ -1,9 +1,6 @@
 require 'object_extensions'
 require 'yaml'
 
-$MY_DEBUG = false
-$DEPTH = 0
-
 class BusScheme
   class ParseError < StandardError; end
 
@@ -13,10 +10,11 @@ class BusScheme
     end
 
     def parse_tokens(tokens)
-      if tokens.first == :'('
-        parse_list(tokens[1 .. -1])
-      elsif tokens.size == 1
-        parse_atom(tokens)
+      token = tokens.shift
+      if token == :'('
+        parse_list(tokens)
+      elsif tokens.empty?
+        token
       else
         raise BusScheme::ParseError
       end
