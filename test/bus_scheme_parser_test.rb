@@ -29,6 +29,10 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to "\"hello world\"", "hello world"
   end
 
+  def test_parses_two_strings
+    assert_parses_to "(concat \"hello\" \"world\")", [:concat, "hello", "world"]
+  end
+
   def test_parse_list_of_numbers
     assert_parses_to "(2 2)", [2, 2]
   end

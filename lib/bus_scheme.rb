@@ -1,5 +1,6 @@
 require 'object_extensions'
 require 'array_extensions'
+require 'yaml'
 
 class BusScheme
   class ParseError < StandardError; end
@@ -23,6 +24,7 @@ class BusScheme
     SYMBOL_TABLE = {}.merge(PRIMITIVES)
 
     def eval(form)
+      form = parse(form) if form.is_a? String
       if form == []
         nil
       elsif form.is_a? Array
@@ -64,7 +66,7 @@ class BusScheme
     end
 
     def tokenize(input)
-      [].returning do tokens
+      [].returning do |tokens|
         while token = pop_token(input)
           tokens << token
         end
@@ -82,7 +84,7 @@ class BusScheme
                 :')'
               when /^(\d+)/ # positive integer
                 Regexp.last_match[1].to_i
-              when /^"(.*)"/ # string
+              when /^"(.*?)"/ # string
                 Regexp.last_match[1]
               when /^([^ \)]+)/ # symbol
                 Regexp.last_match[1].intern
@@ -98,3 +100,7 @@ class BusScheme
     end
   end
 end
+
+# REPL-tastic
+loop { puts "> "; puts BusScheme.eval(gets) } if $0 == __FILE__
+
