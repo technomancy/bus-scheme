@@ -1,10 +1,39 @@
 require 'object_extensions'
+require 'array_extensions'
 require 'yaml'
+
+# TODO:
+# parse cons cells
+# quote function
 
 class BusScheme
   class ParseError < StandardError; end
 
   class << self
+    PRIMITIVES = {
+      :add1 => lambda { |x| x + 1 },
+      :sub1 => lambda { |x| x - 1 },
+      :define => lambda { |sym, definition| SYMBOL_TABLE[x] = definition },
+      :quote => lambda { |*form| form },
+      :+ => lambda { |x, y| x + y }, # redefine outside primitives
+    }
+
+    SYMBOL_TABLE = {}.merge(PRIMITIVES)
+
+    def eval(form)
+      if form == []
+        nil
+      elsif form.is_a? Array
+        apply(form.first, form.rest)
+      else
+        form
+      end
+    end
+
+    def apply(function, args)
+      SYMBOL_TABLE[function].call(*args)
+    end
+
     def parse(input)
       parse_tokens tokenize(normalize_whitespace(input))
     end
@@ -14,7 +43,7 @@ class BusScheme
       if token == :'('
         parse_list(tokens)
       elsif tokens.empty?
-        token
+        token # atom
       else
         raise BusScheme::ParseError
       end
@@ -30,10 +59,6 @@ class BusScheme
           end
         end
       end
-    end
-
-    def parse_atom(tokens)
-      tokens.first
     end
 
     def tokenize(input)

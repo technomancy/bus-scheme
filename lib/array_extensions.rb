@@ -1,10 +1,6 @@
 class Array
-  def cons(item)
-    if item.is_a? Array
-      self + item
-    else
-      self << item
-    end
+  def rest
+    self[1 .. -1]
   end
 
   def shallow_flatten
