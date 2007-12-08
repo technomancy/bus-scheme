@@ -1,4 +1,3 @@
-require 'list'
 require 'object_extensions'
 require 'yaml'
 
