@@ -1,3 +1,4 @@
+$LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
 class BusSchemeEvalTest < Test::Unit::TestCase

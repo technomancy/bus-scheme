@@ -3,3 +3,4 @@ TODO:
  redefine arithmetic using add1/sub1
  lambda
  variable substitution
+ nested eval

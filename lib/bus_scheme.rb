@@ -1,8 +1,9 @@
+$LOAD_PATH << File.dirname(__FILE__)
 require 'object_extensions'
 require 'array_extensions'
-require 'yaml'
+require 'readline'
 
-class BusScheme
+module BusScheme
   class ParseError < StandardError; end
 
   class << self
@@ -102,5 +103,4 @@ class BusScheme
 end
 
 # REPL-tastic
-loop { puts "> "; puts BusScheme.eval(gets) } if $0 == __FILE__
-
+loop { print "> "; puts BusScheme.eval(Readline.readline) } if $0 == __FILE__
