@@ -6,11 +6,10 @@ require 'readline'
 module BusScheme
   class ParseError < StandardError; end
 
-  class << self
     PRIMITIVES = {
       :add1 => lambda { |x| x + 1 },
       :sub1 => lambda { |x| x - 1 },
-      :define => lambda { |sym, definition| SYMBOL_TABLE[x] = definition },
+      :define => lambda { |sym, definition| SYMBOL_TABLE[sym] = BusScheme.eval(definition) },
       :quote => lambda { |*form| form },
 
       :+ => lambda { |x, y| x + y },
@@ -24,6 +23,7 @@ module BusScheme
 
     SYMBOL_TABLE = {}.merge(PRIMITIVES)
 
+  class << self
     def eval(form)
       form = parse(form) if form.is_a? String
       if form == []

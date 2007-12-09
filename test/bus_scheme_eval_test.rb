@@ -28,6 +28,14 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to 2, [:'*', 1, 2]
   end
 
+  def test_define
+    assert_equal nil, BusScheme::SYMBOL_TABLE[:foo]
+    BusScheme.eval("(define foo 5)")
+    assert_equal 5, BusScheme::SYMBOL_TABLE[:foo]
+    BusScheme.eval("(define foo (quote 5 5 5)")
+    assert_equal [5, 5, 5], BusScheme::SYMBOL_TABLE[:foo]
+  end
+
   def test_string_primitives
     assert_evals_to :hi, [:intern, 'hi']
     assert_evals_to 'helloworld', [:concat, 'hello', 'world']
