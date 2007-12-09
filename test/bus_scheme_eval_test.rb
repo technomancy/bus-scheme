@@ -33,7 +33,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     BusScheme.eval("(define foo 5)")
     assert_equal 5, BusScheme::SYMBOL_TABLE[:foo]
     BusScheme.eval("(define foo (quote 5 5 5)")
-    assert_equal [5, 5, 5], BusScheme::SYMBOL_TABLE[:foo]
+    assert_evals_to [5, 5, 5], "foo"
   end
 
   def test_string_primitives
