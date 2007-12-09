@@ -29,13 +29,15 @@ module BusScheme
       if form == []
         nil
       elsif form.is_a? Array
-        apply(form.first, form.rest)
+        apply(form.first, *form.rest)
+      elsif form.is_a? Symbol
+        SYMBOL_TABLE[form]
       else
         form
       end
     end
 
-    def apply(function, args)
+    def apply(function, *args)
       SYMBOL_TABLE[function].call(*args)
     end
 

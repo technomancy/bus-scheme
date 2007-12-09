@@ -11,7 +11,8 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_eval_symbol
-    assert_evals_to :hi, :hi
+    assert_evals_to nil, :hi
+    assert_evals_to :hi, [:quote, :hi]
   end
 
   def test_eval_string
