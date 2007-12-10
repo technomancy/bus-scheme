@@ -12,7 +12,6 @@ class BusSchemeEvalTest < Test::Unit::TestCase
 
   def test_eval_symbol
     assert_evals_to nil, :hi
-    assert_evals_to :hi, [:quote, :hi]
   end
 
   def test_eval_string
@@ -23,10 +22,19 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to 2, [:+, 1, 1]
   end
 
+  def test_many_args_for_arithmetic
+    assert_evals_to 4, [:+, 1, 1, 1, 1]
+    assert_evals_to 2, [:*, 1, 2, 1, 1]
+  end
+
   def test_arithmetic
     assert_evals_to 2, [:'-', 4, 2]
     assert_evals_to 2, [:'/', 4, 2]
     assert_evals_to 2, [:'*', 1, 2]
+  end
+
+  def test_quote
+    assert_evals_to :hi, [:quote, :hi]
   end
 
   def test_define
