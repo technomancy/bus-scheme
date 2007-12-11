@@ -1,0 +1,5 @@
+require 'rubygems'
+gem 'miniunit'
+require 'test/unit'
+$LOAD_PATH << File.dirname(__FILE__) + '/../lib/'
+require 'bus_scheme'
