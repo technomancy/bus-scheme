@@ -66,6 +66,11 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_equal "(+ 2 2)", "(+ 2  \n \t    2)"
   end
 
+  # low-priority, but (I think) the only thing left to do in the parser
+#   def test_parses_dotted_cons
+#     assert_parses_to "(22 . 11)", [:cons, 22, 11]
+#   end
+
   # great way to find edge cases:
   #   def test_parse_random_elisp_form
   #     lisp = "(let ((system-specific-config
@@ -82,12 +87,6 @@ class BusSchemeParserTest < Test::Unit::TestCase
   #   end
 
   private
-
-  def with_debug
-    $MY_DEBUG = true
-    yield
-    $MY_DEBUG = false
-  end
 
   def assert_parses_to(actual_string, expected)
     assert_equal expected, BusScheme.parse(actual_string)

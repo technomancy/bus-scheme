@@ -13,7 +13,7 @@ module BusScheme
     :add1 => lambda { |x| x + 1 },
     :sub1 => lambda { |x| x - 1 },
     :define => lambda { |sym, definition| SYMBOL_TABLE[sym] = BusScheme.eval(definition) },
-    :quote => lambda { |*form| form },
+    :quote => lambda { |arg| arg },
 
     :+ => lambda { |*args| args.inject(0) { |sum, i| sum + i } },
     :- => lambda { |x, y| x - y },
@@ -27,7 +27,8 @@ module BusScheme
     :lambda => lambda { |args, *form| }
   }
 
-    SYMBOL_TABLE = {}.merge(PRIMITIVES)
+  SPECIAL_FORMS = [:quote, :define] # don't apply args for calls to these
+  SYMBOL_TABLE = {}.merge(PRIMITIVES)
 end
 
 # REPL-tastic

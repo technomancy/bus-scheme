@@ -9,10 +9,11 @@ mine. Note that all the implementation of Bus Scheme must be written
 while on a bus. Documentation, tests, and administrivia may be
 accomplished elsewhere, but all actual implementation code is strictly
 bus-driven. Patches are welcome as long as they were written while
-riding a bus. (If your daily commute does not involve a bus, we may be
-able to work something out regarding code written on trains, ferries,
-or perhaps even carpool lanes.) Bus Scheme is primarily a toy; using
-it for anything serious is (right now) ill-advised.
+riding a bus. (If your daily commute does not involve a bus but you
+want to submit a patch, we may be able to work something out regarding
+code written on trains, ferries, or perhaps even carpool lanes.) Bus
+Scheme is primarily a toy; using it for anything serious is (right
+now) ill-advised.
 
 Bus Scheme aims for general Scheme usefulness optimized for learning
 and fun. It's not targeting R5RS or anything like that.
