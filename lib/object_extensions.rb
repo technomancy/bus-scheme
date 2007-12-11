@@ -1,6 +1,6 @@
-class Object
-  def returning
-    yield self
-    self
+module Kernel
+  def returning(x)
+    yield x
+    x
   end
 end
