@@ -24,7 +24,7 @@ module BusScheme
     :concat => lambda { |x, y| x + y },
     :substring => lambda { |x, from, to| x[from .. to] },
 
-    :lambda => lambda { |args, *form| }
+    :lambda => lambda { |args, *form| } # ???
   }
 
   SPECIAL_FORMS = [:quote, :define] # don't apply args for calls to these

@@ -23,8 +23,6 @@ and fun. It's not targeting R5RS or anything like that.
 Bus Scheme is currently missing huge gaps in functionality:
 * parse cons cells
 * lambda
-* fix variable substitution
-* nested eval
 
 == Bonus Fact
 
@@ -33,24 +31,3 @@ I've gathered from reading The Little Schemer, watching the Structure
 and Interpretation of Computer Programs videos, and reading lots about
 Common Lisp and Emacs Lisp. If there are huge gaping flaws in the
 implementation, this is likely to be why.
-
-== License
-
-This is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free
-Software Foundation; either version 3, or (at your option) any later
-version.
-
-This file is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this software; see the file COPYING. If not, write to the
-Free Software Foundation at this address:
-
-  Free Software Foundation
-  51 Franklin Street, Fifth Floor
-  Boston, MA 02110-1301
-  USA
