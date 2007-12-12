@@ -66,25 +66,28 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_equal "(+ 2 2)", "(+ 2  \n \t    2)"
   end
 
-  # low-priority, but (I think) the only thing left to do in the parser
-#   def test_parses_dotted_cons
-#     assert_parses_to "(22 . 11)", [:cons, 22, 11]
-#   end
+  def test_parses_booleans
+    assert_parses_to "#t", true
+    assert_parses_to "#f", false
+  end
 
-  # great way to find edge cases:
-  #   def test_parse_random_elisp_form
-  #     lisp = "(let ((system-specific-config
-  #        (concat \"~/.emacs.d/\"
-  #                (shell-command-to-string \"hostname\"))))
-  #   (if (file-exists-p system-specific-config)
-  #       (load system-specific-config)))"
-  #     assert_parses_to(lisp,
-  #                      [[:let, [[:'system-specific-config',
-  #                                [:concat, "~/.emacs.d/",
-  #                                 [:'shell-command-to-string', "hostname"]]]],
-  #                        [:if, [:'file-exists-p', :'system-specific-config'],
-  #                        [:load, :'system-specific-config']]]])
-  #   end
+  def test_parses_dotted_cons
+    assert_parses_to "(22 . 11)", [:cons, 22, 11]
+  end
+
+  def test_parse_random_elisp_form_from_my_dot_emacs
+    lisp = "(let ((system-specific-config
+         (concat \"~/.emacs.d/\"
+                 (shell-command-to-string \"hostname\"))))
+    (if (file-exists-p system-specific-config)
+        (load system-specific-config)))"
+    assert_parses_to(lisp,
+                     [:let, [[:'system-specific-config',
+                              [:concat, "~/.emacs.d/",
+                               [:'shell-command-to-string', "hostname"]]]],
+                      [:if, [:'file-exists-p', :'system-specific-config'],
+                       [:load, :'system-specific-config']]])
+  end
 
   private
 

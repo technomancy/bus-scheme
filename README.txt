@@ -23,6 +23,9 @@ and fun. It's not targeting R5RS or anything like that.
 Bus Scheme is currently missing huge gaps in functionality:
 * parse cons cells
 * lambda
+* character literals
+* #t and #f
+* numeric tower
 
 == Bonus Fact
 

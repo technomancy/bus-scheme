@@ -12,8 +12,6 @@ module BusScheme
   PRIMITIVES = {
     :add1 => lambda { |x| x + 1 },
     :sub1 => lambda { |x| x - 1 },
-    :define => lambda { |sym, definition| SYMBOL_TABLE[sym] = BusScheme.eval(definition) },
-    :quote => lambda { |arg| arg },
 
     :+ => lambda { |*args| args.inject(0) { |sum, i| sum + i } },
     :- => lambda { |x, y| x - y },
@@ -24,12 +22,29 @@ module BusScheme
     :concat => lambda { |x, y| x + y },
     :substring => lambda { |x, from, to| x[from .. to] },
 
-    :lambda => lambda { |args, *form| } # ???
+    :exit => lambda { exit }, :quit => lambda { exit },
   }
 
-  SPECIAL_FORMS = [:quote, :define] # don't apply args for calls to these
-  SYMBOL_TABLE = {}.merge(PRIMITIVES)
+  SPECIAL_FORMS = {
+    :quote => lambda { |arg| arg },
+    :if => lambda { |condition, yes, *no| eval(condition) ? yes : no },
+    :begin => lambda { },
+    :set! => lambda { },
+    :lambda => lambda { |args, *form| [:lambda, args] + form },
+    :define => lambda { |sym, definition| SYMBOL_TABLE[sym] = BusScheme.eval(definition); sym },
+  }
+
+  SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
+  PROMPT = '> '
+
+  def self.repl
+    loop do
+      begin
+        puts BusScheme.eval(Readline.readline(PROMPT))
+      rescue Interrupt
+      end
+    end
+  end
 end
 
-# REPL-tastic
-loop { print "> "; puts BusScheme.eval(Readline.readline) } if $0 == __FILE__
+BusScheme.repl if $0 == __FILE__
