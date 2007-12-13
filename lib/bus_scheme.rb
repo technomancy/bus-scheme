@@ -1,5 +1,5 @@
 require 'readline'
-require 'yaml'
+require 'yaml' rescue nil # not a deal-killer; this is just for debug
 
 $LOAD_PATH << File.dirname(__FILE__)
 require 'object_extensions'
