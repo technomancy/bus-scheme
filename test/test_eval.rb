@@ -35,7 +35,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_define
-    assert_equal nil, BusScheme::SYMBOL_TABLE[:foo]
+    BusScheme::SYMBOL_TABLE.delete(:foo)
     BusScheme.eval_string("(define foo 5)")
     assert_equal 5, BusScheme::SYMBOL_TABLE[:foo]
     BusScheme.eval_string("(define foo (quote (5 5 5))")
@@ -52,6 +52,11 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to :hi, [:intern, 'hi']
     assert_evals_to 'helloworld', [:concat, 'hello', 'world']
     assert_evals_to 'lo', [:substring, 'hello', 3, -1]
+  end
+
+  def test_booleans
+    assert_evals_to false, :'#f'
+    assert_evals_to true, :'#t'
   end
 
   def test_eval_quote
@@ -77,8 +82,8 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_if
-    assert_evals_to 7 [:if, false, 3, 7]
-    assert_evals_to 3 [:if, [:>, 8, 2], 3, 7]
+    assert_evals_to 7, [:if, :'#f', 3, 7]
+    assert_evals_to 3, [:if, [:>, 8, 2], 3, 7]
   end
 
   def test_begin

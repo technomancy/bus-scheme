@@ -19,7 +19,8 @@ module BusScheme
     end
 
     def apply(function, *args)
-      args.map!{ |arg| eval(arg) } unless SPECIAL_FORMS.include?(function)
+      args.map!{ |arg| eval(arg) } unless SPECIAL_FORMS.has_key?(function)
+      raise "Undefined symbol: #{function}" unless SYMBOL_TABLE.has_key?(function)
       SYMBOL_TABLE[function].call(*args)
     end
   end

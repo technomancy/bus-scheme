@@ -1,4 +1,5 @@
 require 'readline'
+require 'yaml'
 
 $LOAD_PATH << File.dirname(__FILE__)
 require 'object_extensions'
@@ -10,6 +11,9 @@ module BusScheme
   class ParseError < StandardError; end
 
   PRIMITIVES = {
+    :'#t' => true,
+    :'#f' => false,
+
     :add1 => lambda { |x| x + 1 },
     :sub1 => lambda { |x| x - 1 },
 
@@ -17,6 +21,9 @@ module BusScheme
     :- => lambda { |x, y| x - y },
     :'/' => lambda { |x, y| x / y },
     :* => lambda { |*args| args.inject(1) { |product, i| product * i } },
+
+    :> => lambda { |x, y| x > y },
+    :< => lambda { |x, y| x < y },
 
     :intern => lambda { |x| x.intern },
     :concat => lambda { |x, y| x + y },
@@ -27,8 +34,8 @@ module BusScheme
 
   SPECIAL_FORMS = {
     :quote => lambda { |arg| arg },
-    :if => lambda { |condition, yes, *no| eval(condition) ? yes : no },
-    :begin => lambda { },
+    :if => lambda { |condition, yes, *no| eval(condition) ? eval(yes) : eval([:begin] + no) },
+    :begin => lambda { |*args| args.map{ |arg| eval(arg) }.last },
     :set! => lambda { },
     :lambda => lambda { |args, *form| [:lambda, args] + form },
     :define => lambda { |sym, definition| SYMBOL_TABLE[sym] = BusScheme.eval(definition); sym },

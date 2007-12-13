@@ -66,13 +66,9 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_equal "(+ 2 2)", "(+ 2  \n \t    2)"
   end
 
-  def test_parses_booleans
-    assert_parses_to "#t", true
-    assert_parses_to "#f", false
-  end
-
   def test_parses_dotted_cons
     assert_parses_to "(22 . 11)", [:cons, 22, 11]
+    assert_parses_to "((+ 2 2) . 11)", [:cons, [:+, 2, 2], 11]
   end
 
   def test_parse_random_elisp_form_from_my_dot_emacs
