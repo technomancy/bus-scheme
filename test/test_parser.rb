@@ -71,6 +71,15 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to "((+ 2 2) . 11)", [:cons, [:+, 2, 2], 11]
   end
 
+  def test_floats
+  end
+
+  def test_negative_numbers
+  end
+
+  def test_negative_floats
+  end
+
   def test_parse_random_elisp_form_from_my_dot_emacs
     lisp = "(let ((system-specific-config
          (concat \"~/.emacs.d/\"

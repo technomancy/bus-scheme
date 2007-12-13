@@ -82,7 +82,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_if
-    assert_evals_to 7, [:if, :'#f', 3, 7]
+    assert_evals_to 7, [:if, '#f'.intern, 3, 7]
     assert_evals_to 3, [:if, [:>, 8, 2], 3, 7]
   end
 

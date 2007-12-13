@@ -1,6 +1,6 @@
 module Kernel
   def returning(x)
     yield x
-    x
+    return x
   end
 end

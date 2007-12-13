@@ -8,10 +8,9 @@ module BusScheme
       token = tokens.shift
       if token == :'('
         parse_list(tokens)
-      elsif tokens.empty?
-        token # atom
       else
-        raise BusScheme::ParseError
+        raise BusScheme::ParseError if tokens.empty?
+        token # atom
       end
     end
 

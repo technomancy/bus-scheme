@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 begin
   require 'readline'
   require 'yaml'
@@ -16,9 +18,6 @@ module BusScheme
   PRIMITIVES = {
     '#t'.intern => true, # :'#t' screws up emacs' ruby parser
     '#f'.intern => false,
-
-    :add1 => lambda { |x| x + 1 },
-    :sub1 => lambda { |x| x - 1 },
 
     :+ => lambda { |*args| args.inject(0) { |sum, i| sum + i } },
     :- => lambda { |x, y| x - y },
@@ -52,6 +51,7 @@ module BusScheme
       begin
         puts BusScheme.eval_string(Readline.readline(PROMPT))
       rescue Interrupt
+        puts 'Type "(quit)" to leave Bus Scheme.'
       end
     end
   end
