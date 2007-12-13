@@ -36,11 +36,11 @@ module BusScheme
 
   SPECIAL_FORMS = {
     :quote => lambda { |arg| arg },
-    :if => lambda { |condition, yes, *no| eval(condition) ? eval(yes) : eval([:begin] + no) },
-    :begin => lambda { |*args| args.map{ |arg| eval(arg) }.last },
+    :if => lambda { |condition, yes, *no| eval_form(condition) ? eval_form(yes) : eval_form([:begin] + no) },
+    :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },
     :set! => lambda { },
     :lambda => lambda { |args, *form| [:lambda, args] + form },
-    :define => lambda { |sym, definition| SYMBOL_TABLE[sym] = BusScheme.eval(definition); sym },
+    :define => lambda { |sym, definition| SYMBOL_TABLE[sym] = eval_form(definition); sym },
   }
 
   SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
