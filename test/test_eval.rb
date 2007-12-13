@@ -55,8 +55,8 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_booleans
-    assert_evals_to false, :'#f'
-    assert_evals_to true, :'#t'
+    assert_evals_to false, '#f'
+    assert_evals_to true, '#t'
   end
 
   def test_eval_quote

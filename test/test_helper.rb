@@ -1,7 +1,7 @@
 begin
   require 'rubygems'
   gem 'miniunit'
-rescue
+rescue LoadError
   puts "Proceeding with standard test/unit instead of miniunit."
 end
 

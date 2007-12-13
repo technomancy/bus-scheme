@@ -1,5 +1,8 @@
-require 'readline'
-require 'yaml' rescue nil # not a deal-killer; this is just for debug
+begin
+  require 'readline'
+  require 'yaml'
+rescue LoadError
+end
 
 $LOAD_PATH << File.dirname(__FILE__)
 require 'object_extensions'
@@ -11,8 +14,8 @@ module BusScheme
   class ParseError < StandardError; end
 
   PRIMITIVES = {
-    :'#t' => true,
-    :'#f' => false,
+    '#t'.intern => true, # :'#t' screws up emacs' ruby parser
+    '#f'.intern => false,
 
     :add1 => lambda { |x| x + 1 },
     :sub1 => lambda { |x| x - 1 },
@@ -47,7 +50,7 @@ module BusScheme
   def self.repl
     loop do
       begin
-        puts BusScheme.eval(Readline.readline(PROMPT))
+        puts BusScheme.eval_string(Readline.readline(PROMPT))
       rescue Interrupt
       end
     end
