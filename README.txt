@@ -27,20 +27,20 @@ and fun. It's not targeting R5RS or anything like that.
 
 $ bus # drop into a repl
 
-$ bus foo.scm # load a file -- todo
+$ bus -e "(do some stuff)"
 
-$ bus -e "(do some stuff)" # eval a form -- todo
+$ bus foo.scm # load a file -- todo
 
 == Todo
 
-Bus Scheme is currently missing huge gaps in functionality:
+Bus Scheme is currently missing huge pieces of functionality:
 
 * lexical scoping
-* loading files
 * closures
+* loading files
 * eval input from command line, stdin
 * parse cons cells
-* character literals
+* parse character literals
 * numeric tower?
 
 Failing tests for most of these are already included (commented out,

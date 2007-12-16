@@ -118,10 +118,6 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_raises(BusScheme::ArgumentError) { assert_evals_to 2, [:foo, 1, 3] }
   end
 
-  def test_cant_call_nonlambda_array
-    assert_raises(BusScheme::EvalError) { [:+, 3, 3].call }
-  end
-
   #   def test_lambda_args_dont_stay_in_scope
   #     BusScheme::SYMBOL_TABLE.delete(:x)
   #     eval("(define foo (lambda (x) (+ x 1)))")
@@ -140,10 +136,10 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   #     assert_evals_to 3, [:foo, 1]
   #   end
 
-#   def test_load_file
-#     eval "(load \"#{File.dirname(__FILE__)}/foo.scm\")"
-#     assert_evals_to 3, :foo
-#   end
+  #   def test_load_file
+  #     eval "(load \"#{File.dirname(__FILE__)}/foo.scm\")"
+  #     assert_evals_to 3, :foo
+  #   end
 
   private
 

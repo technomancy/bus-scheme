@@ -15,7 +15,7 @@ module BusScheme
     end
 
     def parse_list(tokens)
-      returning([]) do |list|
+      [].affect do |list|
         while element = tokens.shift and element != :')'
           if element == :'('
             list << parse_list(tokens)
@@ -27,7 +27,7 @@ module BusScheme
     end
 
     def tokenize(input)
-      returning([]) do |tokens|
+      [].affect do |tokens|
         while token = pop_token(input)
           tokens << token
         end
