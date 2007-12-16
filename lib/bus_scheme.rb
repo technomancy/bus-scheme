@@ -17,6 +17,8 @@ module BusScheme
   class EvalError < StandardError; end
   class ArgumentError < StandardError; end
 
+  VERSION = "0.5"
+
   PRIMITIVES = {
     '#t'.intern => true, # :'#t' screws up emacs' ruby parser
     '#f'.intern => false,
@@ -58,5 +60,3 @@ module BusScheme
     end
   end
 end
-
-BusScheme.repl if $0 == __FILE__

@@ -118,27 +118,32 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_raises(BusScheme::ArgumentError) { assert_evals_to 2, [:foo, 1, 3] }
   end
 
-#   def test_lambda_args_dont_stay_in_scope
-#     BusScheme::SYMBOL_TABLE.delete(:x)
-#     eval("(define foo (lambda (x) (+ x 1)))")
-#     assert_evals_to 2, [:foo, 1]
-#     assert !BusScheme::SYMBOL_TABLE.has_key?(:x)
-#   end
-
-#   def test_lexical_scoping
-#     assert_raises(BusScheme::EvalError) do
-#       eval "((lambda (y) ((lambda (x) (+ y x)) 2)))" # y should not be in scope in inner lambda
-#     end
-#   end
-
-#   def test_lambda_closures
-#     eval "(define foo (lambda (x) ((lambda (y) (+ x y)) (* x 2))))"
-#     assert_evals_to 3, [:foo, 1]
-#   end
-
   def test_cant_call_nonlambda_array
     assert_raises(BusScheme::EvalError) { [:+, 3, 3].call }
   end
+
+  #   def test_lambda_args_dont_stay_in_scope
+  #     BusScheme::SYMBOL_TABLE.delete(:x)
+  #     eval("(define foo (lambda (x) (+ x 1)))")
+  #     assert_evals_to 2, [:foo, 1]
+  #     assert !BusScheme::SYMBOL_TABLE.has_key?(:x)
+  #   end
+
+  #   def test_lexical_scoping
+  #     assert_raises(BusScheme::EvalError) do
+  #       eval "((lambda (y) ((lambda (x) (+ y x)) 2)))" # y should not be in scope in inner lambda
+  #     end
+  #   end
+
+  #   def test_lambda_closures
+  #     eval "(define foo (lambda (x) ((lambda (y) (+ x y)) (* x 2))))"
+  #     assert_evals_to 3, [:foo, 1]
+  #   end
+
+#   def test_load_file
+#     eval "(load \"#{File.dirname(__FILE__)}/foo.scm\")"
+#     assert_evals_to 3, :foo
+#   end
 
   private
 

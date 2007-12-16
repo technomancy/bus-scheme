@@ -67,19 +67,35 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   # is this even part of Scheme?
-#   def test_parses_dotted_cons
-#     assert_parses_to "(22 . 11)", [:cons, 22, 11]
-#     assert_parses_to "((+ 2 2) . 11)", [:cons, [:+, 2, 2], 11]
+  #   def test_parses_dotted_cons
+  #     assert_parses_to "(22 . 11)", [:cons, 22, 11]
+  #     assert_parses_to "((+ 2 2) . 11)", [:cons, [:+, 2, 2], 11]
+  #   end
+
+#   def test_floats
+#     assert_parses_to "44.9", 44.9
+#     assert_parses_to "0.22", 0.22
+#     assert_parses_to ".22", 0.22
+#     assert_parses_to "2.220", 2.22
 #   end
 
-  def test_floats
-  end
+#   def test_negative_numbers
+#     assert_parses_to "-1", -1
+#     assert_parses_to "-0", 0
+#     assert_parses_to "-02", -2
+#   end
 
-  def test_negative_numbers
-  end
+#   def test_negative_floats
+#     assert_parses_to "-0.22", -0.22
+#     assert_parses_to "-.22", -0.22
+#     assert_parses_to "-0.10", -0.1
+#   end
 
-  def test_negative_floats
-  end
+#   def test_character_literals
+#     assert_parses_to "?e", "e"
+#     assert_parses_to "?A", "A"
+#     # what else?
+#   end
 
   def test_parse_random_elisp_form_from_my_dot_emacs
     lisp = "(let ((system-specific-config

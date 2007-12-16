@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+$LOAD_PATH << File.dirname(__FILE__) + '/../lib'
+
+require 'bus_scheme'
+
+if ARGV.first == '-e'
+  puts BusScheme.eval_string(ARGV[1])
+elsif ARGV.length == 1
+  puts BusScheme.load(ARGV.first)
+else
+  BusScheme.repl
+end
