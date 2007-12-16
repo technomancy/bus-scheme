@@ -14,6 +14,8 @@ require 'eval'
 
 module BusScheme
   class ParseError < StandardError; end
+  class EvalError < StandardError; end
+  class ArgumentError < StandardError; end
 
   PRIMITIVES = {
     '#t'.intern => true, # :'#t' screws up emacs' ruby parser

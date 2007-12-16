@@ -36,16 +36,16 @@ class BusSchemeEvalTest < Test::Unit::TestCase
 
   def test_define
     BusScheme::SYMBOL_TABLE.delete(:foo)
-    BusScheme.eval_string("(define foo 5)")
+    eval("(define foo 5)")
     assert_equal 5, BusScheme::SYMBOL_TABLE[:foo]
-    BusScheme.eval_string("(define foo (quote (5 5 5))")
+    eval("(define foo (quote (5 5 5))")
     assert_evals_to [5, 5, 5], :foo
   end
 
   def test_define_returns_defined_term
     assert_evals_to :foo, "(define foo 2)"
     # can't use the eval convenience testing method since it assumes strings are unparsed
-    assert_equal 2, BusScheme.eval_string("foo")
+    assert_equal 2, eval("foo")
   end
 
   def test_string_primitives
@@ -72,7 +72,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_blows_up_with_undefined_symbol
-    assert_raises(RuntimeError) { BusScheme.eval_string("undefined-symbol") }
+    assert_raises(RuntimeError) { eval("undefined-symbol") }
   end
 
   def test_variable_substitution
@@ -87,9 +87,9 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_begin
-    BusScheme::eval([:begin,
-                     [:define, :foo, 779],
-                     9])
+    eval([:begin,
+          [:define, :foo, 779],
+          9])
     assert_equal 779, BusScheme::SYMBOL_TABLE[:foo]
   end
 
@@ -98,21 +98,46 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_simple_lambda
-    # special-case lambda in #apply ?
-    assert_equal [:lambda, [], [:+, 1, 1]], BusScheme.eval_string("(lambda () (+ 1 1))")
-    BusScheme.eval_string("(define foo (lambda () (+ 1 1)))")
+    assert_equal [:lambda, [], [:+, 1, 1]], eval("(lambda () (+ 1 1))")
+    eval("(define foo (lambda () (+ 1 1)))")
     assert_equal :lambda, BusScheme::SYMBOL_TABLE[:foo].first
     assert_evals_to 2, [:foo]
   end
 
   def test_lambda_with_arg
-    BusScheme.eval_string("(define foo (lambda (x) (+ x 1)))")
+    eval("(define foo (lambda (x) (+ x 1)))")
     assert_evals_to 2, [:foo, 1]
   end
 
-  def test_lambda_closures
-    BusScheme.eval_string "(define foo (lambda (x) ((lambda (y) (+ x y)) (* x 2))))"
-    assert_evals_to 3, [:foo, 1]
+  def test_eval_literal_lambda
+    assert_evals_to 4, "((lambda (x) (* x x)) 2)"
+  end
+
+  def test_lambda_with_incorrect_arity
+    eval("(define foo (lambda (x) (+ x 1)))")
+    assert_raises(BusScheme::ArgumentError) { assert_evals_to 2, [:foo, 1, 3] }
+  end
+
+#   def test_lambda_args_dont_stay_in_scope
+#     BusScheme::SYMBOL_TABLE.delete(:x)
+#     eval("(define foo (lambda (x) (+ x 1)))")
+#     assert_evals_to 2, [:foo, 1]
+#     assert !BusScheme::SYMBOL_TABLE.has_key?(:x)
+#   end
+
+#   def test_lexical_scoping
+#     assert_raises(BusScheme::EvalError) do
+#       eval "((lambda (y) ((lambda (x) (+ y x)) 2)))" # y should not be in scope in inner lambda
+#     end
+#   end
+
+#   def test_lambda_closures
+#     eval "(define foo (lambda (x) ((lambda (y) (+ x y)) (* x 2))))"
+#     assert_evals_to 3, [:foo, 1]
+#   end
+
+  def test_cant_call_nonlambda_array
+    assert_raises(BusScheme::EvalError) { [:+, 3, 3].call }
   end
 
   private
@@ -121,7 +146,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     if form.is_a?(String)
       BusScheme.eval_string(form)
     else
-      BusScheme.eval(form)
+      BusScheme.eval_form(form)
     end
   end
 

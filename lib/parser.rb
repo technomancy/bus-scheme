@@ -9,7 +9,7 @@ module BusScheme
       if token == :'('
         parse_list(tokens)
       else
-        raise BusScheme::ParseError if tokens.empty?
+        raise BusScheme::ParseError unless tokens.empty?
         token # atom
       end
     end
