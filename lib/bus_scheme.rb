@@ -25,7 +25,7 @@ module BusScheme
 
     :+ => lambda { |*args| args.inject(0) { |sum, i| sum + i } },
     :- => lambda { |x, y| x - y },
-    :'/' => lambda { |x, y| x / y },
+    '/'.intern => lambda { |x, y| x / y },
     :* => lambda { |*args| args.inject(1) { |product, i| product * i } },
 
     :> => lambda { |x, y| x > y },
@@ -50,6 +50,7 @@ module BusScheme
   SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
   PROMPT = '> '
 
+  # Read-Eval-Print-Loop
   def self.repl
     loop do
       begin
