@@ -1,9 +1,11 @@
 module BusScheme
   class << self
+    # Parse a string, then eval the result
     def eval_string(string)
       eval_form(parse(string))
     end
 
+    # Eval a form passed in as an array
     def eval_form(form)
       if form == []
         nil
@@ -17,6 +19,7 @@ module BusScheme
       end
     end
 
+    # Call a function with given args
     def apply(function, *args)
       args.map!{ |arg| eval_form(arg) } unless SPECIAL_FORMS.has_key?(function)
 
@@ -29,6 +32,7 @@ module BusScheme
       end
     end
 
+    # All the super lambda magic happens (or fails to happen) here
     def eval_lambda(lambda, args)
       raise BusScheme::EvalError unless lambda.shift == :lambda
 

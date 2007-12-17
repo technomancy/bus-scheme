@@ -1,5 +1,6 @@
 Bus Scheme
     by Phil Hagelberg (c) 2007
+    http://bus-scheme.rubyforge.org
 
 == Description
 
@@ -18,14 +19,36 @@ now) ill-advised.
 Bus Scheme aims for general Scheme usefulness optimized for learning
 and fun. It's not targeting R5RS or anything like that.
 
+== Install
+
+* sudo gem install bus-scheme
+
+== Usage
+
+$ bus # drop into a repl
+
+$ bus -e "(do some stuff)"
+
+$ bus foo.scm # load a file -- todo
+
 == Todo
 
-Bus Scheme is currently missing huge gaps in functionality:
+Bus Scheme is currently missing huge pieces of functionality:
+
+* lexical scoping
+* closures
+* loading files
+* eval input from command line, stdin
 * parse cons cells
-* lambda
-* character literals
-* #t and #f
-* numeric tower
+* parse character literals
+* numeric tower?
+
+Failing tests for most of these are already included (commented out,
+mostly) in the relevant test files.
+
+== Requirements
+
+Bus Scheme should run on (at least) Ruby 1.8, Ruby 1.9, and Rubinius.
 
 == Bonus Fact
 

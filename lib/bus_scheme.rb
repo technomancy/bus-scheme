@@ -17,13 +17,15 @@ module BusScheme
   class EvalError < StandardError; end
   class ArgumentError < StandardError; end
 
+  VERSION = "0.5"
+
   PRIMITIVES = {
     '#t'.intern => true, # :'#t' screws up emacs' ruby parser
     '#f'.intern => false,
 
     :+ => lambda { |*args| args.inject(0) { |sum, i| sum + i } },
     :- => lambda { |x, y| x - y },
-    :'/' => lambda { |x, y| x / y },
+    '/'.intern => lambda { |x, y| x / y },
     :* => lambda { |*args| args.inject(1) { |product, i| product * i } },
 
     :> => lambda { |x, y| x > y },
@@ -48,6 +50,7 @@ module BusScheme
   SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
   PROMPT = '> '
 
+  # Read-Eval-Print-Loop
   def self.repl
     loop do
       begin
@@ -58,5 +61,3 @@ module BusScheme
     end
   end
 end
-
-BusScheme.repl if $0 == __FILE__

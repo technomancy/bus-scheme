@@ -1,9 +1,11 @@
 module BusScheme
   class << self
+    # Turn an input string into an S-expression
     def parse(input)
       parse_tokens tokenize(normalize_whitespace(input))
     end
 
+    # Turn a list of tokens into a properly-nested S-expression
     def parse_tokens(tokens)
       token = tokens.shift
       if token == :'('
@@ -14,8 +16,9 @@ module BusScheme
       end
     end
 
+    # Nest a list from a 1-dimensional list of tokens
     def parse_list(tokens)
-      returning([]) do |list|
+      [].affect do |list|
         while element = tokens.shift and element != :')'
           if element == :'('
             list << parse_list(tokens)
@@ -26,14 +29,16 @@ module BusScheme
       end
     end
 
+    # Split an input string into lexically valid tokens
     def tokenize(input)
-      returning([]) do |tokens|
+      [].affect do |tokens|
         while token = pop_token(input)
           tokens << token
         end
       end
     end
 
+    # Take a token off the input string and return it
     def pop_token(input)
       token = case input
               when /^ +/ # whitespace
@@ -56,6 +61,7 @@ module BusScheme
       return token
     end
 
+    # Treat all whitespace in a string as spaces
     def normalize_whitespace(string)
       string && string.gsub(/\t/, ' ').gsub(/\n/, ' ').gsub(/ +/, ' ')
     end
