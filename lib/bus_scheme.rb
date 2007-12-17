@@ -44,11 +44,37 @@ module BusScheme
     :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },
     :set! => lambda { },
     :lambda => lambda { |args, *form| [:lambda, args] + form },
-    :define => lambda { |sym, definition| SYMBOL_TABLE[sym] = eval_form(definition); sym },
+    :define => lambda { |sym, definition| BusScheme[sym] = eval_form(definition); sym },
   }
 
   SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
+  SCOPES = [SYMBOL_TABLE]
   PROMPT = '> '
+
+  # symbol existence predicate
+  def self.in_scope?(symbol)
+    SCOPES.last.has_key?(symbol) or SCOPES.first.has_key?(symbol)
+  end
+
+  # symbol lookup
+  def self.[](symbol)
+    SCOPES.last[symbol] or SCOPES.first[symbol]
+  end
+
+  # symbol assignment to value
+  def self.[]=(symbol, value)
+    SCOPES.last[symbol] = value
+  end
+
+  # remove symbols from all scopes
+  def self.clear_symbols(*symbols)
+    SCOPES.map{ |scope| symbols.map{ |sym| scope.delete sym } }
+  end
+
+  # symbol special form predicate
+  def self.special_form?(symbol)
+    SPECIAL_FORMS.has_key?(symbol)
+  end
 
   # Read-Eval-Print-Loop
   def self.repl

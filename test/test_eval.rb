@@ -11,8 +11,8 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_eval_symbol
-    BusScheme::SYMBOL_TABLE[:hi] = nil
-    assert_evals_to nil, :hi
+    eval "(define hi 13)"
+    assert_evals_to 13, :hi
   end
 
   def test_eval_string
@@ -35,9 +35,9 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_define
-    BusScheme::SYMBOL_TABLE.delete(:foo)
+    BusScheme.clear_symbols :foo
     eval("(define foo 5)")
-    assert_equal 5, BusScheme::SYMBOL_TABLE[:foo]
+    assert_equal 5, BusScheme[:foo]
     eval("(define foo (quote (5 5 5))")
     assert_evals_to [5, 5, 5], :foo
   end
@@ -76,7 +76,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_variable_substitution
-    BusScheme::SYMBOL_TABLE[:foo] = 7
+    eval "(define foo 7)"
     assert_evals_to 7, :foo
     assert_evals_to 21, [:*, 3, :foo]
   end
@@ -90,7 +90,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     eval([:begin,
           [:define, :foo, 779],
           9])
-    assert_equal 779, BusScheme::SYMBOL_TABLE[:foo]
+    assert_equal 779, BusScheme[:foo]
   end
 
   def test_set!
@@ -100,7 +100,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   def test_simple_lambda
     assert_equal [:lambda, [], [:+, 1, 1]], eval("(lambda () (+ 1 1))")
     eval("(define foo (lambda () (+ 1 1)))")
-    assert_equal :lambda, BusScheme::SYMBOL_TABLE[:foo].first
+    assert_equal :lambda, BusScheme[:foo].first
     assert_evals_to 2, [:foo]
   end
 
@@ -118,16 +118,17 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_raises(BusScheme::ArgumentError) { assert_evals_to 2, [:foo, 1, 3] }
   end
 
-  #   def test_lambda_args_dont_stay_in_scope
-  #     BusScheme::SYMBOL_TABLE.delete(:x)
-  #     eval("(define foo (lambda (x) (+ x 1)))")
-  #     assert_evals_to 2, [:foo, 1]
-  #     assert !BusScheme::SYMBOL_TABLE.has_key?(:x)
-  #   end
+  def test_lambda_args_dont_stay_in_scope
+    BusScheme.clear_symbols(:x, :foo)
+    eval("(define foo (lambda (x) (+ x 1)))")
+    assert !BusScheme.in_scope?(:x)
+    assert_evals_to 2, [:foo, 1]
+    assert !BusScheme.in_scope?(:x)
+  end
 
   #   def test_lexical_scoping
   #     assert_raises(BusScheme::EvalError) do
-  #       eval "((lambda (y) ((lambda (x) (+ y x)) 2)))" # y should not be in scope in inner lambda
+  #       eval "???"
   #     end
   #   end
 
