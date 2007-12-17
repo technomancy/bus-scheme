@@ -29,7 +29,7 @@ module BusScheme
       end
     end
 
-    # Split an input string into lexically-valid tokens
+    # Split an input string into lexically valid tokens
     def tokenize(input)
       [].affect do |tokens|
         while token = pop_token(input)
@@ -38,7 +38,7 @@ module BusScheme
       end
     end
 
-    # Take a token off the input string
+    # Take a token off the input string and return it
     def pop_token(input)
       token = case input
               when /^ +/ # whitespace
