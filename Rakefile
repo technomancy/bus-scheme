@@ -5,7 +5,7 @@ require 'hoe'
 require './lib/bus_scheme.rb'
 require 'rake/testtask'
 
-Hoe.new('BusScheme', BusScheme::VERSION) do |p|
+Hoe.new('bus-scheme', BusScheme::VERSION) do |p|
   p.rubyforge_name = 'bus-scheme'
   p.author = 'Phil Hagelberg'
   p.email = 'technomancy@gmail.com'

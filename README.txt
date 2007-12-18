@@ -23,6 +23,10 @@ and fun. It's not targeting R5RS or anything like that.
 
 * sudo gem install bus-scheme
 
+For the source:
+
+* git clone git://git.caboo.se/bus_scheme.git
+
 == Usage
 
 $ bus # drop into a repl

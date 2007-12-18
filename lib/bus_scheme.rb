@@ -17,7 +17,7 @@ module BusScheme
   class EvalError < StandardError; end
   class ArgumentError < StandardError; end
 
-  VERSION = "0.5"
+  VERSION = "0.6"
 
   PRIMITIVES = {
     '#t'.intern => true, # :'#t' screws up emacs' ruby parser
