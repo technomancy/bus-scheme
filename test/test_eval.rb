@@ -94,7 +94,12 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_set!
-    # i dunno... what does set! do? how's it different from define?
+    BusScheme.clear_symbols(:foo)
+    # can only set! existing variables
+    assert_raises(BusScheme::ArgumentError) { eval "(set! foo 7)" }
+    eval "(define foo 3)"
+    eval "(set! foo 7)"
+    assert_evals_to 7, :foo
   end
 
   def test_simple_lambda

@@ -42,9 +42,10 @@ module BusScheme
     :quote => lambda { |arg| arg },
     :if => lambda { |condition, yes, *no| eval_form(condition) ? eval_form(yes) : eval_form([:begin] + no) },
     :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },
-    :set! => lambda { },
+    :set! => lambda { |sym, value| raise ArgumentError unless in_scope?(sym)
+      BusScheme[sym] = eval_form(value); sym },
     :lambda => lambda { |args, *form| [:lambda, args] + form },
-    :define => lambda { |sym, definition| BusScheme[sym] = eval_form(definition); sym },
+    :define => lambda { |sym, value| BusScheme[sym] = eval_form(value); sym },
   }
 
   SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
