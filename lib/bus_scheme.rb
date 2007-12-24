@@ -11,6 +11,7 @@ require 'object_extensions'
 require 'array_extensions'
 require 'parser'
 require 'eval'
+require 'lambda'
 
 module BusScheme
   class ParseError < StandardError; end
@@ -43,7 +44,7 @@ module BusScheme
     :if => lambda { |condition, yes, *no| eval_form(condition) ? eval_form(yes) : eval_form([:begin] + no) },
     :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },
     :set! => lambda { },
-    :lambda => lambda { |args, *form| [:lambda, args] + form },
+    :lambda => lambda { |args, *form| Lambda.new(args, *form) },
     :define => lambda { |sym, definition| BusScheme[sym] = eval_form(definition); sym },
   }
 

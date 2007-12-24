@@ -1,0 +1,64 @@
+$LOAD_PATH << File.dirname(__FILE__)
+require 'test_helper'
+
+class BusScheme::Lambda
+  attr_accessor :body, :args, :scope
+end
+
+class BusSchemeLambdaTest < Test::Unit::TestCase
+  def test_simple_lambda
+    l = eval("(lambda () (+ 1 1))")
+    assert l.lambda?
+    assert_equal [:+, 1, 1], l.body
+    assert_equal [], l.args
+    # assert_equal ??, l.scope
+
+    eval("(define foo (lambda () (+ 1 1)))")
+    assert BusScheme[:foo].lambda?
+    assert_evals_to 2, [:foo]
+  end
+
+  def test_lambda_with_arg
+    eval("(define foo (lambda (x) (+ x 1)))")
+    assert_evals_to 2, [:foo, 1]
+  end
+
+  def test_eval_literal_lambda
+    assert_evals_to 4, "((lambda (x) (* x x)) 2)"
+  end
+
+  def test_lambda_with_incorrect_arity
+    eval("(define foo (lambda (x) (+ x 1)))")
+    assert_raises(BusScheme::ArgumentError) { assert_evals_to 2, [:foo, 1, 3] }
+  end
+
+  def test_lambda_args_dont_stay_in_scope
+    BusScheme.clear_symbols(:x, :foo)
+    eval("(define foo (lambda (x) (+ x 1)))")
+    assert !BusScheme.in_scope?(:x)
+    assert_evals_to 2, [:foo, 1]
+    assert !BusScheme.in_scope?(:x)
+  end
+
+  def test_lambda_calls_lambda
+    eval "(define f (lambda (x) (+ 3 x)))"
+    eval "(define g (lambda (y) (* 3 y)))"
+    assert_evals_to 12, "(f (g 3))"
+  end
+
+  #   def test_lexical_scoping
+  #     assert_raises(BusScheme::EvalError) do
+  #       eval "???"
+  #     end
+  #   end
+
+  #   def test_lambda_closures
+  #     eval "(define foo (lambda (x) ((lambda (y) (+ x y)) (* x 2))))"
+  #     assert_evals_to 3, [:foo, 1]
+  #   end
+
+  #   def test_load_file
+  #     eval "(load \"#{File.dirname(__FILE__)}/foo.scm\")"
+  #     assert_evals_to 3, :foo
+  #   end
+end

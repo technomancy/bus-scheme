@@ -43,9 +43,10 @@ Bus Scheme is currently missing huge pieces of functionality:
 * closures
 * loading files
 * eval input from command line, stdin
+* optimize tail call recursion
 * parse cons cells
 * parse character literals
-* numeric tower?
+* parse quote, unquote
 
 Failing tests for most of these are already included (commented out,
 mostly) in the relevant test files.

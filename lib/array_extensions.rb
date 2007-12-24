@@ -6,14 +6,4 @@ class Array
 
   alias_method :car, :first
   alias_method :cdr, :rest
-
-  # Treat the array as a lambda and call it with given args
-  def call(*args)
-    BusScheme::eval_lambda(self, args)
-  end
-
-  # Simple predicate for convenience
-  def lambda?
-    first == :lambda
-  end
 end

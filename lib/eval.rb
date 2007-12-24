@@ -14,7 +14,7 @@ module BusScheme
       elsif form.is_a? Symbol
         raise "Undefined symbol: #{form}" unless in_scope?(form)
         BusScheme[form]
-      else
+      else # well it must be a literal then
         form
       end
     end
@@ -23,29 +23,15 @@ module BusScheme
     def apply(function, *args)
       args.map!{ |arg| eval_form(arg) } unless special_form?(function)
 
-      # refactor me
-      if function.is_a?(Array) and function.lambda?
+      # ideally refactor to remove this line:
+      function = eval_form(function) if function.is_a?(Array) and function.first == :lambda
+
+      if function.is_a? Lambda
         function.call(*args)
       else
         raise "Undefined symbol: #{function}" unless in_scope?(function)
         BusScheme[function].call(*args)
       end
-    end
-
-    # All the super lambda magic happens (or fails to happen) here
-    def eval_lambda(lambda, args)
-      raise BusScheme::EvalError unless lambda.shift == :lambda
-
-      arg_list = lambda.shift
-      raise BusScheme::ArgumentError if !arg_list.is_a?(Array) or arg_list.length != args.length
-
-      SCOPES << {} # new scope
-      until arg_list.empty?
-        BusScheme[arg_list.shift] = args.shift
-      end
-
-      # using affect as a non-return-value-affecting callback
-      BusScheme[:begin].call(*lambda).affect { SCOPES.pop }
     end
   end
 end
