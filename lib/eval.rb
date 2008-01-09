@@ -12,7 +12,7 @@ module BusScheme
       elsif form.is_a? Array
         apply(form.first, *form.rest)
       elsif form.is_a? Symbol
-        raise "Undefined symbol: #{form}" unless in_scope?(form)
+        raise EvalError.new("Undefined symbol: #{form}") if not in_scope?(form)
         BusScheme[form]
       else # well it must be a literal then
         form
@@ -22,16 +22,7 @@ module BusScheme
     # Call a function with given args
     def apply(function, *args)
       args.map!{ |arg| eval_form(arg) } unless special_form?(function)
-
-      # ideally refactor to remove this line:
-      function = eval_form(function) if function.is_a?(Array) and function.first == :lambda
-
-      if function.is_a? Lambda
-        function.call(*args)
-      else
-        raise "Undefined symbol: #{function}" unless in_scope?(function)
-        BusScheme[function].call(*args)
-      end
+      eval_form(function).call(*args)
     end
   end
 end

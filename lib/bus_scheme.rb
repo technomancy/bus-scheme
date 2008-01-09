@@ -14,9 +14,10 @@ require 'eval'
 require 'lambda'
 
 module BusScheme
-  class ParseError < StandardError; end
-  class EvalError < StandardError; end
-  class ArgumentError < StandardError; end
+  class BusSchemeError < StandardError; end
+  class ParseError < BusSchemeError; end
+  class EvalError < BusSchemeError; end
+  class ArgumentError < BusSchemeError; end
 
   VERSION = "0.6"
 
@@ -26,8 +27,8 @@ module BusScheme
 
     :+ => lambda { |*args| args.inject(0) { |sum, i| sum + i } },
     :- => lambda { |x, y| x - y },
-    '/'.intern => lambda { |x, y| x / y },
     :* => lambda { |*args| args.inject(1) { |product, i| product * i } },
+    '/'.intern => lambda { |x, y| x / y },
 
     :> => lambda { |x, y| x > y },
     :< => lambda { |x, y| x < y },
@@ -39,9 +40,11 @@ module BusScheme
     :exit => lambda { exit }, :quit => lambda { exit },
   }
 
+  # if we add in macros, can some of these be defined in scheme?
   SPECIAL_FORMS = {
     :quote => lambda { |arg| arg },
-    :if => lambda { |condition, yes, *no| eval_form(condition) ? eval_form(yes) : eval_form([:begin] + no) },
+    # TODO: check that nil, () and #f all behave according to spec
+    :if => lambda { |q, yes, *no| eval_form(q) ? eval_form(yes) : eval_form([:begin] + no) },
     :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },
     :set! => lambda { |sym, value| raise ArgumentError unless in_scope?(sym)
       BusScheme[sym] = eval_form(value); sym },
@@ -85,6 +88,11 @@ module BusScheme
         puts BusScheme.eval_string(Readline.readline(PROMPT))
       rescue Interrupt
         puts 'Type "(quit)" to leave Bus Scheme.'
+      rescue BusSchemeError => e
+        puts "Error: #{e}"
+      rescue StandardError => e
+        puts "You found a bug in Bus Scheme!"
+        puts "#{e.class}: #{e}\n#{e.backtrace.join("\n")}"
       end
     end
   end

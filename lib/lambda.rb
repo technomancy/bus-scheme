@@ -1,23 +1,15 @@
 module BusScheme
   class Lambda
-    def initialize(args, body)
-      @scope = nil # scope
-      @args = args
-      @body = body
+    def initialize(arg_names, body)
+      @arg_names, @body, @environment = [arg_names, body, SCOPES.last]
     end
 
-    def call(*args)
-      raise BusScheme::ArgumentError if args.length != @args.length
+    def call(*arg_values)
+      raise BusScheme::ArgumentError if @arg_names.length != arg_values.length
 
-      SCOPES << {} # new scope
-      args.zip(@args).each do |value, symbol|
-        BusScheme[symbol] = value
-      end
-
-      # using affect as a non-return-value-affecting callback
+      # TODO: changes to variables in the environment must affect their original scope!
+      SCOPES << @environment.merge(@arg_names.zip(arg_values).to_hash)
       BusScheme[:begin].call(@body).affect { SCOPES.pop }
     end
-
-    def lambda?; true end
   end
 end

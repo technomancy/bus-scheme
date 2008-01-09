@@ -44,7 +44,6 @@ class BusSchemeEvalTest < Test::Unit::TestCase
 
   def test_define_returns_defined_term
     assert_evals_to :foo, "(define foo 2)"
-    # can't use the eval convenience testing method since it assumes strings are unparsed
     assert_equal 2, eval("foo")
   end
 
@@ -72,7 +71,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_blows_up_with_undefined_symbol
-    assert_raises(RuntimeError) { eval("undefined-symbol") }
+    assert_raises(BusScheme::EvalError) { eval("undefined-symbol") }
   end
 
   def test_variable_substitution

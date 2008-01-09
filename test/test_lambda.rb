@@ -2,19 +2,18 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
 class BusScheme::Lambda
-  attr_accessor :body, :args, :scope
+  attr_accessor :body, :arg_names, :environment
 end
 
 class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_simple_lambda
     l = eval("(lambda () (+ 1 1))")
-    assert l.lambda?
+    assert l.is_a?(BusScheme::Lambda)
     assert_equal [:+, 1, 1], l.body
-    assert_equal [], l.args
-    # assert_equal ??, l.scope
+    assert_equal [], l.arg_names
 
     eval("(define foo (lambda () (+ 1 1)))")
-    assert BusScheme[:foo].lambda?
+    assert BusScheme[:foo].is_a?(BusScheme::Lambda)
     assert_evals_to 2, [:foo]
   end
 
@@ -46,16 +45,17 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_evals_to 12, "(f (g 3))"
   end
 
-  #   def test_lexical_scoping
-  #     assert_raises(BusScheme::EvalError) do
-  #       eval "???"
-  #     end
-  #   end
+  def test_lambda_closures
+    eval "(define foo (lambda (x) ((lambda (y) (+ x y)) (* x 2))))"
+    assert_evals_to 3, [:foo, 1]
+  end
 
-  #   def test_lambda_closures
-  #     eval "(define foo (lambda (x) ((lambda (y) (+ x y)) (* x 2))))"
-  #     assert_evals_to 3, [:foo, 1]
-  #   end
+#   def test_changes_to_enclosed_variables_are_in_effect_after_lambda_execution
+#     assert_evals_to 2, "((lambda (x) (begin ((lambda () (set! x 2))) x)) 1)"
+#   end
+
+#   def test_implicit_begin
+#   end
 
   #   def test_load_file
   #     eval "(load \"#{File.dirname(__FILE__)}/foo.scm\")"
