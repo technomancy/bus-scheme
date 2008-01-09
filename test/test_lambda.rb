@@ -56,9 +56,4 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
 #   def test_implicit_begin
 #   end
-
-  #   def test_load_file
-  #     eval "(load \"#{File.dirname(__FILE__)}/foo.scm\")"
-  #     assert_evals_to 3, :foo
-  #   end
 end

@@ -37,6 +37,7 @@ module BusScheme
     :concat => lambda { |x, y| x + y },
     :substring => lambda { |x, from, to| x[from .. to] },
 
+    :load => lambda { |filename| eval_string(File.read(filename)) },
     :exit => lambda { exit }, :quit => lambda { exit },
   }
 

@@ -100,4 +100,9 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     eval "(set! foo 7)"
     assert_evals_to 7, :foo
   end
+
+  def test_load_file
+    eval "(load \"#{File.dirname(__FILE__)}/foo.scm\")"
+    assert_evals_to 3, :foo
+  end
 end

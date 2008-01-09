@@ -37,12 +37,9 @@ $ bus foo.scm # load a file -- todo
 
 == Todo
 
-Bus Scheme is currently missing huge pieces of functionality:
+Bus Scheme is currently missing pieces of functionality:
 
-* lexical scoping
-* closures
-* loading files
-* eval input from command line, stdin
+* changes to closure variables don't affect original scope
 * optimize tail call recursion
 * parse cons cells
 * parse character literals
