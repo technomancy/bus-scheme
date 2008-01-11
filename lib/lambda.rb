@@ -1,15 +1,18 @@
 module BusScheme
   class Lambda
     def initialize(arg_names, body)
-      @arg_names, @body, @environment = [arg_names, body, SCOPES.last]
+      @arg_names, @body, @environment = [arg_names, body, SCOPES]
     end
 
     def call(*arg_values)
       raise BusScheme::ArgumentError if @arg_names.length != arg_values.length
+      with_local_scope(@arg_names.zip(arg_values).to_hash) { return BusScheme[:begin].call(@body) }
+    end
 
-      # TODO: changes to variables in the environment must affect their original scope!
-      SCOPES << @environment.merge(@arg_names.zip(arg_values).to_hash)
-      BusScheme[:begin].call(@body).affect { SCOPES.pop }
+    def with_local_scope(scope, &block)
+      SCOPES << scope
+      block.call
+      SCOPES.delete(scope)
     end
   end
 end
