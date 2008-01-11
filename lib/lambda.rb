@@ -4,7 +4,7 @@ module BusScheme
     
     # create new lambda object
     def initialize(arg_names, body)
-      @arg_names, @body, @environment = [arg_names, body.unshift(:begin), LOCAL_SCOPES]
+      @arg_names, @body, @environment = [arg_names, body, LOCAL_SCOPES]
     end
 
     attr_reader :environment
@@ -12,7 +12,7 @@ module BusScheme
     # execute lambda with given arg_values
     def call(*arg_values)
       raise BusScheme::ArgumentError if @arg_names.length != arg_values.length
-      with_local_scope(@arg_names.zip(arg_values).to_hash) { return BusScheme::eval_form(@body) }
+      with_local_scope(@arg_names.zip(arg_values).to_hash) { BusScheme[:begin].call(*@body) }
     end
 
     def self.environment
@@ -23,9 +23,10 @@ module BusScheme
     def with_local_scope(scope, &block)
       BusScheme::LOCAL_SCOPES << scope
       @@current = self
-      block.call
-      BusScheme::LOCAL_SCOPES.delete(scope)
-      @@current = nil
+      block.call.affect do
+        BusScheme::LOCAL_SCOPES.delete(scope)
+        @@current = nil
+      end
     end
   end
 end

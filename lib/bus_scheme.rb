@@ -23,7 +23,7 @@ module BusScheme
 
   # what scope is appropraite for this symbol
   def self.scope_of(symbol)
-    ([LOCAL_SCOPES.last] + Lambda.environment + [SYMBOL_TABLE]).detect { |scope| scope.has_key?(symbol) }
+    ([LOCAL_SCOPES.last] + Lambda.environment + [SYMBOL_TABLE]).compact.detect { |scope| scope.has_key?(symbol) }
   end
   
   # symbol lookup
