@@ -20,3 +20,8 @@ end
 def assert_evals_to(expected, form)
   assert_equal expected, eval(form)
 end
+
+# remove symbols from all scopes
+def clear_symbols(*symbols)
+  (BusScheme::LOCAL_SCOPES << BusScheme::SYMBOL_TABLE).map{ |scope| symbols.map{ |sym| scope.delete sym } }
+end

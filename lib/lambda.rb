@@ -1,15 +1,31 @@
 module BusScheme
   class Lambda
+    @@current = nil
+    
+    # create new lambda object
     def initialize(arg_names, body)
-      @arg_names, @body, @environment = [arg_names, body, SCOPES.last]
+      @arg_names, @body, @environment = [arg_names, body.unshift(:begin), LOCAL_SCOPES]
     end
 
+    attr_reader :environment
+    
+    # execute lambda with given arg_values
     def call(*arg_values)
       raise BusScheme::ArgumentError if @arg_names.length != arg_values.length
+      with_local_scope(@arg_names.zip(arg_values).to_hash) { return BusScheme::eval_form(@body) }
+    end
 
-      # TODO: changes to variables in the environment must affect their original scope!
-      SCOPES << @environment.merge(@arg_names.zip(arg_values).to_hash)
-      BusScheme[:begin].call(@body).affect { SCOPES.pop }
+    def self.environment
+      @@current ? @@current.environment : []
+    end
+    
+    # execute a block with a given local scope
+    def with_local_scope(scope, &block)
+      BusScheme::LOCAL_SCOPES << scope
+      @@current = self
+      block.call
+      BusScheme::LOCAL_SCOPES.delete(scope)
+      @@current = nil
     end
   end
 end

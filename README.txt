@@ -41,11 +41,12 @@ Bus Scheme is currently missing pieces of functionality:
 
 * changes to closure variables don't affect original scope
 * optimize tail call recursion
+* continuations (?!?)
 * parse cons cells
 * parse character literals
 * parse quote, unquote
 
-Failing tests for most of these are already included (commented out,
+Failing tests for some of these are already included (commented out,
 mostly) in the relevant test files.
 
 == Requirements
