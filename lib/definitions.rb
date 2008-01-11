@@ -17,9 +17,11 @@ module BusScheme
     :< => lambda { |x, y| x < y },
 
     :intern => lambda { |x| x.intern },
-    :concat => lambda { |x, y| x + y },
     :substring => lambda { |x, from, to| x[from .. to] },
 
+    :car => lambda { |list| list.car },
+    :cdr => lambda { |list| list.cdr },
+    
     :load => lambda { |filename| eval_string(File.read(filename)) },
     :exit => lambda { exit }, :quit => lambda { exit },
   }

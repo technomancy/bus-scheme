@@ -49,7 +49,6 @@ class BusSchemeEvalTest < Test::Unit::TestCase
 
   def test_string_primitives
     assert_evals_to :hi, [:intern, 'hi']
-    assert_evals_to 'helloworld', [:concat, 'hello', 'world']
     assert_evals_to 'lo', [:substring, 'hello', 3, -1]
   end
 
