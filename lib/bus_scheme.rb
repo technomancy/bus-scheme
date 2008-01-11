@@ -15,7 +15,7 @@ require 'definitions'
 require 'lambda'
 
 module BusScheme
-  VERSION = "0.6"
+  VERSION = "0.7"
 
   SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
   LOCAL_SCOPES = []
