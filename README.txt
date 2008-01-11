@@ -33,13 +33,12 @@ $ bus # drop into a repl
 
 $ bus -e "(do some stuff)"
 
-$ bus foo.scm # load a file -- todo
+$ bus foo.scm # load a file
 
 == Todo
 
 Bus Scheme is currently missing pieces of functionality:
 
-* changes to closure variables don't affect original scope
 * optimize tail call recursion
 * continuations (?!?)
 * parse cons cells
