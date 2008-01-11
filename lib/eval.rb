@@ -12,7 +12,6 @@ module BusScheme
       elsif form.is_a? Array
         apply(form.first, *form.rest)
       elsif form.is_a? Symbol
-        raise EvalError.new("Undefined symbol: #{form}") if not in_scope?(form)
         BusScheme[form]
       else # well it must be a literal then
         form

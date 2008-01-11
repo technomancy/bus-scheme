@@ -35,7 +35,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_define
-    BusScheme.clear_symbols :foo
+    clear_symbols :foo
     eval("(define foo 5)")
     assert_equal 5, BusScheme[:foo]
     eval("(define foo (quote (5 5 5))")
@@ -93,7 +93,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_set!
-    BusScheme.clear_symbols(:foo)
+    clear_symbols(:foo)
     # can only set! existing variables
     assert_raises(BusScheme::ArgumentError) { eval "(set! foo 7)" }
     eval "(define foo 3)"

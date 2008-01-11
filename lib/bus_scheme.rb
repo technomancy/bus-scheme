@@ -64,17 +64,13 @@ module BusScheme
 
   # symbol lookup
   def self.[](symbol)
+    raise EvalError.new("Undefined symbol: #{symbol}") if not in_scope?(symbol)
     SCOPES.last[symbol] or SCOPES.first[symbol]
   end
 
   # symbol assignment to value
   def self.[]=(symbol, value)
     SCOPES.last[symbol] = value
-  end
-
-  # remove symbols from all scopes
-  def self.clear_symbols(*symbols)
-    SCOPES.map{ |scope| symbols.map{ |sym| scope.delete sym } }
   end
 
   # symbol special form predicate

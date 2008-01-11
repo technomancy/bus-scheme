@@ -32,7 +32,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   end
 
   def test_lambda_args_dont_stay_in_scope
-    BusScheme.clear_symbols(:x, :foo)
+    clear_symbols(:x, :foo)
     eval("(define foo (lambda (x) (+ x 1)))")
     assert !BusScheme.in_scope?(:x)
     assert_evals_to 2, [:foo, 1]
