@@ -95,7 +95,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   def test_set!
     clear_symbols(:foo)
     # can only set! existing variables
-    assert_raises(BusScheme::ArgumentError) { eval "(set! foo 7)" }
+    assert_raises(BusScheme::EvalError) { eval "(set! foo 7)" }
     eval "(define foo 3)"
     eval "(set! foo 7)"
     assert_evals_to 7, :foo

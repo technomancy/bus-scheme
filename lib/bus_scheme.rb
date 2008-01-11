@@ -11,73 +11,38 @@ require 'object_extensions'
 require 'array_extensions'
 require 'parser'
 require 'eval'
+require 'definitions'
 require 'lambda'
 
 module BusScheme
-  class BusSchemeError < StandardError; end
-  class ParseError < BusSchemeError; end
-  class EvalError < BusSchemeError; end
-  class ArgumentError < BusSchemeError; end
-
-  VERSION = "0.6"
-
-  PRIMITIVES = {
-    '#t'.intern => true, # :'#t' screws up emacs' ruby parser
-    '#f'.intern => false,
-
-    :+ => lambda { |*args| args.inject(0) { |sum, i| sum + i } },
-    :- => lambda { |x, y| x - y },
-    :* => lambda { |*args| args.inject(1) { |product, i| product * i } },
-    '/'.intern => lambda { |x, y| x / y },
-
-    :> => lambda { |x, y| x > y },
-    :< => lambda { |x, y| x < y },
-
-    :intern => lambda { |x| x.intern },
-    :concat => lambda { |x, y| x + y },
-    :substring => lambda { |x, from, to| x[from .. to] },
-
-    :load => lambda { |filename| eval_string(File.read(filename)) },
-    :exit => lambda { exit }, :quit => lambda { exit },
-  }
-
-  # if we add in macros, can some of these be defined in scheme?
-  SPECIAL_FORMS = {
-    :quote => lambda { |arg| arg },
-    # TODO: check that nil, () and #f all behave according to spec
-    :if => lambda { |q, yes, *no| eval_form(q) ? eval_form(yes) : eval_form([:begin] + no) },
-    :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },
-    :set! => lambda { |sym, value| raise ArgumentError unless in_scope?(sym)
-      BusScheme[sym] = eval_form(value); sym },
-    :lambda => lambda { |args, *form| Lambda.new(args, *form) },
-    :define => lambda { |sym, definition| BusScheme[sym] = eval_form(definition); sym },
-  }
+  VERSION = "0.7"
 
   SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
-  SCOPES = [SYMBOL_TABLE]
+  LOCAL_SCOPES = []
   PROMPT = '> '
 
-  # symbol existence predicate
-  def self.in_scope?(symbol)
-    SCOPES.last.has_key?(symbol) or SCOPES.first.has_key?(symbol)
+  # what scope is appropraite for this symbol
+  def self.scope_of(symbol)
+    ([LOCAL_SCOPES.last] + Lambda.environment + [SYMBOL_TABLE]).compact.detect { |scope| scope.has_key?(symbol) }
   end
-
+  
   # symbol lookup
   def self.[](symbol)
-    raise EvalError.new("Undefined symbol: #{symbol}") if not in_scope?(symbol)
-    SCOPES.last[symbol] or SCOPES.first[symbol]
+    scope = scope_of(symbol)
+    raise EvalError.new("Undefined symbol: #{symbol}") if scope.nil?
+    scope[symbol]
   end
 
   # symbol assignment to value
   def self.[]=(symbol, value)
-    SCOPES.last[symbol] = value
+    (scope_of(symbol) || LOCAL_SCOPES.last || SYMBOL_TABLE)[symbol] = value
   end
 
   # symbol special form predicate
   def self.special_form?(symbol)
     SPECIAL_FORMS.has_key?(symbol)
   end
-
+  
   # Read-Eval-Print-Loop
   def self.repl
     loop do
