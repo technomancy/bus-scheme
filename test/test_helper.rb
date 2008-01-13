@@ -23,5 +23,5 @@ end
 
 # remove symbols from all scopes
 def clear_symbols(*symbols)
-  (BusScheme::LOCAL_SCOPES + [BusScheme::SYMBOL_TABLE]).map{ |scope| symbols.map{ |sym| scope.delete sym } }
+  [BusScheme::Lambda.environment, BusScheme::SYMBOL_TABLE].compact.map{ |scope| symbols.map{ |sym| scope.delete sym } }
 end

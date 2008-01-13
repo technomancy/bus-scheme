@@ -10,6 +10,11 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to 2, 2
   end
 
+  def test_set_symbol
+    BusScheme[:hi] = 'hi'
+    assert BusScheme::SYMBOL_TABLE[:hi]
+  end
+  
   def test_eval_symbol
     eval "(define hi 13)"
     assert_evals_to 13, :hi
@@ -53,6 +58,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_booleans
+    assert BusScheme::PRIMITIVES.has_key? '#f'.intern
     assert_evals_to false, '#f'
     assert_evals_to true, '#t'
   end

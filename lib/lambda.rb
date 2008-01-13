@@ -1,10 +1,10 @@
 module BusScheme
   class Lambda
-    @@current_environment = nil
+    @@environments = []
     
     # create new lambda object
     def initialize(arg_names, body)
-      @arg_names, @body, @environment = [arg_names, body, LOCAL_SCOPES] # do we really want them all?
+      @arg_names, @body, @environment = [arg_names, body, (Lambda.environment or {})]
     end
     
     # execute lambda with given arg_values
@@ -14,17 +14,13 @@ module BusScheme
     end
 
     def self.environment
-      @@current_environment or []
+      @@environments.last
     end
     
     # execute a block with a given local scope
     def with_local_scope(scope, &block)
-      BusScheme::LOCAL_SCOPES << scope
-      @@current_environment = @environment
-      block.call.affect do
-        BusScheme::LOCAL_SCOPES.delete(scope)
-        @@current_environment = nil
-      end
+      @@environments << @environment.merge(scope)
+      block.call.affect { @@environments.pop }
     end
   end
 end

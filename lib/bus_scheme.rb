@@ -18,24 +18,23 @@ module BusScheme
   VERSION = "0.7"
 
   SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
-  LOCAL_SCOPES = []
   PROMPT = '> '
 
   # what scope is appropraite for this symbol
   def self.scope_of(symbol)
-    ([LOCAL_SCOPES.last] + Lambda.environment + [SYMBOL_TABLE]).compact.detect { |scope| scope.has_key?(symbol) }
+    [Lambda.environment, SYMBOL_TABLE].compact.detect { |scope| scope.has_key?(symbol) }
   end
   
   # symbol lookup
   def self.[](symbol)
     scope = scope_of(symbol)
-    raise EvalError.new("Undefined symbol: #{symbol}") if scope.nil?
-    scope[symbol]
+    raise EvalError.new("Undefined symbol: #{symbol}") unless scope
+    scope && scope[symbol]
   end
 
   # symbol assignment to value
   def self.[]=(symbol, value)
-    (scope_of(symbol) || LOCAL_SCOPES.last || SYMBOL_TABLE)[symbol] = value
+    (scope_of(symbol) || Lambda.environment || SYMBOL_TABLE)[symbol] = value
   end
 
   # symbol special form predicate
@@ -46,16 +45,16 @@ module BusScheme
   # Read-Eval-Print-Loop
   def self.repl
     loop do
-      begin
-        puts BusScheme.eval_string(Readline.readline(PROMPT))
-      rescue Interrupt
-        puts 'Type "(quit)" to leave Bus Scheme.'
-      rescue BusSchemeError => e
-        puts "Error: #{e}"
-      rescue StandardError => e
-        puts "You found a bug in Bus Scheme!"
-        puts "#{e.class}: #{e}\n#{e.backtrace.join("\n")}"
-      end
+      puts begin
+             BusScheme.eval_string(Readline.readline(PROMPT))
+           rescue Interrupt
+             'Type "(quit)" to leave Bus Scheme.'
+           rescue BusSchemeError => e
+             "Error: #{e}"
+           rescue StandardError => e
+             "You found a bug in Bus Scheme!\n" +
+               "#{e.class}: #{e}\n#{e.backtrace.join("\n")}"
+           end
     end
   end
 end
