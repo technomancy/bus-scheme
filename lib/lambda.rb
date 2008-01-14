@@ -19,6 +19,8 @@ module BusScheme
     
     # execute a block with a given local scope
     def with_local_scope(scope, &block)
+      # BUG: here a change in @@environments.last will NOT affect
+      # the original environment.
       @@environments << @environment.merge(scope)
       block.call.affect { @@environments.pop }
     end

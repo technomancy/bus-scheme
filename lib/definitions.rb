@@ -15,13 +15,16 @@ module BusScheme
 
     :> => lambda { |x, y| x > y },
     :< => lambda { |x, y| x < y },
-
+    :'=' => lambda { |x, y| x == y }, # may not honor scheme's equality notions
+    :null? => lambda { |x| x.nil? },
+    
     :intern => lambda { |x| x.intern },
     :substring => lambda { |x, from, to| x[from .. to] },
 
     :car => lambda { |list| list.car },
     :cdr => lambda { |list| list.cdr },
-    
+
+    :ruby => lambda { |code| eval(code) },
     :load => lambda { |filename| eval_string(File.read(filename)) },
     :exit => lambda { exit }, :quit => lambda { exit },
   }

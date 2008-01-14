@@ -39,8 +39,11 @@ $ bus foo.scm # load a file
 
 Bus Scheme is currently missing pieces of functionality:
 
+* move as many definitions into Scheme as possible
+* compile to Rubinius bytecode
 * optimize tail call recursion
 * continuations (?!?)
+* check for memory leaks
 * parse cons cells
 * parse character literals
 * parse quote, unquote
