@@ -22,7 +22,7 @@ module BusScheme
 
   # what scope is appropraite for this symbol
   def self.scope_of(symbol)
-    [Lambda.environment, SYMBOL_TABLE].compact.detect { |scope| scope.has_key?(symbol) }
+    [Lambda.scope, SYMBOL_TABLE].compact.detect { |scope| scope.has_key?(symbol) }
   end
   
   # symbol lookup
@@ -34,7 +34,7 @@ module BusScheme
 
   # symbol assignment to value
   def self.[]=(symbol, value)
-    (scope_of(symbol) || Lambda.environment || SYMBOL_TABLE)[symbol] = value
+    (scope_of(symbol) || Lambda.scope || SYMBOL_TABLE)[symbol] = value
   end
 
   # symbol special form predicate

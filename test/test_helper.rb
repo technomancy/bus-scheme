@@ -25,6 +25,6 @@ class Test::Unit::TestCase
 
   # remove symbols from all scopes
   def clear_symbols(*symbols)
-    [BusScheme::Lambda.environment, BusScheme::SYMBOL_TABLE].compact.map{ |scope| symbols.map{ |sym| scope.delete sym } }
+    [BusScheme::Lambda.scope, BusScheme::SYMBOL_TABLE].compact.map{ |scope| symbols.map{ |sym| scope.delete sym } }
   end
 end
