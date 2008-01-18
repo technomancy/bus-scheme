@@ -13,7 +13,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_equal [], l.arg_names
 
     eval("(define foo (lambda () (+ 1 1)))")
-    assert BusScheme[:foo].is_a?(BusScheme::Lambda)
+    assert BusScheme::Lambda.scope[:foo].is_a?(BusScheme::Lambda)
     assert_evals_to 2, [:foo]
   end
 
@@ -34,9 +34,9 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_lambda_args_dont_stay_in_scope
     clear_symbols(:x, :foo)
     eval("(define foo (lambda (x) (+ x 1)))")
-    assert_nil BusScheme.scope_of(:x)
+    assert_nil BusScheme::Lambda.scope[:x]
     assert_evals_to 2, [:foo, 1]
-    assert_nil BusScheme.scope_of(:x)
+    assert_nil BusScheme::Lambda.scope[:x]
   end
 
   def test_lambda_calls_lambda

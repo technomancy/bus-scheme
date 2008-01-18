@@ -1,26 +1,28 @@
 module BusScheme
-  class Scope < Hash
-    def initialize(table, parent)
+  class RecursiveHash < Hash
+    # takes a hash and a parent
+    def initialize(hash, parent)
       @parent = parent
-      table.each { |k, v| self[k] = v }
+      hash.each { |k, v| self[k] = v }
     end
 
-    alias_method :old_has_key?, :has_key?
+    alias_method :immediate_has_key?, :has_key?
+    alias_method :immediate_set, :[]=
+    alias_method :immediate_lookup, :[]
+
     def has_key?(symbol)
-      old_has_key?(symbol) or @parent && @parent.has_key?(symbol)
+      immediate_has_key?(symbol) or @parent && @parent.has_key?(symbol)
     end
 
-    alias_method :lookup, :[]
     def [](symbol)
-      lookup(symbol) or @parent && @parent[symbol]
+      immediate_lookup(symbol) or @parent && @parent[symbol]
     end
 
-    alias_method :old_set, :[]=
     def []=(symbol, value)
-      if !old_has_key?(symbol) and @parent and @parent.has_key?(symbol)
+      if !immediate_has_key?(symbol) and @parent and @parent.has_key?(symbol)
         @parent[symbol] = value
       else
-        old_set symbol, value
+        immediate_set symbol, value
       end
     end
   end
@@ -38,13 +40,13 @@ module BusScheme
     # execute lambda with given arg_values
     def call(*arg_values)
       raise BusScheme::ArgumentError if @arg_names.length != arg_values.length
-      @scope = Scope.new(@arg_names.zip(arg_values).to_hash, @enclosing_scope)
+      @scope = RecursiveHash.new(@arg_names.zip(arg_values).to_hash, @enclosing_scope)
       @@stack << self
-      BusScheme[:begin].call(*@body).affect { @@stack.pop }
+      BusScheme.eval_form(@body.unshift(:begin)).affect { @@stack.pop }
     end
 
     def self.scope
-      @@stack.empty? ? nil : @@stack.last.scope
+      @@stack.empty? ? SYMBOL_TABLE : @@stack.last.scope
     end
   end
 end

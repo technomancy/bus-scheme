@@ -11,8 +11,8 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_set_symbol
-    BusScheme[:hi] = 'hi'
-    assert BusScheme::SYMBOL_TABLE[:hi]
+    BusScheme::Lambda.scope[:hi] = 'hi'
+    assert BusScheme::Lambda.scope[:hi]
   end
   
   def test_eval_symbol
@@ -42,7 +42,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   def test_define
     clear_symbols :foo
     eval("(define foo 5)")
-    assert_equal 5, BusScheme[:foo]
+    assert_equal 5, BusScheme::Lambda.scope[:foo]
     eval("(define foo (quote (5 5 5))")
     assert_evals_to [5, 5, 5], :foo
   end
@@ -94,7 +94,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     eval([:begin,
           [:define, :foo, 779],
           9])
-    assert_equal 779, BusScheme[:foo]
+    assert_equal 779, BusScheme::SYMBOL_TABLE[:foo]
   end
 
   def test_set!

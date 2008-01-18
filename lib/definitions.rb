@@ -35,9 +35,9 @@ module BusScheme
     # TODO: check that nil, () and #f all behave according to spec
     :if => lambda { |q, yes, *no| eval_form(q) ? eval_form(yes) : eval_form([:begin] + no) },
     :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },
-    :set! => lambda { |sym, value| BusScheme[sym] and 
-      BusScheme[sym] = eval_form(value); sym },
+    :set! => lambda { |sym, value| raise EvalError.new unless Lambda.scope.has_key?(sym) and 
+      Lambda.scope[sym] = eval_form(value); sym },
     :lambda => lambda { |args, *form| Lambda.new(args, form) },
-    :define => lambda { |sym, definition| BusScheme[sym] = eval_form(definition); sym },
+    :define => lambda { |sym, definition| Lambda.scope[sym] = eval_form(definition); sym },
   }
 end

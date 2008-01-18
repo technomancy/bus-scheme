@@ -12,7 +12,8 @@ module BusScheme
       elsif form.is_a? Array
         apply(form.first, *form.rest)
       elsif form.is_a? Symbol
-        BusScheme[form]
+        raise EvalError.new("Undefined symbol: #{form}") unless Lambda.scope.has_key?(form)
+        Lambda.scope[form]
       else # well it must be a literal then
         form
       end
