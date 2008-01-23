@@ -39,6 +39,11 @@ $ bus foo.scm # load a file
 
 Bus Scheme is currently missing pieces of functionality:
 
+* lisp-style lists
+* ignore comments in parser
+* REPL should exit on ctrl-d
+* quote, unquote
+* macros
 * move as many definitions into Scheme as possible
 * compile to Rubinius bytecode
 * optimize tail call recursion

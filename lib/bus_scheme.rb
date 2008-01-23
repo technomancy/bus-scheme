@@ -11,7 +11,7 @@ require 'object_extensions'
 require 'array_extensions'
 require 'parser'
 require 'eval'
-require 'definitions'
+require 'primitives'
 require 'lambda'
 
 module BusScheme
@@ -40,4 +40,6 @@ module BusScheme
            end
     end
   end
+
+  ['core'].each { |file| SYMBOL_TABLE[:load].call("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }
 end

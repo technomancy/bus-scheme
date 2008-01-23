@@ -96,6 +96,16 @@ class BusSchemeParserTest < Test::Unit::TestCase
   #     # what else?
   #   end
 
+#   def test_quote
+#     assert_parses_to "'foo", [:quote, :foo]
+#     assert_parses_to "'(foo bar baz)", [:quote, [:foo, :bar, :baz]]
+#   end
+
+#   def test_ignore_comments
+#     assert_parses_to ";; hello", nil
+#     assert_parses_to "12 ;; comment", 12
+#   end
+  
   def test_parse_random_elisp_form_from_my_dot_emacs
     lisp = "(let ((system-specific-config
          (concat \"~/.emacs.d/\"
