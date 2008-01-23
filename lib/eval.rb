@@ -7,9 +7,7 @@ module BusScheme
 
     # Eval a form passed in as an array
     def eval_form(form)
-      if form == []
-        nil
-      elsif form.is_a? Array
+      if form.is_a? Array and not form.empty?
         apply(form.first, *form.rest)
       elsif form.is_a? Symbol
         raise EvalError.new("Undefined symbol: #{form}") unless Lambda.scope.has_key?(form)

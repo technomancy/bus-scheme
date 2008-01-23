@@ -14,7 +14,8 @@ module BusScheme
     '/'.intern => lambda { |x, y| x / y },
 
     :concat => lambda { |*args| args.join('') },
-
+    :cons => lambda { |car, cdr| [car, cdr] },
+    
     :ruby => lambda { |*code| eval(code.join('')) },
     :send => lambda { |obj, *message| obj.send(*message) },
     :load => lambda { |filename| eval_string("(begin #{File.read(filename)} )") },

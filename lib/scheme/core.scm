@@ -5,7 +5,7 @@
   (lambda (string to from) (send string (quote []) to from)))
 
 (define null?
-  (lambda (sym) (send sym (intern "nil?"))))
+  (lambda (expr) (= expr ())))
 
 (define >
   (lambda (x y) (send x (intern ">") y)))
@@ -16,9 +16,20 @@
 (define =
   (lambda (x y) (send x (intern "==") y)))
 
+(define and
+  (lambda (x y) (if x (if y y #f) #f)))
+
+(define or
+  (lambda (x y) (if x x (if y y #f))))
+
 (define not
   (lambda (expr) (if expr #f #t)))
 
-";;;     :car => lambda { |list| list.car },
-;;;     :cdr => lambda { |list| list.cdr },
-"
+(define car
+  (lambda (lst) (send lst (quote first))))
+
+(define cdr
+  (lambda (lst) (send lst (quote rest))))
+
+(define cadr
+  (lambda (lst) (car (cdr lst))))

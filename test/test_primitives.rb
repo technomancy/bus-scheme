@@ -78,4 +78,8 @@ class PrimitivesTest < Test::Unit::TestCase
     eval "(set! foo 7)"
     assert_evals_to 7, :foo
   end
+
+  def test_consing
+    assert_evals_to [:foo, :bar], "(cons (quote foo) (quote bar))"
+  end
 end

@@ -13,9 +13,26 @@ class CoreTest < Test::Unit::TestCase
     assert_evals_to false, "(not #t)"
   end
 
-
   def test_string_functions
     assert_evals_to :hi, [:intern, 'hi']
     assert_evals_to 'lo', [:substring, 'hello', 3, 5]
+  end
+
+  def test_list_functions
+    assert_evals_to :foo, "(car (cons (quote foo) (quote bar)))"
+    assert_evals_to [:bar], "(cdr (cons (quote foo) (quote bar)))"
+    assert_evals_to :bar, "(cadr (cons (quote foo) (quote bar)))"
+  end
+
+  def test_boolean_logic
+    assert_evals_to true, "(and #t #t)"
+    assert_evals_to false, "(and #t #f)"
+    assert_evals_to false, "(and #f #t)"
+    assert_evals_to false, "(and #f #f)"
+
+    assert_evals_to true, "(or #t #t)"
+    assert_evals_to true, "(or #t #f)"
+    assert_evals_to true, "(or #f #t)"
+    assert_evals_to false, "(or #f #f)"
   end
 end
