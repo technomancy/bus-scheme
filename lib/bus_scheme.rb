@@ -43,5 +43,5 @@ module BusScheme
     end
   end
 
-#  ['core'].each { |file| SYMBOL_TABLE[:load].call("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }
+  ['core'].each { |file| SYMBOL_TABLE[:load].call("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }
 end

@@ -2,7 +2,7 @@ module BusScheme
   class << self
     # Turn an input string into an S-expression
     def parse(input)
-      parse_tokens tokenize(input)
+      parse_tokens tokenize(input).flatten
     end
 
     # Turn a list of tokens into a properly-nested S-expression
@@ -41,7 +41,7 @@ module BusScheme
     # Take a token off the input string and return it
     def pop_token(input)
       # REFACTOR
-      if (input =~ /^(\s)/) == 0 # whitespace
+      if (input =~ /^\s/) == 0 # whitespace
         input[0 ... 1] = ''
         return pop_token(input)
       elsif (input =~ /^(;.*)$/) == 0 # comment
@@ -51,6 +51,13 @@ module BusScheme
         token = :'('
       elsif (input =~ /^(\))/) == 0 # closing paren
         token = :')'
+      elsif (input =~ /^'/) == 0 # quote
+        input[0 ... 1] = ''
+        # how the deuce do I figure out how many
+        # tokens to pop into the quote form?
+
+        # or do I handle this in eval? (probably)
+        return [:'(', :quote, pop_token(input), :')']
       elsif (input =~ /^([0-9]+)/) == 0 # positive integer
         token = Regexp.last_match[1].to_i
       elsif (input =~ /^("(.*?)")/) == 0 # string
