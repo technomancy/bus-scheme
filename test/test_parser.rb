@@ -99,10 +99,10 @@ class BusSchemeParserTest < Test::Unit::TestCase
 #     # what else?
 #   end
   
-  def test_quote
-    assert_parses_to "'foo", [:quote, :foo]
-    assert_parses_to "'(foo bar baz)", [:quote, [:foo, :bar, :baz]]
-  end
+#   def test_quote
+#     assert_parses_to "'foo", [:quote, :foo]
+#     assert_parses_to "'(foo bar baz)", [:quote, [:foo, :bar, :baz]]
+#   end
 
   #  have to change normalize_whitespace to not turn newlines into spaces for this to work
   def test_ignore_comments

@@ -40,27 +40,26 @@ module BusScheme
 
     # Take a token off the input string and return it
     def pop_token(input)
-      # problem! in most cases, we want to only examine the first
-      # line; otherwise the ^ metachar doesn't work as expected. but
-      # to handle comments and parse out newlines, we can't just
-      # examine the first line. freaking comments!
-      
-      token = case input
-              when /^(\s)/ # whitespace
-                input[0 ... 1] = ''
-                return pop_token(input)
-              when /^(\()/ # open paren
-                :'('
-              when /^(\))/ # closing paren
-                :')'
-              when /^([0-9]+)/ # positive integer
-                Regexp.last_match[1].to_i
-              when /^("(.*?)")/ # string
-                Regexp.last_match[2]
-              when /^([^ \)]+)/ # symbol
-                Regexp.last_match[1].intern
-              end
-      # compensate for quotation marks
+      # REFACTOR
+      if (input =~ /^(\s)/) == 0 # whitespace
+        input[0 ... 1] = ''
+        return pop_token(input)
+      elsif (input =~ /^(;.*)$/) == 0 # comment
+        input[0 .. Regexp.last_match[1].length - 1] = ''
+        return pop_token(input)
+      elsif (input =~ /^(\()/) == 0 # open paren
+        token = :'('
+      elsif (input =~ /^(\))/) == 0 # closing paren
+        token = :')'
+      elsif (input =~ /^([0-9]+)/) == 0 # positive integer
+        token = Regexp.last_match[1].to_i
+      elsif (input =~ /^("(.*?)")/) == 0 # string
+        token = Regexp.last_match[2]
+      elsif (input =~  /^([^ \n\)]+)/) == 0 # symbol
+        token = Regexp.last_match[1].intern
+      end
+
+      # Remove the matched part from the string
       input[0 .. Regexp.last_match[1].length - 1] = '' if token
       return token
     end
