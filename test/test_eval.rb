@@ -4,6 +4,7 @@ require 'test_helper'
 class BusSchemeEvalTest < Test::Unit::TestCase
   def test_eval_empty_list
     assert_evals_to [], []
+    assert_evals_to true, "(if () #t #f)"
   end
 
   def test_eval_number

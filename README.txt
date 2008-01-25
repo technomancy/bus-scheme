@@ -1,5 +1,5 @@
 Bus Scheme
-    by Phil Hagelberg (c) 2007
+    by Phil Hagelberg (c) 2007 - 2008
     http://bus-scheme.rubyforge.org
 
 == Description
@@ -39,19 +39,32 @@ $ bus foo.scm # load a file
 
 Bus Scheme is currently missing pieces of functionality:
 
-* ignore comments in parser
-* parse ' as quote
-* macros
-* unquote with ,
-* move as many definitions into Scheme as possible
-* compile to Rubinius bytecode
-* optimize tail call recursion
-* continuations (?!?)
-* check for memory leaks
-* parse cons cells
-* parse character literals
-* parse quote, unquote
-* some kind of load path?
+=== Parser
+ * parse ' as quote
+ * parse character literals
+ * case-insensitive identifiers
+ * stricter rules for identifier names
+ * vectors
+ * unquote with ,
+ * parse dotted cons cells
+ * parse floats, negatives, rationals, scientific, complex, and polar complex numbers
+
+=== Primitives
+ * cons, lists
+ * vectors should be implemented as Ruby arrays?
+ * &rest for args?
+ * macros?
+
+=== Scheme core
+ * implement let
+ * move as many definitions into Scheme as possible
+
+=== General
+ * compile to Rubinius bytecode
+ * optimize tail call recursion
+ * some kind of load path?
+ * check for memory leaks
+ * continuations (?!?)
 
 Failing tests for some of these are already included (commented out,
 mostly) in the relevant test files.

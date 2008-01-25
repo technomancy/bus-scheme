@@ -5,6 +5,9 @@ module BusScheme
   class ArgumentError < BusSchemeError; end
 
   PRIMITIVES = {
+    # right now I believe there are as few things implemented primitively as possible
+    # except for functions that require splat args. do we need something like &rest?
+    
     '#t'.intern => true, # :'#t' screws up emacs' ruby parser
     '#f'.intern => false,
 
