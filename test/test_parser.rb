@@ -63,48 +63,54 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_whitespace_indifferent
-    assert_parses_equal "(+ 2 2)", "(+ 2  \n \t    2)"
+    assert_equal 3, BusScheme.pop_token("3 2\n2")
+    assert_parses_equal "(+ 2 2)", "(+ 2       2)", "confused by spaces"
+    assert_parses_equal "(+ 2 2)", "(+ 2  \t   2)", "confused by tab"
+    assert_parses_equal "(+ 2 2)", "(+ 2\n2)", "confused by newline"
   end
 
-  #   def test_parses_dotted_cons
-  #     assert_parses_to "(22 . 11)", [:cons, 22, 11]
-  #     assert_parses_to "((+ 2 2) . 11)", [:cons, [:+, 2, 2], 11]
-  #   end
-
-  #   def test_floats
-  #     assert_parses_to "44.9", 44.9
-  #     assert_parses_to "0.22", 0.22
-  #     assert_parses_to ".22", 0.22
-  #     assert_parses_to "2.220", 2.22
-  #   end
-
-  #   def test_negative_numbers
-  #     assert_parses_to "-1", -1
-  #     assert_parses_to "-0", 0
-  #     assert_parses_to "-02", -2
-  #   end
-
-  #   def test_negative_floats
-  #     assert_parses_to "-0.22", -0.22
-  #     assert_parses_to "-.22", -0.22
-  #     assert_parses_to "-0.10", -0.1
-  #   end
-
-  #   def test_character_literals
-  #     assert_parses_to "?e", "e"
-  #     assert_parses_to "?A", "A"
-  #     # what else?
-  #   end
-
-#   def test_quote
-#     assert_parses_to "'foo", [:quote, :foo]
-#     assert_parses_to "'(foo bar baz)", [:quote, [:foo, :bar, :baz]]
+#   def test_parses_dotted_cons
+#     assert_parses_to "(22 . 11)", [:cons, 22, 11]
+#     assert_parses_to "((+ 2 2) . 11)", [:cons, [:+, 2, 2], 11]
 #   end
 
-#   def test_ignore_comments
-#     assert_parses_to ";; hello", nil
-#     assert_parses_to "12 ;; comment", 12
+#   def test_floats
+#     assert_parses_to "44.9", 44.9
+#     assert_parses_to "0.22", 0.22
+#     assert_parses_to ".22", 0.22
+#     assert_parses_to "2.220", 2.22
 #   end
+
+#   def test_negative_numbers
+#     assert_parses_to "-1", -1
+#     assert_parses_to "-0", 0
+#     assert_parses_to "-02", -2
+#   end
+
+#   def test_negative_floats
+#     assert_parses_to "-0.22", -0.22
+#     assert_parses_to "-.22", -0.22
+#     assert_parses_to "-0.10", -0.1
+#   end
+
+#   def test_character_literals
+#     assert_parses_to "?e", "e"
+#     assert_parses_to "?A", "A"
+#     # what else?
+#   end
+  
+  def test_quote
+    assert_parses_to "'foo", [:quote, :foo]
+    assert_parses_to "'(foo bar baz)", [:quote, [:foo, :bar, :baz]]
+  end
+
+  #  have to change normalize_whitespace to not turn newlines into spaces for this to work
+  def test_ignore_comments
+    assert_parses_to ";; hello", nil
+    assert_parses_to "12 ;; comment", 12
+    assert_parses_to "(+ 2;; this is a mid-sexp comment
+2)", [:+, 2, 2]
+  end
   
   def test_parse_random_elisp_form_from_my_dot_emacs
     lisp = "(let ((system-specific-config
@@ -118,7 +124,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
                                [:'shell-command-to-string', "hostname"]]]],
                       [:if, [:'file-exists-p', :'system-specific-config'],
                        [:load, :'system-specific-config']]])
-  end
+   end
 
   private
 
@@ -126,7 +132,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_equal expected, BusScheme.parse(actual_string)
   end
 
-  def assert_parses_equal(one, two)
-    assert_equal BusScheme.parse(one), BusScheme.parse(two)
+  def assert_parses_equal(one, two, message = nil)
+    assert_equal BusScheme.parse(one), BusScheme.parse(two), message
   end
 end

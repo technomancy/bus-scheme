@@ -8,9 +8,9 @@ module BusScheme
     '#t'.intern => true, # :'#t' screws up emacs' ruby parser
     '#f'.intern => false,
 
-    :+ => lambda { |*args| args.inject(args.pop) { |sum, i| sum + i } },
+    :+ => lambda { |*args| args.inject { |sum, i| sum + i } },
     :- => lambda { |x, y| x - y },
-    :* => lambda { |*args| args.inject(1) { |product, i| product * i } },
+    :* => lambda { |*args| args.inject { |product, i| product * i } },
     '/'.intern => lambda { |x, y| x / y },
 
     :concat => lambda { |*args| args.join('') },

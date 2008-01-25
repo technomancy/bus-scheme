@@ -40,9 +40,9 @@ $ bus foo.scm # load a file
 Bus Scheme is currently missing pieces of functionality:
 
 * ignore comments in parser
-* REPL should exit on ctrl-d
-* quote, unquote with ' and ,
+* parse ' as quote
 * macros
+* unquote with ,
 * move as many definitions into Scheme as possible
 * compile to Rubinius bytecode
 * optimize tail call recursion
@@ -51,6 +51,7 @@ Bus Scheme is currently missing pieces of functionality:
 * parse cons cells
 * parse character literals
 * parse quote, unquote
+* some kind of load path?
 
 Failing tests for some of these are already included (commented out,
 mostly) in the relevant test files.

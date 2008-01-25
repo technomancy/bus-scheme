@@ -29,7 +29,9 @@ module BusScheme
   def self.repl
     loop do
       puts begin
-             BusScheme.eval_string(Readline.readline(PROMPT))
+             input = Readline.readline(PROMPT)
+             exit if input.nil? # only Ctrl-D produces nil here it seems
+             BusScheme.eval_string input
            rescue Interrupt
              'Type "(quit)" to leave Bus Scheme.'
            rescue BusSchemeError => e
@@ -41,5 +43,5 @@ module BusScheme
     end
   end
 
-  ['core'].each { |file| SYMBOL_TABLE[:load].call("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }
+#  ['core'].each { |file| SYMBOL_TABLE[:load].call("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }
 end

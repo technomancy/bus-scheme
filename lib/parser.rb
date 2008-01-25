@@ -2,7 +2,7 @@ module BusScheme
   class << self
     # Turn an input string into an S-expression
     def parse(input)
-      parse_tokens tokenize(normalize_whitespace(input))
+      parse_tokens tokenize(input)
     end
 
     # Turn a list of tokens into a properly-nested S-expression
@@ -40,30 +40,29 @@ module BusScheme
 
     # Take a token off the input string and return it
     def pop_token(input)
+      # problem! in most cases, we want to only examine the first
+      # line; otherwise the ^ metachar doesn't work as expected. but
+      # to handle comments and parse out newlines, we can't just
+      # examine the first line. freaking comments!
+      
       token = case input
-              when /^ +/ # whitespace
+              when /^(\s)/ # whitespace
                 input[0 ... 1] = ''
                 return pop_token(input)
-              when /^\(/ # open paren
+              when /^(\()/ # open paren
                 :'('
-              when /^\)/ # closing paren
+              when /^(\))/ # closing paren
                 :')'
-              when /^(\d+)/ # positive integer
+              when /^([0-9]+)/ # positive integer
                 Regexp.last_match[1].to_i
-              when /^"(.*?)"/ # string
-                Regexp.last_match[1]
+              when /^("(.*?)")/ # string
+                Regexp.last_match[2]
               when /^([^ \)]+)/ # symbol
                 Regexp.last_match[1].intern
               end
       # compensate for quotation marks
-      length = token.is_a?(String) ? token.length + 2 : token.to_s.length
-      input[0 .. length - 1] = ''
+      input[0 .. Regexp.last_match[1].length - 1] = '' if token
       return token
-    end
-
-    # Treat all whitespace in a string as spaces
-    def normalize_whitespace(string)
-      string && string.gsub(/\t/, ' ').gsub(/\n/, ' ').gsub(/ +/, ' ')
     end
   end
 end
