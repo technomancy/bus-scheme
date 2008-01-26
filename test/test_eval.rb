@@ -42,4 +42,8 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to 7, :foo
     assert_evals_to 21, [:*, 3, :foo]
   end
+
+  def test_single_quote
+    raise "something is wrong here, though it seems to parse ok"
+  end
 end

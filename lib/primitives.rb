@@ -17,7 +17,8 @@ module BusScheme
     '/'.intern => lambda { |x, y| x / y },
 
     :concat => lambda { |*args| args.join('') },
-    :cons => lambda { |car, cdr| [car, cdr] },
+    :cons => lambda { |car, cdr| Cons.new(car, cdr) },
+    :list => lambda { |*members| members.to_list },
     
     :ruby => lambda { |*code| eval(code.join('')) },
     :send => lambda { |obj, *message| obj.send(*message) },

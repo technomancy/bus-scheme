@@ -12,6 +12,7 @@ require 'array_extensions'
 require 'parser'
 require 'eval'
 require 'primitives'
+require 'cons'
 require 'lambda'
 
 module BusScheme

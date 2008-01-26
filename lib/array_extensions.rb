@@ -6,6 +6,14 @@ class Array
 
   alias_method :car, :first
   alias_method :cdr, :rest
+
+  def to_list
+    if self.cdr.empty?
+      BusScheme::Cons.new(self.car, nil)
+    else
+      BusScheme::Cons.new(self.car, self.cdr.to_list)
+    end
+  end
 end
 
 module Enumerable # for 1.9, zip is defined on Enumerable

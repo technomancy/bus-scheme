@@ -80,6 +80,6 @@ class PrimitivesTest < Test::Unit::TestCase
   end
 
   def test_consing
-    assert_evals_to [:foo, :bar], "(cons (quote foo) (quote bar))"
+    assert_evals_to BusScheme::Cons.new(:foo, :bar), "(cons (quote foo) (quote bar))"
   end
 end
