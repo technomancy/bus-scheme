@@ -33,6 +33,3 @@
 
 (define cadr
   (lambda (lst) (car (cdr lst))))
-
-;; (define let 
-;;    (lambda (forms body)

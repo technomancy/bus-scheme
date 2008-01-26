@@ -40,7 +40,6 @@ $ bus foo.scm # load a file
 Bus Scheme is currently missing pieces of functionality:
 
 === Parser
- * parse ' as quote
  * parse character literals
  * case-insensitive identifiers
  * stricter rules for identifier names
@@ -60,6 +59,7 @@ Bus Scheme is currently missing pieces of functionality:
  * move as many definitions into Scheme as possible
 
 === General
+ * stack traces on error plz
  * compile to Rubinius bytecode
  * optimize tail call recursion
  * some kind of load path?

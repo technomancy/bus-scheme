@@ -23,3 +23,7 @@ end
 task :flog do
   system "flog lib/*rb"
 end
+
+task :todo do
+  puts File.read('README.txt').match(/== Todo(.*)== Requirements/m)[1].split("\n").grep(/^( \* |===)/).join("\n")
+end
