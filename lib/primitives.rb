@@ -19,6 +19,7 @@ module BusScheme
     :concat => lambda { |*args| args.join('') },
     :cons => lambda { |car, cdr| Cons.new(car, cdr) },
     :list => lambda { |*members| members.to_list },
+    :vector => lambda { |*members| members },
     
     :ruby => lambda { |*code| eval(code.join('')) },
     :send => lambda { |obj, *message| obj.send(*message) },

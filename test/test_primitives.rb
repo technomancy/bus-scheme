@@ -56,6 +56,7 @@ class PrimitivesTest < Test::Unit::TestCase
 
   def test_quote
     assert_evals_to :hi, [:quote, :hi]
+    assert_evals_to [:a, :b, :c].to_list, "(list 'a 'b 'c)"
   end
 
   def test_if
@@ -81,5 +82,9 @@ class PrimitivesTest < Test::Unit::TestCase
 
   def test_consing
     assert_evals_to BusScheme::Cons.new(:foo, :bar), "(cons (quote foo) (quote bar))"
+  end
+
+  def test_vectors
+    assert_evals_to [1, 2, 3], "#(1 2 3)"
   end
 end

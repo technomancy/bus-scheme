@@ -47,7 +47,10 @@ module BusScheme
                 return pop_token(input)
               when /\A(\(|\))/ # parens
                 Regexp.last_match[1].intern
-              when /\A'/
+              when /\A#\(/ # vector
+                input[0 ... 2] = ''
+                return [:'(', :vector, tokenize(input)]
+              when /\A'/ # single-quote
                 input[0 ... 1] = ''
                 return [:'(', :quote, tokenize(input), :')']
               when /\A([0-9]+)/ # positive integer

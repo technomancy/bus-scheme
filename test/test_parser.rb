@@ -69,6 +69,12 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_equal "(+ 2 2)", "(+ 2\n2)", "confused by newline"
   end
 
+  def test_parses_vectors
+    assert_equal [:'(', :vector, 1, 2, :')'], BusScheme::tokenize("#(1 2)").flatten
+    assert_parses_to  "#(1 2)", [:vector, 1, 2]
+    assert_parses_to "#(1 (2 3 4)", [:vector, 1, [2, 3, 4]]
+  end
+  
 #   def test_parses_dotted_cons
 #     assert_parses_to "(22 . 11)", [:cons, 22, 11]
 #     assert_parses_to "((+ 2 2) . 11)", [:cons, [:+, 2, 2], 11]

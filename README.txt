@@ -38,21 +38,19 @@ $ bus foo.scm # load a file
 == Todo
 
 Bus Scheme is currently missing pieces of functionality:
+(fewer stars => higher priority)
 
 === Parser
- * parse character literals
- * case-insensitive identifiers
- * stricter rules for identifier names
- * vectors
- * unquote with ,
- * parse dotted cons cells
- * parse floats, negatives, rationals, scientific, complex, and polar complex numbers
+ ** parse character literals
+ ** parse dotted cons cells
+ *** case-insensitive identifiers
+ *** stricter rules for identifier names
+ *** unquote with ,
+ *** parse floats, negatives, rationals, scientific, complex, and polar complex numbers
 
 === Primitives
- * cons, lists
- * vectors should be implemented as Ruby arrays?
- * &rest for args?
- * macros?
+ ** &rest for args?
+ ** macros?
 
 === Scheme core
  * implement let
@@ -61,10 +59,10 @@ Bus Scheme is currently missing pieces of functionality:
 === General
  * stack traces on error plz
  * compile to Rubinius bytecode
- * optimize tail call recursion
- * some kind of load path?
- * check for memory leaks
- * continuations (?!?)
+ ** optimize tail call recursion
+ ** some kind of load path?
+ *** check for memory leaks
+ *** continuations (?!?)
 
 Failing tests for some of these are already included (commented out,
 mostly) in the relevant test files.
