@@ -1,4 +1,5 @@
 module BusScheme
+  # The RecursiveHash is needed to store Lambda environments
   class RecursiveHash < Hash
     # takes a hash and a parent
     def initialize(hash, parent)
@@ -27,6 +28,7 @@ module BusScheme
     end
   end
 
+  # Lambdas are closures.
   class Lambda
     @@stack = []
 
@@ -45,6 +47,7 @@ module BusScheme
       BusScheme.eval_form(@body.unshift(:begin)).affect { @@stack.pop }
     end
 
+    # What's the current scope?
     def self.scope
       @@stack.empty? ? SYMBOL_TABLE : @@stack.last.scope
     end

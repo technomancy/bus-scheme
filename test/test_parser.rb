@@ -80,24 +80,24 @@ class BusSchemeParserTest < Test::Unit::TestCase
 #     assert_parses_to "((+ 2 2) . 11)", [:cons, [:+, 2, 2], 11]
 #   end
 
-#   def test_floats
-#     assert_parses_to "44.9", 44.9
-#     assert_parses_to "0.22", 0.22
-#     assert_parses_to ".22", 0.22
-#     assert_parses_to "2.220", 2.22
-#   end
+  def test_floats
+    assert_parses_to "44.9", 44.9
+    assert_parses_to "0.22", 0.22
+    assert_parses_to ".22", 0.22
+    assert_parses_to "2.220", 2.22
+  end
 
-#   def test_negative_numbers
-#     assert_parses_to "-1", -1
-#     assert_parses_to "-0", 0
-#     assert_parses_to "-02", -2
-#   end
+  def test_negative_ints
+    assert_parses_to "-1", -1
+    assert_parses_to "-0", 0
+    assert_parses_to "-02", -2
+  end
 
-#   def test_negative_floats
-#     assert_parses_to "-0.22", -0.22
-#     assert_parses_to "-.22", -0.22
-#     assert_parses_to "-0.10", -0.1
-#   end
+  def test_negative_floats
+    assert_parses_to "-0.22", -0.22
+    assert_parses_to "-.22", -0.22
+    assert_parses_to "-0.10", -0.1
+  end
 
 #   def test_character_literals
 #     assert_parses_to "?e", "e"

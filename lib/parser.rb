@@ -52,8 +52,16 @@ module BusScheme
                 return [:'(', :vector, tokenize(input)]
               when /\A'/ # single-quote
                 input[0 ... 1] = ''
-                return [:'(', :quote, tokenize(input), :')']
-              when /\A([0-9]+)/ # positive integer
+                return [:'(', :quote,
+                        if input[0 ... 1] == '('
+                          tokenize(input)
+                        else
+                          pop_token(input)
+                        end,
+                        :')']
+              when /\A(-?[0-9]*\.[0-9]+)/ # float
+                Regexp.last_match[1].to_f
+              when /\A(-?[0-9]+)/ # integer
                 Regexp.last_match[1].to_i
               when /\A("(.*?)")/ # string
                 Regexp.last_match[2]

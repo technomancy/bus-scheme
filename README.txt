@@ -40,17 +40,13 @@ $ bus foo.scm # load a file
 Bus Scheme is currently missing pieces of functionality:
 
 === Parser
- * Fix single-quote
  ** parse character literals
  ** parse dotted cons cells
- *** case-insensitive identifiers
- *** stricter rules for identifier names
-
-=== Primitives
- ** &rest for args?
+ *** look up and enforce rules for identifier names
 
 === General
  * stack traces on error plz
+ ** &rest for lambda args?
  ** optimize tail call recursion
  ** some kind of load path?
 
@@ -60,7 +56,7 @@ mostly) in the relevant test files.
 === Long Term (post 1.0)
  * continuations (?!?)
  * compile to Rubinius bytecode
- * parse floats, negatives, rationals, scientific, complex, and polar complex numbers
+ * parse rationals, scientific, complex, and polar complex numbers
 
 == Requirements
 
