@@ -33,10 +33,3 @@
 
 (define cadr
   (lambda (lst) (car (cdr lst))))
-
-(define let
-  (lambda (defs body)
-    ((lambda ((map car defs)) (map ;; should we just eval the body?
-			 (lambda (form) ((car form) (cdr form)))
-			 body))
-     (map cadr defs))))

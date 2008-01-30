@@ -49,9 +49,6 @@ Bus Scheme is currently missing pieces of functionality:
 === Primitives
  ** &rest for args?
 
-=== Scheme core
- * implement let
-
 === General
  * stack traces on error plz
  ** optimize tail call recursion

@@ -100,4 +100,19 @@ class PrimitivesTest < Test::Unit::TestCase
     assert_equal "(1 . 1)", BusScheme::Cons.new(1, 1).inspect
     assert_equal "(1 1 1)", BusScheme::Cons.new(1, BusScheme::Cons.new(1, BusScheme::Cons.new(1))).inspect
   end
+
+  def test_let
+    assert_evals_to 4, "(let ((x 2)
+                              (y 2))
+                           (+ x y))"
+
+    assert_evals_to 6, "(let ((doubler (lambda (x) (* 2 x)))
+                             (x 3))
+                           (doubler x))"
+
+    assert_evals_to 6, "(let ((doubler (lambda (x) (* 2 x)))
+                             (x 3))
+                           x
+                           (doubler x))"
+  end
 end

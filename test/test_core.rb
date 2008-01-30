@@ -40,10 +40,4 @@ class CoreTest < Test::Unit::TestCase
     assert_evals_to true, "(or #f #t)"
     assert_evals_to false, "(or #f #f)"
   end
-
-  def test_let
-    assert_evals_to 4, "(let ((x 2)
-                              (y 2))
-                           (+ x y))"
-  end
 end
