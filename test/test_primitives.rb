@@ -23,6 +23,10 @@ class PrimitivesTest < Test::Unit::TestCase
     assert_evals_to "foobar", "(concat \"foo\" \"bar\")"
   end
 
+  def test_eval
+    assert_evals_to 23, "(eval '(+ 20 3))"
+  end
+  
   def test_eval_ruby
     assert_evals_to "foofoofoo", "(ruby \"'foo' * 3\")"
   end
@@ -42,7 +46,7 @@ class PrimitivesTest < Test::Unit::TestCase
     eval("(define foo 5)")
     assert_equal 5, BusScheme::Lambda.scope[:foo]
     eval("(define foo (quote (5 5 5))")
-    assert_evals_to [5, 5, 5], :foo
+    assert_evals_to [5, 5, 5].to_list, :foo
   end
 
   def test_define_returns_defined_term
@@ -51,11 +55,14 @@ class PrimitivesTest < Test::Unit::TestCase
   end
 
   def test_eval_quote
-    assert_evals_to [:'+', 2, 2], [:quote, [:'+', 2, 2]]
+    assert_evals_to [:'+', 2, 2].to_list, [:quote, [:'+', 2, 2]]
   end
 
   def test_quote
     assert_evals_to :hi, [:quote, :hi]
+    assert_evals_to [:a, :b, :c].to_list, "'(a b c)"
+    assert_evals_to [:a].to_list, "(list 'a)"
+    assert_evals_to [:a, :b].to_list, "(list 'a 'b)"
     assert_evals_to [:a, :b, :c].to_list, "(list 'a 'b 'c)"
   end
 
@@ -86,5 +93,11 @@ class PrimitivesTest < Test::Unit::TestCase
 
   def test_vectors
     assert_evals_to [1, 2, 3], "#(1 2 3)"
+  end
+
+  def test_inspect
+    assert_equal "(1)", [1].to_list.inspect
+    assert_equal "(1 . 1)", BusScheme::Cons.new(1, 1).inspect
+    assert_equal "(1 1 1)", BusScheme::Cons.new(1, BusScheme::Cons.new(1, BusScheme::Cons.new(1))).inspect
   end
 end

@@ -2,7 +2,7 @@ module BusScheme
   class Cons
     attr_accessor :car, :cdr
     
-    def initialize(car, cdr)
+    def initialize(car, cdr = nil)
       @car, @cdr = [car, cdr]
     end
 
@@ -22,9 +22,20 @@ module BusScheme
         [@car]
       end
     end
+
+    def inspect(open = '(', close = ')')
+      str = open + @car.inspect
+      if @cdr.nil?
+        str + close
+      elsif @cdr.is_a? Cons
+        str + ' ' + @cdr.inspect('', '') + close
+      else
+        str + ' . ' + @cdr.inspect + close
+      end
+    end
   end
 
-  def cons(car, cdr)
+  def cons(car, cdr = nil)
     Cons.new(car, cdr)
   end
 end

@@ -45,6 +45,6 @@ class BusSchemeEvalTest < Test::Unit::TestCase
 
   def test_single_quote
     assert_evals_to :foo, "'foo"
-    assert_evals_to [:foo, :biz, :bbb], "'(foo biz bbb)"
+    assert_evals_to [:foo, :biz, :bbb].to_list, "'(foo biz bbb)"
   end
 end

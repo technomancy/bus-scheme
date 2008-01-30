@@ -38,34 +38,32 @@ $ bus foo.scm # load a file
 == Todo
 
 Bus Scheme is currently missing pieces of functionality:
-(fewer stars => higher priority)
 
 === Parser
+ * Fix single-quote
  ** parse character literals
  ** parse dotted cons cells
  *** case-insensitive identifiers
  *** stricter rules for identifier names
- *** unquote with ,
- *** parse floats, negatives, rationals, scientific, complex, and polar complex numbers
 
 === Primitives
  ** &rest for args?
- ** macros?
 
 === Scheme core
  * implement let
- * move as many definitions into Scheme as possible
 
 === General
  * stack traces on error plz
- * compile to Rubinius bytecode
  ** optimize tail call recursion
  ** some kind of load path?
- *** check for memory leaks
- *** continuations (?!?)
 
 Failing tests for some of these are already included (commented out,
 mostly) in the relevant test files.
+
+=== Long Term (post 1.0)
+ * continuations (?!?)
+ * compile to Rubinius bytecode
+ * parse floats, negatives, rationals, scientific, complex, and polar complex numbers
 
 == Requirements
 

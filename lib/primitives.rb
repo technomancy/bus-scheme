@@ -22,6 +22,7 @@ module BusScheme
     :vector => lambda { |*members| members },
     
     :ruby => lambda { |*code| eval(code.join('')) },
+    :eval => lambda { |code| eval_form(code) },
     :send => lambda { |obj, *message| obj.send(*message) },
     :load => lambda { |filename| eval_string("(begin #{File.read(filename)} )") },
     :exit => lambda { exit }, :quit => lambda { exit },
@@ -29,7 +30,7 @@ module BusScheme
 
   # if we add in macros, can some of these be defined in scheme?
   SPECIAL_FORMS = {
-    :quote => lambda { |arg| arg },
+    :quote => lambda { |arg| arg.to_sexp },
     # TODO: check that nil, () and #f all behave according to spec
     :if => lambda { |q, yes, *no| eval_form(q) ? eval_form(yes) : eval_form([:begin] + no) },
     :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },

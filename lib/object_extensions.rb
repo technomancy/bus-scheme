@@ -5,4 +5,8 @@ class Object
     yield self
     return self
   end
+
+  def to_sexp
+    self
+  end
 end

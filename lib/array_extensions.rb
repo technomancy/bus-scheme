@@ -14,6 +14,8 @@ class Array
       BusScheme::Cons.new(self.car, self.cdr.to_list)
     end
   end
+
+  alias_method :to_sexp, :to_list
 end
 
 module Enumerable # for 1.9, zip is defined on Enumerable
