@@ -100,9 +100,8 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
 #   def test_character_literals
-#     assert_parses_to "?e", "e"
-#     assert_parses_to "?A", "A"
-#     # what else?
+#     assert_parses_to "?#e", "e"
+#     assert_parses_to "?#A", "A"
 #   end
   
   def test_quote

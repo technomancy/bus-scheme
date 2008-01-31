@@ -16,7 +16,7 @@ require 'cons'
 require 'lambda'
 
 module BusScheme
-  VERSION = "0.7.1"
+  VERSION = "0.7.5"
 
   SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
   PROMPT = '> '

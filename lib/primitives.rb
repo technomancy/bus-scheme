@@ -18,6 +18,7 @@ module BusScheme
 
     :concat => lambda { |*args| args.join('') },
     :cons => lambda { |car, cdr| Cons.new(car, cdr) },
+    # todo: lambda args should come as lists by default, not vectors/arrays
     :list => lambda { |*members| members.to_list },
     :vector => lambda { |*members| members },
     
