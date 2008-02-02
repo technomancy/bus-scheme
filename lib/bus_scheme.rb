@@ -44,5 +44,11 @@ module BusScheme
     end
   end
 
-  ['core'].each { |file| SYMBOL_TABLE[:load].call("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }
+  def self.load(filename)
+    eval_string("(begin #{File.read(filename)} )")
+  end
+  
+  ['core'].each { |file| load("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }
 end
+
+require 'web'

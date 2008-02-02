@@ -3,7 +3,8 @@ module BusScheme
   class ParseError < BusSchemeError; end
   class EvalError < BusSchemeError; end
   class ArgumentError < BusSchemeError; end
-
+  class AssertionFailed < BusSchemeError; end
+  
   PRIMITIVES = {
     # right now I believe there are as few things implemented primitively as possible
     # except for functions that require splat args. do we need something like &rest?
@@ -25,7 +26,7 @@ module BusScheme
     :ruby => lambda { |*code| eval(code.join('')) },
     :eval => lambda { |code| eval_form(code) },
     :send => lambda { |obj, *message| obj.send(*message) },
-    :load => lambda { |filename| eval_string("(begin #{File.read(filename)} )") },
+    :load => lambda { |filename| BusScheme.load filename },
     :exit => lambda { exit }, :quit => lambda { exit },
   }
 

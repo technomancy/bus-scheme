@@ -12,12 +12,12 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_set_symbol
-    BusScheme::Lambda.scope[:hi] = 'hi'
-    assert BusScheme::Lambda.scope[:hi]
+    Lambda.scope[:hi] = 'hi'
+    assert Lambda.scope[:hi]
   end
   
   def test_eval_symbol
-    BusScheme::Lambda.scope[:hi] = 13
+    Lambda.scope[:hi] = 13
     assert_evals_to 13, :hi
   end
 
@@ -34,7 +34,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_blows_up_with_undefined_symbol
-    assert_raises(BusScheme::EvalError) { eval("undefined-symbol") }
+    assert_raises(EvalError) { eval("undefined-symbol") }
   end
 
   def test_variable_substitution

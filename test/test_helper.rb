@@ -3,6 +3,8 @@ require 'test/unit'
 require 'bus_scheme'
 
 class Test::Unit::TestCase
+  include BusScheme
+
   # convenience method that accepts string or form
   def eval(form)
     if form.is_a?(String)

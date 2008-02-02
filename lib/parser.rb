@@ -1,5 +1,9 @@
 module BusScheme
   class << self
+    IDENTIFIER_CHARS = "[^ \n\)]"
+#    IDENTIFIER_CHARS = "A-Za-z0-9!\\$%&\\*\\+\\-\\.\\/:<=>\\?@\\^_~"
+    IDENTIFIER_BEGIN = IDENTIFIER_CHARS #.gsub("(\\+\\-|0-9|\\.)", "")
+
     # Turn an input string into an S-expression
     def parse(input)
       parse_tokens tokenize(input).flatten
@@ -65,7 +69,7 @@ module BusScheme
                 Regexp.last_match[1].to_i
               when /\A("(.*?)")/ # string
                 Regexp.last_match[2]
-              when /\A([^ \n\)]+)/ # symbol
+              when /\A(#{IDENTIFIER_BEGIN}+#{IDENTIFIER_CHARS}*)/ # symbol
                 Regexp.last_match[1].intern
               end
 

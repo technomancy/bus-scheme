@@ -1,0 +1,63 @@
+= Differences between Bus Scheme and R5RS
+
+== Parsing
+
+"a sequence of letters, digits, and "extended alphabetic characters
+that begins with a character that cannot begin a number is an
+identifier"
+
+Extended chars: 
+! $ % & * + - . / : < = > ? @ ^ _ ~
+
+Explicitly positive numbers
+
+Quasiquote, unquote, unquote-splice
+
+Backslash in strings
+
+[]{}| - reserved
+
+Character literals
+
+Alternate-base numbers
+
+Alternate lambda forms
+
+== Functions
+
+=== Basic
+read
+cond
+case
+let*
+letrec
+do
+delay
+
+=== Predicates
+boolean?
+symbol?
+char?
+vector?
+procedure?
+pair?
+number?
+string?
+port?
+
+== Errors
+
+Mutating constant values
+Using invalid identifiers
+
+== Macros
+
+...
+
+== Other
+
+Tail-recursion
+
+Continuations
+
+Gone through the doc through section 4

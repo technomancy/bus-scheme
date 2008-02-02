@@ -117,6 +117,20 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to "(+ 2;; this is a mid-sexp comment
 2)", [:+, 2, 2]
   end
+
+#   def test_reject_bad_identifiers
+#     [".ab3", "14kalt", "-bolt"].each do |identifier|
+#       assert_raises(BusScheme::ParseError, "#{identifier} should not be valid") { BusScheme.parse(identifier) }
+#     end
+#   end
+
+  def test_r5rs_identifiers
+    ["lambda", "q", "list->vector", "soup", "+",
+     "V17a", "<=?", "a34kTMNs",
+     "the-word-recursion-has-many-meanings"].each do |identifier|
+      assert_nothing_raised { BusScheme.parse(identifier) }
+    end
+  end
   
   def test_parse_random_elisp_form_from_my_dot_emacs
     lisp = "(let ((system-specific-config
@@ -132,6 +146,10 @@ class BusSchemeParserTest < Test::Unit::TestCase
                        [:load, :'system-specific-config']]])
    end
 
+#   def test_accepts_multiline_strings_in_repl
+#     # oh crap
+#   end
+  
   private
 
   def assert_parses_to(actual_string, expected)

@@ -43,9 +43,10 @@ Bus Scheme is currently missing pieces of functionality:
  * parse character literals
  ** alternate define lambda forms
  ** parse dotted cons cells
- *** look up and enforce rules for identifier names
 
 === General
+ * make sure and only evals second arg if first is true, check or as well
+ * fix on rubinius
  * lambda args should get passed in as lists by default, not vectors/arrays
  * (lambda args body) for rest args
  * stack traces on error plz

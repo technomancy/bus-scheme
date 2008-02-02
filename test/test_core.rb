@@ -21,9 +21,9 @@ class CoreTest < Test::Unit::TestCase
   def test_list_functions
     assert_evals_to :foo, "(car (cons (quote foo) (quote bar)))"
     assert_evals_to :bar, "(cdr (cons (quote foo) (quote bar)))"
-    assert_equal(BusScheme::Cons.new(:foo, BusScheme::Cons.new(:bar, nil)),
+    assert_equal(Cons.new(:foo, Cons.new(:bar, nil)),
                  [:foo, :bar].to_list)
-    assert_evals_to(BusScheme::Cons.new(2, BusScheme::Cons.new(3, nil)),
+    assert_evals_to(Cons.new(2, Cons.new(3, nil)),
                     "(list 2 3)")
     assert_evals_to "bar", "(cadr (list \"foo\" \"bar\")"
     assert_evals_to [1, :foo].to_list, "(list 1 'foo)"
