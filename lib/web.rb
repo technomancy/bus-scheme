@@ -1,34 +1,28 @@
 require 'rubygems'
 require 'mongrel'
 
-# try evaling:
-# (http-listen (lambda (req) "hello world"))
-# and then curl http://localhost:3500
-
 module BusScheme
+  HTTP_SERVERS = {}
+  
   SYMBOL_TABLE[:'http-listen'] = lambda do |*args|
     handler_function = args[0]
     path = args[1] || '/'
-    host = args[2] || 'localhost'
+    host = args[2] || '0.0.0.0'
     port = args[3] || 3500
 
-    Mongrel::Configurator.new :host => host do
-      listener :port => port do
-        http_handler = Mongrel::HttpHandler.new
-
-        process = lambda do |request, response|
-          response.start(200) do |head, out|
-            head['Content-Type'] = 'text/html'
-            out.write(handler_function.call(request))
-          end
-        end
-
-        http_handler.extend(Module.new{ define_method(:process, process) })
-
-        uri(path, :handler => http_handler)
+    # has to be a closure so we have access to handler_function
+    handler_method = lambda do |request, response|
+      response.start(200) do |head, out|
+        head['Content-Type'] = 'text/html'
+        out.write(handler_function.call(request))
       end
-
-      run
     end
+
+    mongrel_handler = Mongrel::HttpHandler.new
+    mongrel_handler.extend(Module.new{ define_method(:process, handler_method) })
+
+    server = (HTTP_SERVERS["#{host}:#{port}"] ||= Mongrel::HttpServer.new(host, port))
+    server.register(path, mongrel_handler)
+    server.run
   end
 end

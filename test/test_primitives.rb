@@ -36,8 +36,8 @@ class PrimitivesTest < Test::Unit::TestCase
   end
 
   def test_load_file
-    eval "(load \"#{File.dirname(__FILE__)}/foo.scm\")"
-    assert_evals_to 3, :foo
+    eval "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")"
+    assert_evals_to 5, "(fib 5)"
   end
 
   # special forms
