@@ -7,12 +7,17 @@ module BusScheme
     end
 
     def ==(other)
-      @car == other.car and @cdr == other.cdr
+      other.respond_to?(:car) and @car == other.car and
+        other.respond_to?(:cdr) and @cdr == other.cdr
     end
 
     alias_method :first, :car
     alias_method :rest, :cdr
 
+    def map(mapper)
+      cons(mapper.call(@car), @cdr ? @cdr.map(mapper) : @cdr)
+    end
+    
     def to_a
       if @cdr.respond_to? :to_a
         [@car] + @cdr.to_a

@@ -6,7 +6,7 @@ class Object
     return self
   end
 
-  def to_sexp
+  def sexp
     self
   end
 end

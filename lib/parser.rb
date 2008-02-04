@@ -6,7 +6,7 @@ module BusScheme
 
     # Turn an input string into an S-expression
     def parse(input)
-      parse_tokens tokenize(input).flatten
+      parse_tokens(tokenize(input).flatten)
     end
 
     # Turn a list of tokens into a properly-nested S-expression

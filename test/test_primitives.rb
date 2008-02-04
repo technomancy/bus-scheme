@@ -23,8 +23,9 @@ class PrimitivesTest < Test::Unit::TestCase
     assert_evals_to "foobar", "(concat \"foo\" \"bar\")"
   end
 
-  def test_eval
-    assert_evals_to 23, "(eval '(+ 20 3))"
+  def test_eval_quoted_args
+    # TODO: causes explosion in 1.9
+    assert_evals_to 23, "(eval (quote + 20 3))"
   end
   
   def test_eval_ruby
@@ -64,6 +65,8 @@ class PrimitivesTest < Test::Unit::TestCase
     assert_evals_to [:a].to_list, "(list 'a)"
     assert_evals_to [:a, :b].to_list, "(list 'a 'b)"
     assert_evals_to [:a, :b, :c].to_list, "(list 'a 'b 'c)"
+    # TODO: breaks in 1.9 =(
+    assert_evals_to [:+, 2, 3].to_list, "(quote + 2 3)"
   end
 
   def test_if
@@ -115,5 +118,14 @@ class PrimitivesTest < Test::Unit::TestCase
                              (x 3))
                            x
                            (doubler x))"
+  end
+
+  def test_assert
+    assert_raises(AssertionFailed) { eval "(assert (= 3 9))"}
+  end
+
+  AS_SMALL_AS_POSSIBLE = 17
+  def test_as_few_primitives_as_possible
+    assert BusScheme::PRIMITIVES.size <= AS_SMALL_AS_POSSIBLE # =)
   end
 end

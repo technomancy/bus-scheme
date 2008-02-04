@@ -19,20 +19,20 @@ module BusScheme
 
     :concat => lambda { |*args| args.join('') },
     :cons => lambda { |car, cdr| Cons.new(car, cdr) },
-    # todo: lambda args should come as lists by default, not vectors/arrays
     :list => lambda { |*members| members.to_list },
     :vector => lambda { |*members| members },
     
     :ruby => lambda { |*code| eval(code.join('')) },
     :eval => lambda { |code| eval_form(code) },
     :send => lambda { |obj, *message| obj.send(*message) },
+    :assert => lambda { |cond| raise AssertionFailed unless cond },
     :load => lambda { |filename| BusScheme.load filename },
     :exit => lambda { exit }, :quit => lambda { exit },
   }
 
   # if we add in macros, can some of these be defined in scheme?
   SPECIAL_FORMS = {
-    :quote => lambda { |arg| arg.to_sexp },
+    :quote => lambda { |arg| arg.sexp },
     :if => lambda { |q, yes, *no| eval_form(q) ? eval_form(yes) : eval_form([:begin] + no) },
     :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },
     :set! => lambda { |sym, value| raise EvalError.new unless Lambda.scope.has_key?(sym) and 

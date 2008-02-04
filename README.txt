@@ -38,28 +38,39 @@ $ bus foo.scm # load a file
 == Todo
 
 Bus Scheme is currently missing pieces of functionality:
+* means includes failing test, - means untested
+
+=== Bugs
+ * lambda args are arrays, not lists
+ * enforce paren closing
+ * block arity of quote is inconsistent (breaks 1.9)
+ * and/or should short-circuit-eval args (special forms)
+ * reject bad identifiers
+ - REPL should accept multiline strings
 
 === Parser
  * parse character literals
- ** alternate define lambda forms
+ -- alternate define lambda forms
  ** parse dotted cons cells
 
 === General
- * make sure and only evals second arg if first is true, check or as well
- * fix on rubinius
- * lambda args should get passed in as lists by default, not vectors/arrays
- * (lambda args body) for rest args
- * stack traces on error plz
- ** optimize tail call recursion
- ** some kind of load path?
+ - (lambda args body) for rest args
+ - stack traces on error plz
+ -- some kind of load path?
+
+=== Web
+ - defresource
+ - oh man... so much to do here!
 
 Failing tests for some of these are already included (commented out,
 mostly) in the relevant test files.
 
 === Long Term (post 1.0)
- * continuations (?!?)
- * compile to Rubinius bytecode
- * parse rationals, scientific, complex, and polar complex numbers
+ - (lambda (arg1 arg2 . args) body) for rest args
+ - continuations (?!?)
+ - optimize tail call recursion
+ - compile to Rubinius bytecode
+ - parse rationals, scientific, complex, and polar complex numbers
 
 == Requirements
 

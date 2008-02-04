@@ -15,7 +15,7 @@ class Array
     end
   end
 
-  alias_method :to_sexp, :to_list
+  alias_method :sexp, :to_list
 end
 
 module Enumerable # for 1.9, zip is defined on Enumerable

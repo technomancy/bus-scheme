@@ -5,6 +5,8 @@ require 'hoe'
 require './lib/bus_scheme.rb'
 require 'rake/testtask'
 
+RBX_BIN = ENV['bin'] || "~/src/rubinius/shotgun/rubinius"
+
 Hoe.new('bus-scheme', BusScheme::VERSION) do |p|
   p.rubyforge_name = 'bus-scheme'
   p.author = 'Phil Hagelberg'
@@ -28,12 +30,24 @@ end
 
 desc "Show todo items"
 task :todo do
-  puts File.read('README.txt').match(/== Todo(.*)== Requirements/m)[1].split("\n").grep(/^( \*|===)/).join("\n")
+  puts File.read('README.txt').match(/== Todo(.*)== Requirements/m)[1].split("\n").grep(/^( \*|===| \-)/).join("\n")
 end
 
 desc "Show tests that have been commented out"
 task :commented_tests do
   Dir.glob('test/test_*.rb').each do |file|
     puts File.read(file).grep(/^\s*#\s*def (test_[^ ]*)/)
+  end
+end
+
+# TODO: use multiruby, duh
+desc "Run tests in Rubinius"
+task :rbx_test do
+  if ENV['test']
+    system "#{RBX_BIN} test/test_#{ENV['test']}.rb"
+  else
+    Dir.glob('test/test_*.rb').each do |test_file|
+      system "#{RBX_BIN} #{test_file}"
+    end
   end
 end

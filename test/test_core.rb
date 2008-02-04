@@ -40,4 +40,9 @@ class CoreTest < Test::Unit::TestCase
     assert_evals_to true, "(or #f #t)"
     assert_evals_to false, "(or #f #f)"
   end
+
+#   def test_boolean_short_circuit
+#     assert_evals_to false, "(and #f (assert #f))"
+#     assert_evals_to true, "(or #t (assert #f))"
+#   end
 end

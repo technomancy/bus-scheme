@@ -1,6 +1,7 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 require 'open-uri'
+require 'web'
 
 require "#{File.dirname __FILE__}/../lib/web.rb"
 

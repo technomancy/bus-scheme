@@ -50,5 +50,3 @@ module BusScheme
   
   ['core'].each { |file| load("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }
 end
-
-require 'web'
