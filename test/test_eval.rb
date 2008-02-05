@@ -52,12 +52,4 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to 5, cons(:+, cons(2, cons(3)))
     assert_evals_to 5, cons(:+, cons(2, cons(3)).to_a)
   end
-
-  def test_args_are_lists_not_arrays
-    SYMBOL_TABLE[:'no-arrays-plz'] = lambda do |arg|
-      raise "Lambda args should be passed in as lists" unless arg.is_a?(Cons)
-    end
-
-    assert_nothing_raised { eval "(no-arrays-plz \"kthxbai\")"}
-  end
 end

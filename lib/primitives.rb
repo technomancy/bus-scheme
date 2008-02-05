@@ -32,6 +32,7 @@ module BusScheme
 
   # if we add in macros, can some of these be defined in scheme?
   SPECIAL_FORMS = {
+    # TODO: hacky to coerce everything to sexps... won't work once we start using vectors
     :quote => lambda { |arg| arg.sexp },
     :if => lambda { |q, yes, *no| eval_form(q) ? eval_form(yes) : eval_form([:begin] + no) },
     :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },

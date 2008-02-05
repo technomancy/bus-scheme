@@ -41,9 +41,7 @@ Bus Scheme is currently missing pieces of functionality:
 * means includes failing test, - means untested
 
 === Bugs
- * lambda args are arrays, not lists
  * enforce paren closing
- * block arity of quote is inconsistent (breaks 1.9)
  * and/or should short-circuit-eval args (special forms)
  * reject bad identifiers
  - REPL should accept multiline strings

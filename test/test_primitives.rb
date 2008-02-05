@@ -24,8 +24,7 @@ class PrimitivesTest < Test::Unit::TestCase
   end
 
   def test_eval_quoted_args
-    # TODO: causes explosion in 1.9
-    assert_evals_to 23, "(eval (quote + 20 3))"
+    assert_evals_to 23, "(eval '(+ 20 3))"
   end
   
   def test_eval_ruby
@@ -65,8 +64,7 @@ class PrimitivesTest < Test::Unit::TestCase
     assert_evals_to [:a].to_list, "(list 'a)"
     assert_evals_to [:a, :b].to_list, "(list 'a 'b)"
     assert_evals_to [:a, :b, :c].to_list, "(list 'a 'b 'c)"
-    # TODO: breaks in 1.9 =(
-    assert_evals_to [:+, 2, 3].to_list, "(quote + 2 3)"
+    assert_evals_to [:+, 2, 3].to_list, "'(+ 2 3)"
   end
 
   def test_if

@@ -108,6 +108,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to "'foo", [:quote, :foo]
     assert_equal [:'(', :quote, :'(', :foo, :bar, :baz, :')', :')'], BusScheme::tokenize("'(foo bar baz)").flatten
     assert_parses_to "'(foo bar baz)", [:quote, [:foo, :bar, :baz]]
+    assert_parses_to "'(+ 20 3)", [:quote, [:+, 20, 3]]
   end
 
   #  have to change normalize_whitespace to not turn newlines into spaces for this to work
@@ -158,7 +159,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
   private
 
   def assert_parses_to(actual_string, expected)
-    assert_equal expected, BusScheme.parse(actual_string)
+    assert_equal expected.sexp, BusScheme.parse(actual_string)
   end
 
   def assert_parses_equal(one, two, message = nil)

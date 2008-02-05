@@ -1,6 +1,10 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 require 'open-uri'
+
+# TODO: figure out a better rubinius heuristic
+return unless RUBY_VERSION == '1.8.6' and not "".respond_to? :to_sexp
+
 require 'web'
 
 require "#{File.dirname __FILE__}/../lib/web.rb"
@@ -21,9 +25,6 @@ class WebTest < Test::Unit::TestCase
     eval '(http-listen (lambda (req) "hello world"))'
     assert_equal 'hello world', open('http://localhost:3500/').read
   end
-
-#   def test_returns_http_response_at_root
-#   end
 
 #   def test_returns_html_at_root
 #   end
