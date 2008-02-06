@@ -10,7 +10,7 @@ class Test::Unit::TestCase
     if form.is_a?(String)
       BusScheme.eval_string(form)
     else
-      BusScheme.eval_form(form)
+      BusScheme.eval(form)
     end
   end
 

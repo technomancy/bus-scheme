@@ -10,3 +10,7 @@ class Object
     self
   end
 end
+
+class Symbol
+  attr_accessor :defined_in
+end

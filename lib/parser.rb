@@ -1,7 +1,3 @@
-class Symbol # TODO: this is wrong. so wrong.
-  attr_accessor :defined_in
-end
-
 module BusScheme
   class << self
     IDENTIFIER_CHARS = "[^ \n\)]"
@@ -10,6 +6,7 @@ module BusScheme
 
     # Turn an input string into an S-expression
     def parse(input)
+      @@lines = 0
       # TODO: should sexp it as it's being constructed, not after
       parse_tokens(tokenize(input).flatten).sexp
     end
@@ -53,6 +50,7 @@ module BusScheme
       # can't use ^ since it matches line beginnings in mid-string
       token = case input
               when /\A(\s|;.*$)/ # ignore whitespace and comments
+                @@lines += Regexp.last_match[1].count("\n")
                 input[0 .. Regexp.last_match[1].length - 1] = ''
                 return pop_token(input)
               when /\A(\(|\))/ # parens
@@ -76,7 +74,10 @@ module BusScheme
               when /\A("(.*?)")/ # string
                 Regexp.last_match[2]
               when /\A(#{IDENTIFIER_BEGIN}+#{IDENTIFIER_CHARS}*)/ # symbol
-                Regexp.last_match[1].intern.affect{ |sym| sym.defined_in = [BusScheme.loaded_files.last] }
+                puts "#{Regexp.last_match[1]} - #{@@lines}"
+                # bugger--this is *not* going to work. every reference to the symbol
+                # resets the defined_in properties. ick! i don't want a ParseNode class!
+                Regexp.last_match[1].intern.affect{ |sym| sym.defined_in = [BusScheme.loaded_files.last, @@lines] }
               end
 
       # Remove the matched part from the string

@@ -46,7 +46,7 @@ module BusScheme
 
   def self.load(filename)
     loaded_files.push filename
-    eval_string("(begin #{File.read(filename)} )")
+    eval_string File.read(filename)
     loaded_files.pop
   end
 

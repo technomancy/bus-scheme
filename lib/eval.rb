@@ -2,17 +2,17 @@ module BusScheme
   class << self
     # Parse a string, then eval the result
     def eval_string(string)
-      eval_form(parse(string))
+      eval(parse("(begin #{string})"))
     end
 
     # Eval a form passed in as an array
-    def eval_form(form)
+    def eval(form)
       # puts "evaling #{form.inspect}"
-      if form.respond_to?(:first) and form.first
+      if (form.is_a?(Cons) or form.is_a?(Array)) and form.first
         apply(form.first, form.rest)
       elsif form.is_a? Symbol
         raise EvalError.new("Undefined symbol: #{form}") unless Lambda.scope.has_key?(form)
-        Lambda.scope[form]
+        Lambda[form]
       else # well it must be a literal then
         form
       end
@@ -22,8 +22,8 @@ module BusScheme
     def apply(function, args)
       # puts "applying #{function.inspect} with #{args.inspect}"
       args = args.to_a
-      args.map!{ |arg| eval_form(arg) } unless special_form?(function)
-      eval_form(function).call(*args)
+      args.map!{ |arg| eval(arg) } unless special_form?(function)
+      eval(function).call(*args)
     end
   end
 end

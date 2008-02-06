@@ -52,4 +52,16 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to 5, cons(:+, cons(2, cons(3)))
     assert_evals_to 5, cons(:+, cons(2, cons(3)).to_a)
   end
+
+  def test_eval_multiple_forms
+    assert_raises(AssertionFailed) do
+      BusScheme.eval_string "(+ 2 2) (assert #f)"
+    end
+  end
+
+  def test_define_after_load
+    BusScheme.eval_string "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")
+(define greeting \"hi\")"
+    assert Lambda[:greeting]
+  end
 end

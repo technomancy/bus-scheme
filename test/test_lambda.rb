@@ -13,7 +13,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_equal [], l.formals
 
     eval("(define foo (lambda () (+ 1 1)))")
-    assert Lambda.scope[:foo].is_a?(Lambda)
+    assert Lambda[:foo].is_a?(Lambda)
     assert_evals_to 2, [:foo]
   end
 
@@ -34,9 +34,9 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_lambda_args_dont_stay_in_scope
     clear_symbols(:x, :foo)
     eval("(define foo (lambda (x) (+ x 1)))")
-    assert_nil Lambda.scope[:x]
+    assert_nil Lambda[:x]
     assert_evals_to 2, [:foo, 1]
-    assert_nil Lambda.scope[:x]
+    assert_nil Lambda[:x]
   end
 
   def test_lambda_calls_lambda
@@ -75,12 +75,18 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_lambdas_know_what_file_they_were_defined_in
     filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
     eval "(load \"#{filename}\")"
-    assert_equal filename, Lambda.scope[:fib].defined_in.first
+    assert_equal filename, Lambda[:fib].defined_in.first
+
+    eval "(define fab 'warble)"
+    assert_equal "(eval)", Lambda[:fab].defined_in.first
   end
 
-#   def test_lambdas_know_what_line_they_were_defined_in
-#     filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
-#     eval "(load \"#{filename}\")"
-#     assert_equal 1, Lambda.scope[:fib].defined_in.last
-#   end
+  def test_lambdas_know_what_line_they_were_defined_in
+    eval "#{"\n" * 7} (define fab 'warble)"
+    assert_equal 7, Lambda[:fab].defined_in.last
+
+    filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
+    eval "(load \"#{filename}\")"
+    assert_equal 1, Lambda.scope[:fib].defined_in.last
+  end
 end

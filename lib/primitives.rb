@@ -22,8 +22,8 @@ module BusScheme
     :list => lambda { |*members| members.to_list },
     :vector => lambda { |*members| members },
     
-    :ruby => lambda { |*code| eval(code.join('')) },
-    :eval => lambda { |code| eval_form(code) },
+    :ruby => lambda { |*code| Kernel.eval code.join('') },
+    :eval => lambda { |code| eval(code) },
     :send => lambda { |obj, *message| obj.send(*message) },
     :assert => lambda { |cond| raise AssertionFailed unless cond },
     :load => lambda { |filename| BusScheme.load filename },
@@ -34,20 +34,16 @@ module BusScheme
   SPECIAL_FORMS = {
     # TODO: hacky to coerce everything to sexps... won't work once we start using vectors
     :quote => lambda { |arg| arg.sexp },
-    :if => lambda { |q, yes, *no| eval_form(q) ? eval_form(yes) : eval_form([:begin] + no) },
-    :begin => lambda { |*args| args.map{ |arg| eval_form(arg) }.last },
+    :if => lambda { |q, yes, *no| eval(q) ? eval(yes) : eval([:begin] + no) },
+    :begin => lambda { |*args| args.map{ |arg| eval(arg) }.last },
     :set! => lambda { |sym, value| raise EvalError.new unless Lambda.scope.has_key?(sym) and 
-      Lambda.scope[sym] = eval_form(value); sym },
+      Lambda[sym] = eval(value); sym },
     :lambda => lambda { |args, *form| Lambda.new(args, form) },
-    :define => lambda do |sym, definition|
-      Lambda.scope[sym] = eval_form(definition)
-      Lambda.scope[sym].defined_in = sym.defined_in if Lambda[sym].respond_to?(:defined_in)
-      sym
-    end,
+    :define => lambda { |sym, definition| Lambda[sym] = eval(definition); sym },
 
     # once we have macros, this can be defined in scheme
-    :and => lambda { |*args| args.all? { |x| eval_form(x) } },
-    :or => lambda { |*args| args.any? { |x| eval_form(x) } },
-    :let => lambda { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval_form d.last }) },
+    :and => lambda { |*args| args.all? { |x| eval(x) } },
+    :or => lambda { |*args| args.any? { |x| eval(x) } },
+    :let => lambda { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval d.last }) },
   }
 end

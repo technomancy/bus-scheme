@@ -49,7 +49,7 @@ Bus Scheme is currently missing pieces of functionality:
  ** parse dotted cons cells
 
 === General
- - stack traces on error plz
+ * stack traces on error plz
  - macros
  -- some kind of load path?
 

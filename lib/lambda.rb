@@ -36,12 +36,12 @@ module BusScheme
     attr_reader :scope
     attr_accessor :defined_in
     
-    # create new lambda object
+    # create new Lambda object
     def initialize(formals, body)
       @formals, @body, @enclosing_scope = [formals, body, Lambda.scope]
     end
     
-    # execute lambda with given arg_values
+    # execute Lambda with given arg_values
     def call(*args)
       locals = if @formals.is_a? Symbol # rest args
                  { @formals => args.to_list }
@@ -52,12 +52,23 @@ module BusScheme
 
       @scope = RecursiveHash.new(locals, @enclosing_scope)
       @@stack << self
-      BusScheme.eval_form(@body.unshift(:begin)).affect { @@stack.pop }
+      BusScheme.eval(@body.unshift(:begin)).affect { @@stack.pop }
     end
 
     # What's the current scope?
     def self.scope
       @@stack.empty? ? SYMBOL_TABLE : @@stack.last.scope
+    end
+
+    # shorthand for lookup in the currently relevant scope
+    def self.[](sym)
+      self.scope[sym]
+    end
+
+    # shorthand for assignment in the currently relevant scope
+    def self.[]=(sym, val)
+      val.defined_in = sym.defined_in if val.respond_to?(:defined_in)
+      self.scope[sym] = val
     end
   end
 end
