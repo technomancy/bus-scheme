@@ -2,12 +2,9 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 require 'open-uri'
 
-# TODO: figure out a better rubinius heuristic
-return unless RUBY_VERSION == '1.8.6' and not "".respond_to? :to_sexp
+return unless RUBY_VERSION == '1.8.6' and not defined? Rubinius
 
 require 'web'
-
-require "#{File.dirname __FILE__}/../lib/web.rb"
 
 HTML = <<EOH
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

@@ -2,7 +2,7 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
 class BusScheme::Lambda
-  attr_accessor :body, :arg_names, :environment
+  attr_accessor :body, :formals, :environment
 end
 
 class BusSchemeLambdaTest < Test::Unit::TestCase
@@ -10,7 +10,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     l = eval("(lambda () (+ 1 1))")
     assert l.is_a?(Lambda)
     assert_equal [[:+, 1, 1]], l.body
-    assert_equal [], l.arg_names
+    assert_equal [], l.formals
 
     eval("(define foo (lambda () (+ 1 1)))")
     assert Lambda.scope[:foo].is_a?(Lambda)
@@ -65,5 +65,10 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
           (lambda (y) (cons x y)))))
  (let ((x (quote not-a)))
   (f (quote b))))"
+ end
+
+ def test_lambda_rest_args
+   eval "(define rest (lambda args args))"
+   assert_evals_to [:a, :b, :c].to_list, "(rest 'a 'b 'c)"
  end
 end

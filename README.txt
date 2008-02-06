@@ -48,11 +48,10 @@ Bus Scheme is currently missing pieces of functionality:
 
 === Parser
  * parse character literals
- -- alternate define lambda forms
  ** parse dotted cons cells
 
 === General
- - (lambda args body) for rest args
+ * (lambda args body) for rest args
  - stack traces on error plz
  -- some kind of load path?
 
