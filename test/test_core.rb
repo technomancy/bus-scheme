@@ -25,7 +25,7 @@ class CoreTest < Test::Unit::TestCase
                  [:foo, :bar].to_list)
     assert_evals_to(Cons.new(2, Cons.new(3, nil)),
                     "(list 2 3)")
-    assert_evals_to "bar", "(cadr (list \"foo\" \"bar\")"
+    assert_evals_to "bar", "(cadr (list \"foo\" \"bar\"))"
     assert_evals_to [1, :foo].to_list, "(list 1 'foo)"
   end
 end

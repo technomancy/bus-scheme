@@ -3,7 +3,7 @@ require 'test_helper'
 
 class PrimitivesTest < Test::Unit::TestCase
   def test_booleans
-    assert BusScheme::PRIMITIVES.has_key? '#f'.intern
+    assert BusScheme::PRIMITIVES.has_key?('#f'.intern)
     assert_evals_to false, '#f'
     assert_evals_to true, '#t'
   end
@@ -45,7 +45,7 @@ class PrimitivesTest < Test::Unit::TestCase
     clear_symbols :foo
     eval("(define foo 5)")
     assert_equal 5, BusScheme::Lambda.scope[:foo]
-    eval("(define foo (quote (5 5 5))")
+    eval("(define foo (quote (5 5 5)))")
     assert_evals_to [5, 5, 5].to_list, :foo
   end
 

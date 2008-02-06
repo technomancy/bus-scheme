@@ -72,7 +72,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
   def test_parses_vectors
     assert_equal [:'(', :vector, 1, 2, :')'], BusScheme::tokenize("#(1 2)").flatten
     assert_parses_to  "#(1 2)", [:vector, 1, 2]
-    assert_parses_to "#(1 (2 3 4)", [:vector, 1, [2, 3, 4]]
+    assert_parses_to "#(1 (2 3 4))", [:vector, 1, [2, 3, 4]]
   end
   
 #   def test_parses_dotted_cons
@@ -119,10 +119,10 @@ class BusSchemeParserTest < Test::Unit::TestCase
 2)", [:+, 2, 2]
   end
 
-#   def test_requires_closed_lists
-#     assert_raises(ParseError) { BusScheme.parse "(+ 2 2" }
-#     assert_raises(ParseError) { BusScheme.parse "(+ (* 3 4) 2 2" }
-#   end
+  def test_requires_closed_lists
+    assert_raises(ParseError) { BusScheme.parse "(+ 2 2" }
+    assert_raises(ParseError) { BusScheme.parse "(+ (* 3 4) 2 2" }
+  end
   
 #   def test_reject_bad_identifiers
 #     [".ab3", "14kalt", "-bolt"].each do |identifier|

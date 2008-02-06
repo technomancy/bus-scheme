@@ -45,7 +45,13 @@ module BusScheme
   end
 
   def self.load(filename)
+    loaded_files.push filename
     eval_string("(begin #{File.read(filename)} )")
+    loaded_files.pop
+  end
+
+  def self.loaded_files
+    (@loaded_files ||= ["(eval)"])
   end
   
   ['core'].each { |file| load("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }

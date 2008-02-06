@@ -34,6 +34,7 @@ module BusScheme
     @@stack = []
 
     attr_reader :scope
+    attr_accessor :defined_in
     
     # create new lambda object
     def initialize(formals, body)

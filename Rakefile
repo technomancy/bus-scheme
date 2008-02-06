@@ -5,7 +5,7 @@ require 'hoe'
 require './lib/bus_scheme.rb'
 require 'rake/testtask'
 
-RBX_BIN = ENV['bin'] || "~/src/rubinius/shotgun/rubinius"
+BIN = ENV['bin'] || "~/src/rubinius/shotgun/rubinius"
 
 Hoe.new('bus-scheme', BusScheme::VERSION) do |p|
   p.rubyforge_name = 'bus-scheme'
@@ -44,10 +44,8 @@ end
 desc "Run tests in Rubinius"
 task :rbx_test do
   if ENV['test']
-    system "#{RBX_BIN} test/test_#{ENV['test']}.rb"
+    system "#{BIN} test/test_#{ENV['test']}.rb"
   else
-    Dir.glob('test/test_*.rb').each do |test_file|
-      system "#{RBX_BIN} #{test_file}"
-    end
+    system "#{BIN} -w -Ilib:ext:bin:test -e '#{Dir.glob('test/test_*.rb').map{ |f| "require \"" + f + "\" "}.join('; ')}'"
   end
 end

@@ -1,3 +1,7 @@
+class Symbol # TODO: this is wrong. so wrong.
+  attr_accessor :defined_in
+end
+
 module BusScheme
   class << self
     IDENTIFIER_CHARS = "[^ \n\)]"
@@ -31,6 +35,7 @@ module BusScheme
             list << element
           end
         end
+        raise ParseError unless element == :')'
       end
     end
 
@@ -71,7 +76,7 @@ module BusScheme
               when /\A("(.*?)")/ # string
                 Regexp.last_match[2]
               when /\A(#{IDENTIFIER_BEGIN}+#{IDENTIFIER_CHARS}*)/ # symbol
-                Regexp.last_match[1].intern
+                Regexp.last_match[1].intern.affect{ |sym| sym.defined_in = [BusScheme.loaded_files.last] }
               end
 
       # Remove the matched part from the string

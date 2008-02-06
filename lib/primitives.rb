@@ -39,11 +39,15 @@ module BusScheme
     :set! => lambda { |sym, value| raise EvalError.new unless Lambda.scope.has_key?(sym) and 
       Lambda.scope[sym] = eval_form(value); sym },
     :lambda => lambda { |args, *form| Lambda.new(args, form) },
-    :define => lambda { |sym, definition| Lambda.scope[sym] = eval_form(definition); sym },
+    :define => lambda do |sym, definition|
+      Lambda.scope[sym] = eval_form(definition)
+      Lambda.scope[sym].defined_in = sym.defined_in if Lambda[sym].respond_to?(:defined_in)
+      sym
+    end,
 
     # once we have macros, this can be defined in scheme
     :and => lambda { |*args| args.all? { |x| eval_form(x) } },
     :or => lambda { |*args| args.any? { |x| eval_form(x) } },
-    :let => lambda { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval_form d.last }) }
+    :let => lambda { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval_form d.last }) },
   }
 end

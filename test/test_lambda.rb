@@ -56,19 +56,31 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_evals_to 2, "((lambda (x) (begin ((lambda () (set! x 2))) x)) 1)"
   end
 
- def test_implicit_begin
-   assert_evals_to 3, "((lambda () (intern \"hi\") (+ 2 2) (* 1 3)))"
- end
+  def test_implicit_begin
+    assert_evals_to 3, "((lambda () (intern \"hi\") (+ 2 2) (* 1 3)))"
+  end
 
- def test_shadowed_vars_dont_stay_in_scope
-   assert_evals_to Cons.new(:a, :b), "(let ((f (let ((x (quote a)))
+  def test_shadowed_vars_dont_stay_in_scope
+    assert_evals_to Cons.new(:a, :b), "(let ((f (let ((x (quote a)))
           (lambda (y) (cons x y)))))
  (let ((x (quote not-a)))
   (f (quote b))))"
- end
+  end
 
- def test_lambda_rest_args
-   eval "(define rest (lambda args args))"
-   assert_evals_to [:a, :b, :c].to_list, "(rest 'a 'b 'c)"
- end
+  def test_lambda_rest_args
+    eval "(define rest (lambda args args))"
+    assert_evals_to [:a, :b, :c].to_list, "(rest 'a 'b 'c)"
+  end
+
+  def test_lambdas_know_what_file_they_were_defined_in
+    filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
+    eval "(load \"#{filename}\")"
+    assert_equal filename, Lambda.scope[:fib].defined_in.first
+  end
+
+#   def test_lambdas_know_what_line_they_were_defined_in
+#     filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
+#     eval "(load \"#{filename}\")"
+#     assert_equal 1, Lambda.scope[:fib].defined_in.last
+#   end
 end

@@ -41,7 +41,6 @@ Bus Scheme is currently missing pieces of functionality:
 * means includes failing test, - means untested
 
 === Bugs
- * enforce paren closing
  * reject bad identifiers
  - REPL should accept multiline strings
 
@@ -51,6 +50,7 @@ Bus Scheme is currently missing pieces of functionality:
 
 === General
  - stack traces on error plz
+ - macros
  -- some kind of load path?
 
 === Web
