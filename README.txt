@@ -42,7 +42,6 @@ Bus Scheme is currently missing pieces of functionality:
 
 === Bugs
  * enforce paren closing
- * and/or should short-circuit-eval args (special forms)
  * reject bad identifiers
  - REPL should accept multiline strings
 
@@ -51,7 +50,6 @@ Bus Scheme is currently missing pieces of functionality:
  ** parse dotted cons cells
 
 === General
- * (lambda args body) for rest args
  - stack traces on error plz
  -- some kind of load path?
 

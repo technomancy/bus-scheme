@@ -122,8 +122,25 @@ class PrimitivesTest < Test::Unit::TestCase
     assert_raises(AssertionFailed) { eval "(assert (= 3 9))"}
   end
 
-  AS_SMALL_AS_POSSIBLE = 17
+  AS_SMALL_AS_POSSIBLE = 19
   def test_as_few_primitives_as_possible
     assert BusScheme::PRIMITIVES.size <= AS_SMALL_AS_POSSIBLE # =)
+  end
+
+  def test_boolean_logic
+    assert_evals_to true, "(and #t #t)"
+    assert_evals_to false, "(and #t #f)"
+    assert_evals_to false, "(and #f #t)"
+    assert_evals_to false, "(and #f #f)"
+
+    assert_evals_to true, "(or #t #t)"
+    assert_evals_to true, "(or #t #f)"
+    assert_evals_to true, "(or #f #t)"
+    assert_evals_to false, "(or #f #f)"
+  end
+
+  def test_boolean_short_circuit
+    assert_evals_to false, "(and #f (assert #f))"
+    assert_evals_to true, "(or #t (assert #f))"
   end
 end

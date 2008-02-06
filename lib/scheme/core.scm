@@ -16,12 +16,6 @@
 (define =
   (lambda (x y) (send x (intern "==") y)))
 
-(define and
-  (lambda (x y) (if x (if y y #f) #f)))
-
-(define or
-  (lambda (x y) (if x x (if y y #f))))
-
 (define not
   (lambda (expr) (if expr #f #t)))
 

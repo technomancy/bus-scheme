@@ -42,6 +42,8 @@ module BusScheme
     :define => lambda { |sym, definition| Lambda.scope[sym] = eval_form(definition); sym },
 
     # once we have macros, this can be defined in scheme
+    :and => lambda { |*args| args.all? { |x| eval_form(x) } },
+    :or => lambda { |*args| args.any? { |x| eval_form(x) } },
     :let => lambda { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval_form d.last }) }
   }
 end
