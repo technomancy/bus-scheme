@@ -74,7 +74,7 @@ module BusScheme
               when /\A("(.*?)")/ # string
                 Regexp.last_match[2]
               when /\A(#{IDENTIFIER_BEGIN}+#{IDENTIFIER_CHARS}*)/ # symbol
-                puts "#{Regexp.last_match[1]} - #{@@lines}"
+                # puts "#{Regexp.last_match[1]} - #{@@lines}"
                 # bugger--this is *not* going to work. every reference to the symbol
                 # resets the defined_in properties. ick! i don't want a ParseNode class!
                 Regexp.last_match[1].intern.affect{ |sym| sym.defined_in = [BusScheme.loaded_files.last, @@lines] }
