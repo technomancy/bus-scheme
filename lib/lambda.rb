@@ -34,7 +34,7 @@ module BusScheme
     @@stack = []
 
     attr_reader :scope
-    attr_accessor :defined_in
+    attr_accessor :file, :line
     
     # create new Lambda object
     def initialize(formals, body)
@@ -61,14 +61,15 @@ module BusScheme
     end
 
     # shorthand for lookup in the currently relevant scope
-    def self.[](sym)
-      self.scope[sym]
+    def self.[](symbol)
+      self.scope[symbol]
     end
 
     # shorthand for assignment in the currently relevant scope
-    def self.[]=(sym, val)
-      val.defined_in = sym.defined_in if val.respond_to?(:defined_in)
-      self.scope[sym] = val
+    def self.[]=(symbol, val)
+      val.file = symbol.file if val.respond_to?(:file)
+      val.line = symbol.line if val.respond_to?(:line)
+      self.scope[symbol] = val
     end
   end
 end

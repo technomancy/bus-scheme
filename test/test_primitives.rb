@@ -143,4 +143,10 @@ class PrimitivesTest < Test::Unit::TestCase
     assert_evals_to false, "(and #f (assert #f))"
     assert_evals_to true, "(or #t (assert #f))"
   end
+
+  def test_array_modulo
+    assert_equal [[1, 2], [3, 4], [5]], (1 .. 5).to_a % 2
+    assert_equal [[1, 2], [3, 4], [5, 6]], (1 .. 6).to_a % 2
+    assert_equal [[1, 2, 3], [4, 5, 6]], (1 .. 6).to_a % 3
+  end
 end

@@ -38,6 +38,11 @@ module BusScheme
         str + ' . ' + @cdr.inspect + close
       end
     end
+
+    # allows for (mylist 4) => (nth mylist 4)
+    def call(nth)
+      nth == 0 ? @car : @cdr.call(nth - 1)
+    end
   end
 
   def cons(car, cdr = nil)

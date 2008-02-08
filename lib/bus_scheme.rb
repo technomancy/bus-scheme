@@ -9,6 +9,7 @@ end
 $LOAD_PATH << File.dirname(__FILE__)
 require 'object_extensions'
 require 'array_extensions'
+require 'hash_extensions'
 require 'parser'
 require 'eval'
 require 'primitives'
@@ -22,8 +23,9 @@ module BusScheme
   PROMPT = '> '
 
   # symbol special form predicate
-  def self.special_form?(symbol)
-    SPECIAL_FORMS.has_key?(symbol)
+  def self.special_form?(form)
+    form.is_a? Symbol and
+      SPECIAL_FORMS.has_key?(form)
   end
   
   # Read-Eval-Print-Loop

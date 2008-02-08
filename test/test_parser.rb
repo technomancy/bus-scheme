@@ -152,6 +152,11 @@ class BusSchemeParserTest < Test::Unit::TestCase
                        [:load, :'system-specific-config']]])
    end
 
+  def test_parser_saves_file_info
+    tree = BusScheme.parse("(define foo 23)")
+    assert_equal "(eval)", tree.cdr.car.file
+  end
+  
 #   def test_accepts_multiline_strings_in_repl
 #     # oh crap
 #   end

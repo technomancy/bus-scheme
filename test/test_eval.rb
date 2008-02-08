@@ -64,4 +64,16 @@ class BusSchemeEvalTest < Test::Unit::TestCase
 (define greeting \"hi\")"
     assert Lambda[:greeting]
   end
+
+  def test_funcall_list_means_nth
+    assert_evals_to 3, "((list 1 2 3) 2)"
+  end
+
+  def test_funcall_vector_means_nth
+    assert_evals_to 3, "((vector 1 2 3) 2)"
+  end
+
+  def test_funcall_hash_means_lookup
+    assert_evals_to 3, "((hash (1 1) (2 2) (3 3)) 3)"
+  end
 end

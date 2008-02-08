@@ -45,5 +45,6 @@ module BusScheme
     :and => lambda { |*args| args.all? { |x| eval(x) } },
     :or => lambda { |*args| args.any? { |x| eval(x) } },
     :let => lambda { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval d.last }) },
+    :hash => lambda { |*args| args.to_hash }, # accepts an alist
   }
 end
