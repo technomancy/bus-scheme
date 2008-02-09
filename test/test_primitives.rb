@@ -42,16 +42,18 @@ class PrimitivesTest < Test::Unit::TestCase
 
   # special forms
   def test_define
-    clear_symbols :foo
+    clear_symbols :foo.node
     eval("(define foo 5)")
-    assert_equal 5, BusScheme::Lambda.scope[:foo]
+    assert_equal 5, BusScheme::Lambda.scope[:foo.node]
     eval("(define foo (quote (5 5 5)))")
-    assert_evals_to [5, 5, 5].to_list, :foo
+    assert_evals_to [5, 5, 5].to_list, :foo.node
   end
 
   def test_define_returns_defined_term
-    assert_evals_to :foo, "(define foo 2)"
-    assert_equal 2, eval("foo")
+    assert_evals_to :foo.node, "(define foo 2)"
+    assert SYMBOL_TABLE.has_key?(:foo.node)
+    assert Lambda.scope.has_key?(:foo.node)
+    assert_evals_to 2, "foo"
   end
 
   def test_eval_quote

@@ -10,7 +10,7 @@ module BusScheme
       # puts "evaling #{form.inspect}"
       if (form.is_a?(Cons) or form.is_a?(Array)) and form.first
         apply(form.first, form.rest)
-      elsif form.is_a? Symbol
+      elsif form.is_a? Symbol or form.is_a? Node
         raise EvalError.new("Undefined symbol: #{form}") unless Lambda.scope.has_key?(form)
         Lambda[form]
       else # well it must be a literal then

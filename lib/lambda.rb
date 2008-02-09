@@ -62,14 +62,17 @@ module BusScheme
 
     # shorthand for lookup in the currently relevant scope
     def self.[](symbol)
-      self.scope[symbol]
+      return self.scope[symbol] if self.scope.has_key?(symbol)
+      return self.scope[symbol.to_sym] if self.scope.has_key?(symbol.to_sym)
+      return self.scope[symbol.node] if self.scope.has_key?(symbol.node)
     end
 
     # shorthand for assignment in the currently relevant scope
     def self.[]=(symbol, val)
+      puts "#{symbol.inspect} = #{val.inspect}"
       val.file = symbol.file if val.respond_to?(:file)
       val.line = symbol.line if val.respond_to?(:line)
-      self.scope[symbol] = val
+      self.scope[symbol.node] = val
     end
   end
 end

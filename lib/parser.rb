@@ -77,7 +77,7 @@ module BusScheme
                 # puts "#{Regexp.last_match[1]} - #{@@lines}"
                 # bugger--this is *not* going to work. every reference to the symbol
                 # resets the defined_in properties. ick! i don't want a ParseNode class!
-                Regexp.last_match[1].intern.affect{ |sym| sym.file, sym.line = [BusScheme.loaded_files.last, @@lines] }
+                Regexp.last_match[1].node.affect{ |sym| sym.file, sym.line = [BusScheme.loaded_files.last, @@lines] }
               end
 
       # Remove the matched part from the string

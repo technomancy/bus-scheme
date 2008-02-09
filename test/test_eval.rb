@@ -39,13 +39,13 @@ class BusSchemeEvalTest < Test::Unit::TestCase
 
   def test_variable_substitution
     eval "(define foo 7)"
-    assert_evals_to 7, :foo
-    assert_evals_to 21, [:*, 3, :foo]
+    assert_evals_to 7, :foo.node
+    assert_evals_to 21, [:*, 3, :foo.node]
   end
 
   def test_single_quote
-    assert_evals_to :foo, "'foo"
-    assert_evals_to [:foo, :biz, :bbb].to_list, "'(foo biz bbb)"
+    assert_evals_to :foo.node, "'foo"
+    assert_evals_to [:foo.node, :biz.node, :bbb.node].to_list, "'(foo biz bbb)"
   end
 
   def test_array_of_args_or_list_of_args

@@ -53,4 +53,12 @@ class Node < String
   def eql?(other)
     self.intern.eql?(other)
   end
+  
+  def inspect
+    ";#{self}"
+  end
+
+  def to_s
+    self.intern.to_s
+  end
 end

@@ -36,7 +36,7 @@ module BusScheme
     :quote => lambda { |arg| arg.sexp },
     :if => lambda { |q, yes, *no| eval(q) ? eval(yes) : eval([:begin] + no) },
     :begin => lambda { |*args| args.map{ |arg| eval(arg) }.last },
-    :set! => lambda { |sym, value| raise EvalError.new unless Lambda.scope.has_key?(sym) and 
+    :set! => lambda { |sym, value| raise EvalError.new unless Lambda.scope.has_key?(sym) or Lambda.scope.has_key?(sym.intern) and 
       Lambda[sym] = eval(value); sym },
     :lambda => lambda { |args, *form| Lambda.new(args, form) },
     :define => lambda { |sym, definition| Lambda[sym] = eval(definition); sym },

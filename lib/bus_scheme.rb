@@ -24,7 +24,7 @@ module BusScheme
 
   # symbol special form predicate
   def self.special_form?(form)
-    form.is_a? Symbol and
+    form.is_a? Symbol or form.is_a? Node and
       SPECIAL_FORMS.has_key?(form)
   end
   
