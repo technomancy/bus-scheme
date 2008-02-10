@@ -12,14 +12,14 @@ class Object
 end
 
 class String
-  def node
-    Node.new(self)
+  def sym
+    Sym.new(self)
   end
 end
 
 class Symbol
-  def node
-    Node.new(self.to_s)
+  def sym
+    Sym.new(self.to_s)
   end
 
   def file
@@ -47,12 +47,12 @@ class Proc
   end
 end
 
-class Node < String
+class Sym < String
   attr_accessor :file, :line
   
-  def eql?(other)
-    self.intern.eql?(other)
-  end
+#   def eql?(other)
+#     self.intern.eql?(other)
+#   end
   
   def inspect
     ";#{self}"

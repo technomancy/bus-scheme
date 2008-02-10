@@ -1,4 +1,4 @@
-(define intern
+(define string->symbol
   (lambda (sym) (send sym 'intern)))
 
 (define substring

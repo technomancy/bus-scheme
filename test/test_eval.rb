@@ -17,8 +17,8 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
   
   def test_eval_symbol
-    Lambda.scope[:hi] = 13
-    assert_evals_to 13, :hi
+    Lambda.scope[:hi.sym] = 13
+    assert_evals_to 13, :hi.sym
   end
 
   def test_eval_string
@@ -39,18 +39,19 @@ class BusSchemeEvalTest < Test::Unit::TestCase
 
   def test_variable_substitution
     eval "(define foo 7)"
-    assert_evals_to 7, :foo.node
-    assert_evals_to 21, [:*, 3, :foo.node]
+    assert_evals_to 7, :foo.sym
+    assert_evals_to 21, [:*.sym, 3, :foo.sym]
   end
 
   def test_single_quote
-    assert_evals_to :foo.node, "'foo"
-    assert_evals_to [:foo.node, :biz.node, :bbb.node].to_list, "'(foo biz bbb)"
+    assert BusScheme.special_form?(:quote.sym)
+    assert_evals_to :foo.sym, "'foo"
+    assert_evals_to [:foo.sym, :biz.sym, :bbb.sym].to_list, "'(foo biz bbb)"
   end
 
   def test_array_of_args_or_list_of_args
-    assert_evals_to 5, cons(:+, cons(2, cons(3)))
-    assert_evals_to 5, cons(:+, cons(2, cons(3)).to_a)
+    assert_evals_to 5, cons(:+.sym, cons(2, cons(3)))
+    assert_evals_to 5, cons(:+.sym, cons(2, cons(3)).to_a)
   end
 
   def test_eval_multiple_forms
@@ -62,7 +63,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   def test_define_after_load
     BusScheme.eval_string "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")
 (define greeting \"hi\")"
-    assert Lambda[:greeting]
+    assert Lambda.in_scope?(:greeting.sym)
   end
 
   def test_funcall_list_means_nth

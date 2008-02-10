@@ -24,8 +24,9 @@ module BusScheme
 
   # symbol special form predicate
   def self.special_form?(form)
-    form.is_a? Symbol or form.is_a? Node and
-      SPECIAL_FORMS.has_key?(form)
+    form.is_a?(Sym) and
+      # TODO: hacky; has_key? has different equality semantics from ==
+      SPECIAL_FORMS.keys.any?{ |k| k == form }
   end
   
   # Read-Eval-Print-Loop

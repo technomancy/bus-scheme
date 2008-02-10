@@ -37,6 +37,7 @@ class PrimitivesTest < Test::Unit::TestCase
 
   def test_load_file
     eval "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")"
+    assert Lambda.scope.has_key?(:fib.node)
     assert_evals_to 5, "(fib 5)"
   end
 

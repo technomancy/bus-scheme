@@ -9,42 +9,42 @@ module BusScheme
     # right now I believe there are as few things implemented primitively as possible
     # except for functions that require splat args. do we need something like &rest?
     
-    '#t'.intern => true, # :'#t' screws up emacs' ruby parser
-    '#f'.intern => false,
+    '#t'.sym => true, # :'#t' screws up emacs' ruby parser
+    '#f'.sym => false,
 
-    :+ => lambda { |*args| args.inject { |sum, i| sum + i } },
-    :- => lambda { |x, y| x - y },
-    :* => lambda { |*args| args.inject { |product, i| product * i } },
-    '/'.intern => lambda { |x, y| x / y },
+    :+.sym => lambda { |*args| args.inject { |sum, i| sum + i } },
+    :-.sym => lambda { |x, y| x - y },
+    :*.sym => lambda { |*args| args.inject { |product, i| product * i } },
+    '/'.sym => lambda { |x, y| x / y },
 
-    :concat => lambda { |*args| args.join('') },
-    :cons => lambda { |car, cdr| Cons.new(car, cdr) },
-    :list => lambda { |*members| members.to_list },
-    :vector => lambda { |*members| members },
+    :concat.sym => lambda { |*args| args.join('') },
+    :cons.sym => lambda { |car, cdr| Cons.new(car, cdr) },
+    :list.sym => lambda { |*members| members.to_list },
+    :vector.sym => lambda { |*members| members },
     
-    :ruby => lambda { |*code| Kernel.eval code.join('') },
-    :eval => lambda { |code| eval(code) },
-    :send => lambda { |obj, *message| obj.send(*message) },
-    :assert => lambda { |cond| raise AssertionFailed unless cond },
-    :load => lambda { |filename| BusScheme.load filename },
-    :exit => lambda { exit }, :quit => lambda { exit },
+    :ruby.sym => lambda { |*code| Kernel.eval code.join('') },
+    :eval.sym => lambda { |code| eval(code) },
+    :send.sym => lambda { |obj, *message| obj.send(*message) },
+    :assert.sym => lambda { |cond| raise AssertionFailed unless cond },
+    :load.sym => lambda { |filename| BusScheme.load filename },
+    :exit.sym => lambda { exit }, :quit.sym => lambda { exit },
   }
 
   # if we add in macros, can some of these be defined in scheme?
   SPECIAL_FORMS = {
     # TODO: hacky to coerce everything to sexps... won't work once we start using vectors
-    :quote => lambda { |arg| arg.sexp },
-    :if => lambda { |q, yes, *no| eval(q) ? eval(yes) : eval([:begin] + no) },
-    :begin => lambda { |*args| args.map{ |arg| eval(arg) }.last },
-    :set! => lambda { |sym, value| raise EvalError.new unless Lambda.scope.has_key?(sym) or Lambda.scope.has_key?(sym.intern) and 
+    :quote.sym => lambda { |arg| arg.sexp },
+    :if.sym => lambda { |q, yes, *no| eval(q) ? eval(yes) : eval([:begin] + no) },
+    :begin.sym => lambda { |*args| args.map{ |arg| eval(arg) }.last },
+    :set!.sym => lambda { |sym, value| raise EvalError.new unless Lambda.in_scope?(sym)
       Lambda[sym] = eval(value); sym },
-    :lambda => lambda { |args, *form| Lambda.new(args, form) },
-    :define => lambda { |sym, definition| Lambda[sym] = eval(definition); sym },
+    :lambda.sym => lambda { |args, *form| Lambda.new(args, form) },
+    :define.sym => lambda { |sym, definition| Lambda[sym] = eval(definition); sym },
 
     # once we have macros, this can be defined in scheme
-    :and => lambda { |*args| args.all? { |x| eval(x) } },
-    :or => lambda { |*args| args.any? { |x| eval(x) } },
-    :let => lambda { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval d.last }) },
-    :hash => lambda { |*args| args.to_hash }, # accepts an alist
+    :and.sym => lambda { |*args| args.all? { |x| eval(x) } },
+    :or.sym => lambda { |*args| args.any? { |x| eval(x) } },
+    :let.sym => lambda { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval d.last }) },
+    :hash.sym => lambda { |*args| args.to_hash }, # accepts an alist
   }
 end

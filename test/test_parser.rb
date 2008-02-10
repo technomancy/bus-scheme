@@ -6,7 +6,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
     string = "(+ 2 2)"
     assert_equal :'(', BusScheme.pop_token(string)
 
-    assert_equal :'+'.node, BusScheme.pop_token(string)
+    assert_equal :'+'.sym, BusScheme.pop_token(string)
     assert_equal 2, BusScheme.pop_token(string)
     assert_equal 2, BusScheme.pop_token(string)
     assert_equal :")", BusScheme.pop_token(string)
@@ -17,9 +17,9 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_tokenize
-    assert_equal [:'(', :'+'.node, 2, 2, :')'], BusScheme.tokenize("(+ 2 2)")
-    assert_equal [:'(', :'+'.node, 2, :'(', :'+'.node, 22, 2, :')', :')'], BusScheme.tokenize("(+ 2 (+ 22 2))")
-    assert_equal [:'(', :plus.node, 2, 2, :')'], BusScheme.tokenize('(plus 2 2)')
+    assert_equal [:'(', :'+'.sym, 2, 2, :')'], BusScheme.tokenize("(+ 2 2)")
+    assert_equal [:'(', :'+'.sym, 2, :'(', :'+'.sym, 22, 2, :')', :')'], BusScheme.tokenize("(+ 2 (+ 22 2))")
+    assert_equal [:'(', :plus.sym, 2, 2, :')'], BusScheme.tokenize('(plus 2 2)')
   end
 
   def test_parse_numbers
@@ -31,7 +31,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_parses_two_strings
-    assert_parses_to "(concat \"hello\" \"world\")", [:concat.node, "hello", "world"]
+    assert_parses_to "(concat \"hello\" \"world\")", [:concat.sym, "hello", "world"]
   end
 
   def test_parse_list_of_numbers
@@ -39,27 +39,27 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_parse_list_of_atoms
-    assert_parses_to "(+ 2 2)", [:+.node, 2, 2]
+    assert_parses_to "(+ 2 2)", [:+.sym, 2, 2]
   end
 
   def test_parse_list_of_atoms_with_string
-    assert_parses_to "(+ 2 \"two\")", [:+.node, 2, "two"]
+    assert_parses_to "(+ 2 \"two\")", [:+.sym, 2, "two"]
   end
 
   def test_parse_list_of_nested_sexprs
-    assert_parses_to "(+ 2 (+ 2))", [:+.node, 2, [:+.node, 2]]
+    assert_parses_to "(+ 2 (+ 2))", [:+.sym, 2, [:+.sym, 2]]
   end
 
   def test_parse_list_of_deeply_nested_sexprs
-    assert_parses_to "(+ 2 (+ 2 (+ 2 2)))", [:+.node, 2, [:+.node, 2, [:+.node, 2, 2]]]
+    assert_parses_to "(+ 2 (+ 2 (+ 2 2)))", [:+.sym, 2, [:+.sym, 2, [:+.sym, 2, 2]]]
   end
 
   def test_parse_two_consecutive_parens_simple
-    assert_parses_to "(let ((foo 2)))", [:let.node, [[:foo.node, 2]]]
+    assert_parses_to "(let ((foo 2)))", [:let.sym, [[:foo.sym, 2]]]
   end
 
   def test_parse_two_consecutive_parens
-    assert_parses_to "(let ((foo 2)) (+ foo 2))", [:let.node, [[:foo.node, 2]], [:+.node, :foo.node, 2]]
+    assert_parses_to "(let ((foo 2)) (+ foo 2))", [:let.sym, [[:foo.sym, 2]], [:+.sym, :foo.sym, 2]]
   end
 
   def test_whitespace_indifferent
@@ -70,9 +70,9 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_parses_vectors
-    assert_equal [:'(', :vector, 1, 2, :')'], BusScheme::tokenize("#(1 2)").flatten
-    assert_parses_to  "#(1 2)", [:vector, 1, 2]
-    assert_parses_to "#(1 (2 3 4))", [:vector, 1, [2, 3, 4]]
+    assert_equal [:'(', :vector.sym, 1, 2, :')'], BusScheme::tokenize("#(1 2)").flatten
+    assert_parses_to  "#(1 2)", [:vector.sym, 1, 2]
+    assert_parses_to "#(1 (2 3 4))", [:vector.sym, 1, [2, 3, 4]]
   end
   
 #   def test_parses_dotted_cons
@@ -105,10 +105,10 @@ class BusSchemeParserTest < Test::Unit::TestCase
 #   end
   
   def test_quote
-    assert_parses_to "'foo", [:quote, :foo.node]
-    assert_equal [:'(', :quote, :'(', :foo.node, :bar.node, :baz.node, :')', :')'], BusScheme::tokenize("'(foo bar baz)").flatten
-    assert_parses_to "'(foo bar baz)", [:quote, [:foo.node, :bar.node, :baz.node]]
-    assert_parses_to "'(+ 20 3)", [:quote, [:+.node, 20, 3]]
+    assert_parses_to "'foo", [:quote.sym, :foo.sym]
+    assert_equal [:'(', :quote.sym, :'(', :foo.sym, :bar.sym, :baz.sym, :')', :')'], BusScheme::tokenize("'(foo bar baz)").flatten
+    assert_parses_to "'(foo bar baz)", [:quote.sym, [:foo.sym, :bar.sym, :baz.sym]]
+    assert_parses_to "'(+ 20 3)", [:quote.sym, [:+.sym, 20, 3]]
   end
 
   #  have to change normalize_whitespace to not turn newlines into spaces for this to work
@@ -116,7 +116,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to ";; hello", nil
     assert_parses_to "12 ;; comment", 12
     assert_parses_to "(+ 2;; this is a mid-sexp comment
-2)", [:+.node, 2, 2]
+2)", [:+.sym, 2, 2]
   end
 
   def test_requires_closed_lists
@@ -145,11 +145,11 @@ class BusSchemeParserTest < Test::Unit::TestCase
     (if (file-exists-p system-specific-config)
         (load system-specific-config)))"
     assert_parses_to(lisp,
-                     [:let.node, [[:'system-specific-config'.node,
-                              [:concat.node, "~/.emacs.d/",
-                               [:'shell-command-to-string'.node, "hostname"]]]],
-                      [:if.node, [:'file-exists-p'.node, :'system-specific-config'.node],
-                       [:load.node, :'system-specific-config'.node]]])
+                     [:let.sym, [[:'system-specific-config'.sym,
+                              [:concat.sym, "~/.emacs.d/",
+                               [:'shell-command-to-string'.sym, "hostname"]]]],
+                      [:if.sym, [:'file-exists-p'.sym, :'system-specific-config'.sym],
+                       [:load.sym, :'system-specific-config'.sym]]])
    end
 
   def test_parser_saves_file_info
