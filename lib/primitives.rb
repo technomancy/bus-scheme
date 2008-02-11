@@ -1,49 +1,56 @@
 module BusScheme
+  SYMBOL_TABLE = {}
+
   class BusSchemeError < StandardError; end
   class ParseError < BusSchemeError; end
   class EvalError < BusSchemeError; end
   class ArgumentError < BusSchemeError; end
   class AssertionFailed < BusSchemeError; end
+
+  def self.define(identifier, value)
+    SYMBOL_TABLE[identifier.sym] = value
+  end
+
+  def self.special_form(identifier, value)
+    SYMBOL_TABLE[identifier.sym] = value
+    SYMBOL_TABLE[identifier.sym].special_form = true
+  end
+
+  define '#t', true
+  define '#f', false
+
+  define '+', lambda { |*args| args.inject { |sum, i| sum + i } }
+  define '-', lambda { |x, y| x - y }
+  define '*', lambda { |*args| args.inject { |product, i| product * i } }
+  define '/', lambda { |x, y| x / y }
+
+  define 'concat', lambda { |*args| args.join('') }
+  define 'cons', lambda { |car, cdr| Cons.new(car, cdr) }
+  define 'list', lambda { |*members| members.to_list }
+  define 'vector', lambda { |*members| members.to_a }
+  define 'map', lambda { |fn, list| list.map(lambda { |n| fn.call(n) }).sexp }
   
-  PRIMITIVES = {
-    # right now I believe there are as few things implemented primitively as possible
-    # except for functions that require splat args. do we need something like &rest?
-    
-    '#t'.intern => true, # :'#t' screws up emacs' ruby parser
-    '#f'.intern => false,
+  define 'eval', lambda { |code| eval(code) }
 
-    :+ => lambda { |*args| args.inject { |sum, i| sum + i } },
-    :- => lambda { |x, y| x - y },
-    :* => lambda { |*args| args.inject { |product, i| product * i } },
-    '/'.intern => lambda { |x, y| x / y },
+  define 'ruby', lambda { |*code| Kernel.eval code.join('') }
+  define 'send', lambda { |obj, *message| obj.send(*message) }
 
-    :concat => lambda { |*args| args.join('') },
-    :cons => lambda { |car, cdr| Cons.new(car, cdr) },
-    :list => lambda { |*members| members.to_list },
-    :vector => lambda { |*members| members },
-    
-    :ruby => lambda { |*code| Kernel.eval code.join('') },
-    :eval => lambda { |code| eval(code) },
-    :send => lambda { |obj, *message| obj.send(*message) },
-    :assert => lambda { |cond| raise AssertionFailed unless cond },
-    :load => lambda { |filename| BusScheme.load filename },
-    :exit => lambda { exit }, :quit => lambda { exit },
-  }
+  define 'load', lambda { |filename| BusScheme.load filename }
+  define 'exit', lambda { exit }
+  define 'quit', lambda { exit }
 
-  # if we add in macros, can some of these be defined in scheme?
-  SPECIAL_FORMS = {
-    # TODO: hacky to coerce everything to sexps... won't work once we start using vectors
-    :quote => lambda { |arg| arg.sexp },
-    :if => lambda { |q, yes, *no| eval(q) ? eval(yes) : eval([:begin] + no) },
-    :begin => lambda { |*args| args.map{ |arg| eval(arg) }.last },
-    :set! => lambda { |sym, value| raise EvalError.new unless Lambda.scope.has_key?(sym) and 
-      Lambda[sym] = eval(value); sym },
-    :lambda => lambda { |args, *form| Lambda.new(args, form) },
-    :define => lambda { |sym, definition| Lambda[sym] = eval(definition); sym },
+  # TODO: hacky to coerce everything to sexps... won't work once we start using vectors
+  special_form 'quote', lambda { |arg| arg.sexp }
+  special_form 'if', lambda { |q, yes, *no| eval(q) ? eval(yes) : eval([:begin] + no) }
+  special_form 'begin', lambda { |*args| args.map{ |arg| eval(arg) }.last }
+  special_form 'lambda', lambda { |args, *form| Lambda.new(args, form) }
+  special_form 'define', lambda { |sym, definition| Lambda[sym] = eval(definition); sym }
+  special_form 'set!', lambda { |sym, value| raise EvalError.new unless Lambda.in_scope?(sym)
+      Lambda[sym] = eval(value); sym }
 
-    # once we have macros, this can be defined in scheme
-    :and => lambda { |*args| args.all? { |x| eval(x) } },
-    :or => lambda { |*args| args.any? { |x| eval(x) } },
-    :let => lambda { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval d.last }) },
-  }
+  # TODO: once we have macros, this can be defined in scheme
+  special_form 'and', lambda { |*args| args.all? { |x| eval(x) } }
+  special_form 'or', lambda { |*args| args.any? { |x| eval(x) } }
+  special_form 'let', lambda { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval d.last }) }
+  special_form 'hash', lambda { |*args| args.to_hash } # accepts an alist
 end

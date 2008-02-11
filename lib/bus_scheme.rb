@@ -9,6 +9,7 @@ end
 $LOAD_PATH << File.dirname(__FILE__)
 require 'object_extensions'
 require 'array_extensions'
+require 'hash_extensions'
 require 'parser'
 require 'eval'
 require 'primitives'
@@ -18,14 +19,8 @@ require 'lambda'
 module BusScheme
   VERSION = "0.7.5"
 
-  SYMBOL_TABLE = {}.merge(PRIMITIVES).merge(SPECIAL_FORMS)
   PROMPT = '> '
 
-  # symbol special form predicate
-  def self.special_form?(symbol)
-    SPECIAL_FORMS.has_key?(symbol)
-  end
-  
   # Read-Eval-Print-Loop
   def self.repl
     loop do
@@ -53,6 +48,7 @@ module BusScheme
   def self.loaded_files
     (@loaded_files ||= ["(eval)"])
   end
-  
-  ['core'].each { |file| load("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }
+
+  raise 'not special!' unless Lambda['define'.sym].special_form?
+  ['core', 'test'].each { |file| load("#{File.dirname(__FILE__)}/scheme/#{file}.scm") }
 end

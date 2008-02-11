@@ -14,18 +14,18 @@ class CoreTest < Test::Unit::TestCase
   end
 
   def test_string_functions
-    assert_evals_to :hi, [:intern, 'hi']
-    assert_evals_to 'lo', [:substring, 'hello', 3, 5]
+    assert_evals_to :hi, ['string->symbol'.sym, 'hi']
+    assert_evals_to 'lo', [:substring.sym, 'hello', 3, 5]
   end
 
   def test_list_functions
-    assert_evals_to :foo, "(car (cons (quote foo) (quote bar)))"
-    assert_evals_to :bar, "(cdr (cons (quote foo) (quote bar)))"
-    assert_equal(Cons.new(:foo, Cons.new(:bar, nil)),
-                 [:foo, :bar].to_list)
+    assert_evals_to :foo.sym, "(car (cons (quote foo) (quote bar)))"
+    assert_evals_to :bar.sym, "(cdr (cons (quote foo) (quote bar)))"
+    assert_equal(Cons.new(:foo.sym, Cons.new(:bar.sym, nil)),
+                 [:foo.sym, :bar.sym].to_list)
     assert_evals_to(Cons.new(2, Cons.new(3, nil)),
                     "(list 2 3)")
     assert_evals_to "bar", "(cadr (list \"foo\" \"bar\"))"
-    assert_evals_to [1, :foo].to_list, "(list 1 'foo)"
+    assert_evals_to [1, :foo.sym].to_list, "(list 1 'foo)"
   end
 end

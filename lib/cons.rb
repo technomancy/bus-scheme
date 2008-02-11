@@ -15,7 +15,7 @@ module BusScheme
     alias_method :rest, :cdr
 
     def map(mapper)
-      cons(mapper.call(@car), @cdr ? @cdr.map(mapper) : @cdr)
+      Cons.new(mapper.call(@car), @cdr ? @cdr.map(mapper) : @cdr)
     end
     
     def to_a
@@ -37,6 +37,11 @@ module BusScheme
       else
         str + ' . ' + @cdr.inspect + close
       end
+    end
+
+    # allows for (mylist 4) => (nth mylist 4)
+    def call(nth)
+      nth == 0 ? @car : @cdr.call(nth - 1)
     end
   end
 

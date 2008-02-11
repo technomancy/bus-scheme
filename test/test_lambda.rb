@@ -9,12 +9,12 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_simple_lambda
     l = eval("(lambda () (+ 1 1))")
     assert l.is_a?(Lambda)
-    assert_equal [[:+, 1, 1]], l.body
+    assert_equal [[:+.sym, 1, 1]], l.body
     assert_equal [], l.formals
 
     eval("(define foo (lambda () (+ 1 1)))")
-    assert Lambda[:foo].is_a?(Lambda)
-    assert_evals_to 2, [:foo]
+    assert Lambda[:foo.sym].is_a?(Lambda)
+    assert_evals_to 2, [:foo.sym]
   end
 
   def test_lambda_with_arg
@@ -57,11 +57,11 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   end
 
   def test_implicit_begin
-    assert_evals_to 3, "((lambda () (intern \"hi\") (+ 2 2) (* 1 3)))"
+    assert_evals_to 3, "((lambda () (string->symbol \"hi\") (+ 2 2) (* 1 3)))"
   end
 
   def test_shadowed_vars_dont_stay_in_scope
-    assert_evals_to Cons.new(:a, :b), "(let ((f (let ((x (quote a)))
+    assert_evals_to Cons.new(:a.sym, :b.sym), "(let ((f (let ((x (quote a)))
           (lambda (y) (cons x y)))))
  (let ((x (quote not-a)))
   (f (quote b))))"
@@ -69,24 +69,29 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
   def test_lambda_rest_args
     eval "(define rest (lambda args args))"
-    assert_evals_to [:a, :b, :c].to_list, "(rest 'a 'b 'c)"
+    assert_evals_to [:a.sym, :b.sym, :c.sym].to_list, "(rest 'a 'b 'c)"
   end
 
-  def test_lambdas_know_what_file_they_were_defined_in
-    filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
-    eval "(load \"#{filename}\")"
-    assert_equal filename, Lambda[:fib].defined_in.first
+#   def test_lambdas_know_what_file_they_were_defined_in
+#     assert_equal "(primitive)", Lambda[:if.sym].file
+    
+#     eval "(define fab (lambda () \"warble\"))"
+#     assert_equal "(eval)", Lambda[:fab.sym].file
 
-    eval "(define fab 'warble)"
-    assert_equal "(eval)", Lambda[:fab].defined_in.first
-  end
+#     filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
+#     eval "(load \"#{filename}\")"
+#     assert_equal filename, Lambda[:fib.sym].file
+#   end
 
-  def test_lambdas_know_what_line_they_were_defined_in
-    eval "#{"\n" * 7} (define fab 'warble)"
-    assert_equal 7, Lambda[:fab].defined_in.last
+#   def test_lambdas_know_what_line_they_were_defined_in
+#     assert_equal nil, Lambda[:if].line
+    
+#     filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
+#     eval "(load \"#{filename}\")"
+#     assert Lambda.scope[:fib.sym].is_a?(Lambda)
+#     assert_equal 1, Lambda.scope[:fib.sym].line
 
-    filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
-    eval "(load \"#{filename}\")"
-    assert_equal 1, Lambda.scope[:fib].defined_in.last
-  end
+#     eval "#{"\n" * 7} (define fab 'warble)"
+#     assert_equal 7, Lambda[:fab.sym].line
+#   end
 end

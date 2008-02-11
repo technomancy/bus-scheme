@@ -10,8 +10,10 @@ module BusScheme
       # puts "evaling #{form.inspect}"
       if (form.is_a?(Cons) or form.is_a?(Array)) and form.first
         apply(form.first, form.rest)
-      elsif form.is_a? Symbol
-        raise EvalError.new("Undefined symbol: #{form}") unless Lambda.scope.has_key?(form)
+        # TODO: should we still allow symbols?
+      elsif form.is_a? Sym or form.is_a? Symbol
+        form = form.sym if form.is_a? Symbol
+        raise EvalError.new("Undefined symbol: #{form.inspect}") unless Lambda.in_scope?(form)
         Lambda[form]
       else # well it must be a literal then
         form
@@ -22,7 +24,7 @@ module BusScheme
     def apply(function, args)
       # puts "applying #{function.inspect} with #{args.inspect}"
       args = args.to_a
-      args.map!{ |arg| eval(arg) } unless special_form?(function)
+      args.map!{ |arg| eval(arg) } unless function.special_form?
       eval(function).call(*args)
     end
   end

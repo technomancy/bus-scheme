@@ -57,10 +57,10 @@ module BusScheme
                 Regexp.last_match[1].intern
               when /\A#\(/ # vector
                 input[0 ... 2] = ''
-                return [:'(', :vector, tokenize(input)]
+                return [:'(', :vector.sym, tokenize(input)]
               when /\A'/ # single-quote
                 input[0 ... 1] = ''
-                return [:'(', :quote,
+                return [:'(', :quote.sym,
                         if input[0 ... 1] == '('
                           tokenize(input)
                         else
@@ -75,9 +75,7 @@ module BusScheme
                 Regexp.last_match[2]
               when /\A(#{IDENTIFIER_BEGIN}+#{IDENTIFIER_CHARS}*)/ # symbol
                 # puts "#{Regexp.last_match[1]} - #{@@lines}"
-                # bugger--this is *not* going to work. every reference to the symbol
-                # resets the defined_in properties. ick! i don't want a ParseNode class!
-                Regexp.last_match[1].intern.affect{ |sym| sym.defined_in = [BusScheme.loaded_files.last, @@lines] }
+                Regexp.last_match[1].sym.affect{ |sym| sym.file, sym.line = [BusScheme.loaded_files.last, @@lines] }
               end
 
       # Remove the matched part from the string

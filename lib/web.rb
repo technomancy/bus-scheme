@@ -4,7 +4,7 @@ require 'mongrel'
 module BusScheme
   module HTTP
     HTTP_SERVERS = {}
-    SYMBOL_TABLE[:'http-listen'] = lambda do |*args|
+    SYMBOL_TABLE[:'http-listen'.sym] = lambda do |*args|
       handler_function = args[0]
       path = args[1] || '/'
       host = args[2] || '0.0.0.0'
