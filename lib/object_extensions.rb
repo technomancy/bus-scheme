@@ -1,3 +1,11 @@
+module Traceable
+  attr_reader :symbol, :file, :line
+
+  def defined_as(symbol, file, line)
+    @symbol, @file, @line = [symbol, file, line]
+  end
+end
+
 class Object
   # Return self after evaling block
   # see http://www.ruby-forum.com/topic/131340
@@ -8,6 +16,10 @@ class Object
 
   def sexp
     self
+  end
+
+  def special_form?
+    false
   end
 end
 
@@ -25,19 +37,17 @@ class Symbol
   def file
     "(primitive)"
   end
-
-  def line
-    nil
-  end
-  
-  def file=(*args)
-  end
-
-  def line=(*args)
-  end
 end
 
 class Proc
+  include Traceable
+  attr_accessor :'special_form'
+  
+  def special_form?
+    @special_form ||= false
+    @special_form
+  end
+
   def file
     "(primitive)"
   end
@@ -49,10 +59,11 @@ end
 
 class Sym < String
   attr_accessor :file, :line
-  
-#   def eql?(other)
-#     self.intern.eql?(other)
-#   end
+
+  # TODO: refactor
+  def special_form?
+    BusScheme::Lambda[self].special_form?
+  end
   
   def inspect
     ";#{self}"

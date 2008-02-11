@@ -31,6 +31,7 @@ module BusScheme
 
   # Lambdas are closures.
   class Lambda
+    include Traceable
     @@stack = []
 
     attr_reader :scope
@@ -72,8 +73,7 @@ module BusScheme
 
     # shorthand for assignment in the currently relevant scope
     def self.[]=(symbol, val)
-      val.file = symbol.file if val.respond_to?(:file)
-      val.line = symbol.line if val.respond_to?(:line)
+      val.defined_as symbol, val.file, val.line if val.respond_to?(:defined_as)
       self.scope[symbol] = val
     end
   end

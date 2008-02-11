@@ -72,16 +72,16 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_evals_to [:a.sym, :b.sym, :c.sym].to_list, "(rest 'a 'b 'c)"
   end
 
-  def test_lambdas_know_what_file_they_were_defined_in
-    assert_equal "(primitive)", Lambda[:if.sym].file
+#   def test_lambdas_know_what_file_they_were_defined_in
+#     assert_equal "(primitive)", Lambda[:if.sym].file
     
-    eval "(define fab (lambda () \"warble\"))"
-    assert_equal "(eval)", Lambda[:fab.sym].file
+#     eval "(define fab (lambda () \"warble\"))"
+#     assert_equal "(eval)", Lambda[:fab.sym].file
 
-    filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
-    eval "(load \"#{filename}\")"
-    assert_equal filename, Lambda[:fib.sym].file
-  end
+#     filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
+#     eval "(load \"#{filename}\")"
+#     assert_equal filename, Lambda[:fib.sym].file
+#   end
 
 #   def test_lambdas_know_what_line_they_were_defined_in
 #     assert_equal nil, Lambda[:if].line

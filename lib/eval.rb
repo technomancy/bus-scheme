@@ -24,7 +24,7 @@ module BusScheme
     def apply(function, args)
       # puts "applying #{function.inspect} with #{args.inspect}"
       args = args.to_a
-      args.map!{ |arg| eval(arg) } unless special_form?(function)
+      args.map!{ |arg| eval(arg) } unless function.special_form?
       eval(function).call(*args)
     end
   end

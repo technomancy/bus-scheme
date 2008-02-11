@@ -15,7 +15,7 @@ module BusScheme
     alias_method :rest, :cdr
 
     def map(mapper)
-      cons(mapper.call(@car), @cdr ? @cdr.map(mapper) : @cdr)
+      Cons.new(mapper.call(@car), @cdr ? @cdr.map(mapper) : @cdr)
     end
     
     def to_a
