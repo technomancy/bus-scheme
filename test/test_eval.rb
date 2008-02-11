@@ -48,6 +48,15 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to [:foo.sym, :biz.sym, :bbb.sym].to_list, "'(foo biz bbb)"
   end
 
+  def test_quote
+    assert_evals_to :hi.sym, "(quote hi)"
+    assert_evals_to [:a.sym, :b.sym, :c.sym].to_list, "'(a b c)"
+    assert_evals_to [:a.sym].to_list, "(list 'a)"
+    assert_evals_to [:a.sym, :b.sym].to_list, "(list 'a 'b)"
+    assert_evals_to [:a.sym, :b.sym, :c.sym].to_list, "(list 'a 'b 'c)"
+    assert_evals_to [:+.sym, 2, 3].to_list, "'(+ 2 3)"
+  end
+
   def test_array_of_args_or_list_of_args
     assert_evals_to 5, cons(:+.sym, cons(2, cons(3)))
     assert_evals_to 5, cons(:+.sym, cons(2, cons(3)).to_a)
