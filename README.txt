@@ -19,6 +19,60 @@ now) ill-advised.
 Bus Scheme aims for general Scheme usefulness optimized for learning
 and fun. It's not targeting R5RS or anything like that.
 
+== Usage
+
+$ bus # drop into the REPL
+
+$ bus -e "(do some stuff)"
+
+$ bus foo.scm # load a file
+
+== What makes Bus Scheme different?
+
+Well, for starters it's implemented on the bus. No other Scheme
+implementation can claim this. Here are a few other things that set
+Bus Scheme apart:
+
+=== Flexible calling syntax
+
+Taking a hint from Arc, Bus Scheme allows you to use the notation
+(mylist n) to access the nth place of the mylist list instead of (nth
+mylist n) or the (myhash key) notation to access the slot in myhash
+corresponding to the value of key instead of (gethash myhash key). 
+TODO: This notation is flexible, and other data types may have
+their own "call behaviour" specified.
+
+=== Mongrel integration
+
+Web and RESTful application development are part of the package. Bus
+Scheme uses the wonderful Mongrel web server to allow scheme programs
+to serve web applications. TODO: Representations of data can be easily
+translated between s-expressions, HTML, and JSON.
+
+=== Written in a high-level language
+
+Bus Scheme is written in Ruby, which means anyone with experience in
+high-level dynamic languages (like, oh, I don't know... Scheme?)
+should be right at home poking around at the implementation. Using
+Ruby allows the implementation code to remain compact and concise. Bus
+Scheme should run on Ruby 1.8, Ruby 1.9, and Rubinius at least. Bus
+Scheme also allows you to drop into Ruby when that's convenient. TODO:
+allow real inline Ruby blocks instead of access via a function call.
+
+=== XML integration
+
+TODO: Bus Scheme has a notion of XML literals so that it may be
+inlined into your Scheme code, much like the way ECMAScript uses
+E4X. If you'd prefer, you can leverage convenient s-expression -> XML
+conversion facilities.
+
+=== Test-Driven
+
+Bus Scheme is written in an entirely test-driven manner. As much as
+possible, it tries to keep its tests written in Scheme itself, so it
+includes a fairly comprehensive testing suite and encourages programs
+to be written test-first.
+
 == Install
 
 * sudo gem install bus-scheme
@@ -27,44 +81,38 @@ For the source:
 
 * git clone git://git.caboo.se/bus_scheme.git
 
-== Usage
-
-$ bus # drop into a repl
-
-$ bus -e "(do some stuff)"
-
-$ bus foo.scm # load a file
-
 == Todo
 
 Bus Scheme is currently missing pieces of functionality:
-* means includes failing test, - means untested
 
 === Bugs
- * reject bad identifiers
- - REPL should accept multiline strings
+* REPL should accept multiline strings
 
 === Parser
- * parse character literals
- ** parse dotted cons cells
+* parse character literals
+* parse dotted cons cells
+* Ruby blocks
+* XML literals?
 
 === General
- * stack traces on error plz
- - macros
+* stack traces on error plz
+* test framework needs work
+* macros
+* custom call behaviour
+* continuations
 
 === Web
- - defresource
- - oh man... so much to do here!
+* defresource
+* oh man... so much to do here!
 
 Failing tests for some of these are already included (commented out,
 mostly) in the relevant test files.
 
 === Long Term (post 1.0)
- - (lambda (arg1 arg2 . args) body) for rest args
- - continuations (?!?)
- - optimize tail call recursion
- - compile to Rubinius bytecode
- - parse rationals, scientific, complex, and polar complex numbers
+* (lambda (arg1 arg2 . args) body) for rest args
+* optimize tail call recursion
+* compile to Rubinius bytecode
+* parse rationals, scientific, complex, and polar complex numbers
 
 == Requirements
 
