@@ -73,3 +73,7 @@ class Sym < String
     self.intern.to_s
   end
 end
+
+class Hash
+  alias_method :call, :[]
+end

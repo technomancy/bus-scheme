@@ -10,7 +10,6 @@ module BusScheme
       # puts "evaling #{form.inspect}"
       if (form.is_a?(Cons) or form.is_a?(Array)) and form.first
         apply(form.first, form.rest)
-        # TODO: should we still allow symbols?
       elsif form.is_a? Sym or form.is_a? Symbol
         form = form.sym if form.is_a? Symbol
         raise EvalError.new("Undefined symbol: #{form.inspect}") unless Lambda.in_scope?(form)
