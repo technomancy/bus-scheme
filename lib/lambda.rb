@@ -42,7 +42,7 @@ module BusScheme
 
     # shorthand for assignment in the currently relevant scope
     def self.[]=(symbol, val)
-      val.defined_as(symbol, val.file, val.line) if val.respond_to?(:defined_as)
+      val.defined_as(symbol, symbol.file, symbol.line) if val.respond_to?(:defined_as)
       self.scope[symbol] = val
     end
 
