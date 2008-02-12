@@ -35,7 +35,6 @@ module BusScheme
     @@stack = []
 
     attr_reader :scope
-    attr_accessor :file, :line
     
     # create new Lambda object
     def initialize(formals, body)
@@ -75,6 +74,11 @@ module BusScheme
     def self.[]=(symbol, val)
       val.defined_as symbol, val.file, val.line if val.respond_to?(:defined_as)
       self.scope[symbol] = val
+    end
+
+    # where were we called from?
+    def self.trace
+      @@stack.reverse.map { |fn| [fn.symbol, fn.file, fn.line] }
     end
   end
 end

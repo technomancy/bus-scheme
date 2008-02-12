@@ -67,6 +67,16 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   (f (quote b))))"
   end
 
+  def test_args_work_right
+    eval "(define fib (lambda (x)
+              (ruby \"p Lambda.scope\")
+              (assert (> x 0))
+	      (if (< x 3)
+		  1
+                 (+ (fib (- x 1)) (fib (- x 2))))))"
+    assert_evals_to 3, "(fib 3)"
+  end
+
   def test_lambda_rest_args
     eval "(define rest (lambda args args))"
     assert_evals_to [:a.sym, :b.sym, :c.sym].to_list, "(rest 'a 'b 'c)"

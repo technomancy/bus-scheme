@@ -4,6 +4,7 @@ module BusScheme
   class BusSchemeError < StandardError; end
   class ParseError < BusSchemeError; end
   class EvalError < BusSchemeError; end
+  class LoadError < BusSchemeError; end
   class ArgumentError < BusSchemeError; end
   class AssertionFailed < BusSchemeError; end
 

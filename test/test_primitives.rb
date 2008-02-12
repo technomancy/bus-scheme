@@ -14,12 +14,8 @@ class PrimitivesTest < Test::Unit::TestCase
   def test_load_file
     eval "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")"
     assert Lambda[:fib.sym]
-    assert_evals_to 1, "(fib 1)"
-    assert_evals_to 1, "(fib 2)"
-    assert_evals_to 2, "(fib 3)"
-    assert_evals_to 3, "(fib 4)"
-    assert_evals_to 5, "(fib 5)"
-    assert_evals_to 8, "(fib 6)"
+    assert_evals_to 5, "(+ (fib 3) (fib 4))"
+    assert_evals_to [1, 1, 2, 3, 5, 8].to_list, "(map fib (list 1 2 3 4 5 6))"
   end
 
   def test_set!

@@ -15,17 +15,9 @@ class Array
     end
   end
 
-  def %(n)
-    all = []
-    self.each_with_index do |x, i|
-      (all[i / n] ||= []) << x
-    end
-    return all
-  end
-  alias_method :sexp, :to_list
-
   # allows for (mylist 4) => mylist[4]
   alias_method :call, :[]
+  alias_method :sexp, :to_list
 end
 
 module Enumerable # for 1.9, zip is defined on Enumerable

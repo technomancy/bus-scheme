@@ -51,7 +51,6 @@ Bus Scheme is currently missing pieces of functionality:
 === General
  * stack traces on error plz
  - macros
- -- some kind of load path?
 
 === Web
  - defresource
