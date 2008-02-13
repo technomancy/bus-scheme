@@ -99,6 +99,12 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to "-0.10", -0.1
   end
 
+  def test_explicitly_positive_floats
+    assert_parses_to "+0.22", 0.22
+    assert_parses_to "+.22", 0.22
+    assert_parses_to "+0.10", 0.1
+  end
+
 #   def test_character_literals
 #     assert_parses_to "?#e", "e"
 #     assert_parses_to "?#A", "A"
@@ -124,11 +130,11 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_raises(IncompleteError) { BusScheme.parse "(+ (* 3 4) 2 2" }
   end
   
-#   def test_reject_bad_identifiers
-#     [".ab3", "14kalt", "-bolt"].each do |identifier|
-#       assert_raises(BusScheme::ParseError, "#{identifier} should not be valid") { BusScheme.parse(identifier) }
-#     end
-#   end
+  def test_reject_bad_identifiers
+    ["14kalt", "-bolt", ".ab3"].each do |identifier|
+      assert_raises(ParseError, "#{identifier} should not be valid") { BusScheme.parse(identifier) }
+    end
+  end
 
   def test_r5rs_identifiers
     ["lambda", "q", "list->vector", "soup", "+",
