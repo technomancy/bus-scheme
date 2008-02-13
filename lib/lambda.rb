@@ -16,7 +16,9 @@ module BusScheme
       locals = if @formals.is_a? Sym # rest args
                  { @formals => args.to_list }
                else # regular arg list
-                 raise BusScheme::ArgumentError if @formals.length != args.length
+                 raise BusScheme::ArgumentError, "Wrong number of args passed to #{@symbol}.
+  expected #{@formals.size}, got #{args.size}
+  in #{@file}:#{@line}" if @formals.length != args.length
                  @formals.zip(args).to_hash
                end
 
@@ -54,7 +56,7 @@ module BusScheme
 
     # where were we called from?
     def self.stacktrace
-      @@stack.reverse.map { |fn| [fn.symbol, fn.file, fn.line] }
+      @@stack.reverse.map { |fn| [fn.file, fn.line, fn.symbol] }
     end
   end
 end

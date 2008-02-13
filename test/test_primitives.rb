@@ -18,6 +18,17 @@ class PrimitivesTest < Test::Unit::TestCase
     assert_evals_to [1, 1, 2, 3, 5, 8].to_list, "(map fib (list 1 2 3 4 5 6))"
   end
 
+  def test_load_path
+    LOAD_PATH << File.dirname(__FILE__) + '/../examples/'
+    eval "(load \"fib.scm\")"
+    assert Lambda[:fib.sym]
+    
+    clear_symbols :fib.sym
+    LOAD_PATH << File.dirname(__FILE__)
+    eval "(load \"../examples/fib.scm\")"
+    assert Lambda[:fib.sym]
+  end
+
   def test_set!
     clear_symbols(:foo.sym)
     # can only set! existing variables

@@ -21,7 +21,7 @@ module BusScheme
 
   PROMPT = '> '
   INCOMPLETE_PROMPT = ' ... '
-  LOAD_PATH = ["#{File.dirname(__FILE__)}/scheme/"]
+  LOAD_PATH = ["#{File.dirname(__FILE__)}/scheme/", './']
   
   class BusSchemeError < StandardError; end
   class ParseError < BusSchemeError; end
@@ -57,8 +57,7 @@ module BusScheme
   # Load a file if on the load path or absolute
   def self.load(filename)
     loaded_files.push filename
-    filename = add_load_path(filename)
-    eval_string File.read(filename)
+    eval_string File.read(add_load_path(filename))
     loaded_files.pop
   end
 

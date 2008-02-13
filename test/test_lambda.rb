@@ -115,8 +115,8 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_stacktrace
     eval "(define gimme-trace (lambda () (stacktrace)))"
     eval "(define nest-trace (lambda () (gimme-trace)))"
-    assert_equal([[:'gimme-trace'.sym, "(eval)", 0],
-                  [:'nest-trace'.sym, "(eval)", 0]],
+    assert_equal([["(eval)", 0, :'gimme-trace'.sym],
+                  ["(eval)", 0, :'nest-trace'.sym]],
                  eval("(nest-trace)"))
   end
 end

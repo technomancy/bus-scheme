@@ -1,6 +1,3 @@
-(define fail (lambda (message)
-	       (ruby (concat "raise AssertionFailed"))))
-
 (define assert 
   (lambda (bool)
     (if bool
@@ -11,4 +8,5 @@
   (lambda (expected actual)
     (if (= expected actual)
 	#t
-	(fail (concat "Expected " expected ", got " actual)))))
+	(fail (concat "Expected " (send expected 'inspect) ", got " 
+		      (send actual 'inspect))))))
