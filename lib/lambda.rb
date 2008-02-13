@@ -21,8 +21,14 @@ module BusScheme
                end
 
       @scope = RecursiveHash.new(locals, @enclosing_scope)
-      @@stack << self
-      BusScheme.eval(@body.unshift(:begin.sym)).affect { @@stack.pop }
+      # we dupe the lambda so that @scope is unique for each call of the function
+      @@stack << self.dup
+      
+      begin
+        return BusScheme.eval(@body.unshift(:begin.sym))
+      ensure
+        @@stack.pop
+      end
     end
 
     # What's the current scope?
@@ -47,7 +53,7 @@ module BusScheme
     end
 
     # where were we called from?
-    def self.trace
+    def self.stacktrace
       @@stack.reverse.map { |fn| [fn.symbol, fn.file, fn.line] }
     end
   end

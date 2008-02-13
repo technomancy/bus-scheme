@@ -120,8 +120,8 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_requires_closed_lists
-    assert_raises(ParseError) { BusScheme.parse "(+ 2 2" }
-    assert_raises(ParseError) { BusScheme.parse "(+ (* 3 4) 2 2" }
+    assert_raises(IncompleteError) { BusScheme.parse "(+ 2 2" }
+    assert_raises(IncompleteError) { BusScheme.parse "(+ (* 3 4) 2 2" }
   end
   
 #   def test_reject_bad_identifiers

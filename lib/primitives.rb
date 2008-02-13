@@ -1,13 +1,6 @@
 module BusScheme
   SYMBOL_TABLE = {}
 
-  class BusSchemeError < StandardError; end
-  class ParseError < BusSchemeError; end
-  class EvalError < BusSchemeError; end
-  class LoadError < BusSchemeError; end
-  class ArgumentError < BusSchemeError; end
-  class AssertionFailed < BusSchemeError; end
-
   def self.define(identifier, value)
     SYMBOL_TABLE[identifier.sym] = value
   end
@@ -32,7 +25,8 @@ module BusScheme
   define 'map', lambda { |fn, list| list.map(lambda { |n| fn.call(n) }).sexp }
   
   define 'eval', lambda { |code| eval(code) }
-
+  define 'stacktrace', lambda { Lambda.stacktrace }
+  
   define 'ruby', lambda { |*code| Kernel.eval code.join('') }
   define 'send', lambda { |obj, *message| obj.send(*message) }
 

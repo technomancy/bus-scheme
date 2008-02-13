@@ -20,15 +20,29 @@ module BusScheme
   VERSION = "0.7.5"
 
   PROMPT = '> '
+  INCOMPLETE_PROMPT = ' ... '
   LOAD_PATH = ["#{File.dirname(__FILE__)}/scheme/"]
   
+  class BusSchemeError < StandardError; end
+  class ParseError < BusSchemeError; end
+  class EvalError < BusSchemeError; end
+  class LoadError < BusSchemeError; end
+  class IncompleteError < BusSchemeError; end
+  class ArgumentError < BusSchemeError; end
+  class AssertionFailed < BusSchemeError; end
+
   # Read-Eval-Print-Loop
   def self.repl
     loop do
       puts begin
              input = Readline.readline(PROMPT)
              exit if input.nil? # only Ctrl-D produces nil here it seems
-             BusScheme.eval_string input
+             begin # allow for multiline input
+               BusScheme.eval_string input
+             rescue IncompleteError
+               input += "\n" + Readline.readline(INCOMPLETE_PROMPT)
+               retry
+             end
            rescue Interrupt
              'Type "(quit)" or press Ctrl-D to leave Bus Scheme.'
            rescue BusSchemeError => e

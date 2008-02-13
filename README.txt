@@ -85,13 +85,13 @@ For the source:
 
 Bus Scheme is currently missing pieces of functionality:
 
-=== Bugs
-* REPL should accept multiline strings
-
 === Parser
-* parse character literals
-* parse dotted cons cells
-* Ruby blocks
+* character literals
+* multiline strings
+* escape sequences in strings
+* string interpolation
+* dotted cons cells
+* Ruby blocks?
 * XML literals?
 
 === General

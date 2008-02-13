@@ -11,13 +11,13 @@ module BusScheme
       parse_tokens(tokenize(input).flatten).sexp
     end
 
-    # Turn a list of tokens into a properly-nested S-expression
+    # Turn a list of tokens into a properly-nested array
     def parse_tokens(tokens)
       token = tokens.shift
       if token == :'('
         parse_list(tokens)
       else
-        raise BusScheme::ParseError unless tokens.empty?
+        raise ParseError unless tokens.empty?
         token # atom
       end
     end
@@ -32,7 +32,7 @@ module BusScheme
             list << element
           end
         end
-        raise ParseError unless element == :')'
+        raise IncompleteError unless element == :')'
       end
     end
 

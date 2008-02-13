@@ -2,7 +2,11 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
 class BusScheme::Lambda
-  attr_accessor :body, :formals, :environment
+  attr_accessor :body, :formals, :enclosing_scope
+
+  def self.stack
+    @@stack
+  end
 end
 
 class BusSchemeLambdaTest < Test::Unit::TestCase
@@ -67,15 +71,14 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   (f (quote b))))"
   end
 
-#   def test_args_work_right
-#     eval "(define fib (lambda (x)
-#               (ruby \"p Lambda.scope\")
-#               (assert (> x 0))
-# 	      (if (< x 3)
-# 		  1
-#                  (+ (fib (- x 1)) (fib (- x 2))))))"
-#     assert_evals_to 3, "(fib 3)"
-#   end
+  def test_nested_function_calls_dont_affect_caller
+    eval "(define fib (lambda (x)
+	      (if (< x 3)
+		  1
+                 (+ (fib (- x 1)) (fib (- x 2))))))"
+
+    assert_evals_to 5, "(fib 5)"
+  end
 
   def test_lambda_rest_args
     eval "(define rest (lambda args args))"
@@ -103,5 +106,17 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
     eval "#{"\n" * 7} (define fab 'warble)"
     assert_equal 7, Lambda[:fab.sym].line
+  end
+
+  def test_stack_gets_popped
+    # TODO: 
+  end
+  
+  def test_stacktrace
+    eval "(define gimme-trace (lambda () (stacktrace)))"
+    eval "(define nest-trace (lambda () (gimme-trace)))"
+    assert_equal([[:'gimme-trace'.sym, "(eval)", 0],
+                  [:'nest-trace'.sym, "(eval)", 0]],
+                 eval("(nest-trace)"))
   end
 end

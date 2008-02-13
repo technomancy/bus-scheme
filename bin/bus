@@ -8,7 +8,7 @@ if ARGV.empty?
 elsif ARGV.first == '-e' and ARGV.length == 2
   puts BusScheme.eval_string(ARGV[1])
 elsif ARGV.length == 1 and File.exist?(ARGV.first)
-  puts BusScheme.eval_string "(load \"#{ARGV.first}\")"
+  puts BusScheme.eval_string("(load \"#{ARGV.first}\")")
 else
   puts "Bus Scheme: a scheme interpreter written on the bus.
 Usage: bus [file | -e \"form\"]
