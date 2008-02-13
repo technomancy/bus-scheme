@@ -108,6 +108,7 @@ mostly) in the relevant test files.
 * optimize tail call recursion
 * compile to Rubinius bytecode
 * custom call behaviour
+* parse non-decimal base numbers
 * parse rationals, scientific, complex, and polar complex numbers
 
 == Requirements

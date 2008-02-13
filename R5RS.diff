@@ -9,8 +9,6 @@ identifier"
 Extended chars: 
 ! $ % & * + - . / : < = > ? @ ^ _ ~
 
-Explicitly positive numbers
-
 Quasiquote, unquote, unquote-splice
 
 Backslash in strings

@@ -51,6 +51,7 @@ module BusScheme
                 return pop_token(input)
               when /\A(\(|\))/ # parens
                 Regexp.last_match[1].intern
+#              when /\A#([^\)])/
               when /\A#\(/ # vector
                 input[0 ... 2] = ''
                 return [:'(', :vector.sym, tokenize(input)]
@@ -71,7 +72,8 @@ module BusScheme
                 Regexp.last_match[2]
               # Official Scheme valid identifiers:
               # when /\A([A-Za-z!\$%&\*\.\/:<=>\?@\^_~][A-Za-z0-9!\$%&\*\+\-\.\/:<=>\?@\^_~]*)/ # symbol
-              when /\A([^-0-9\. \n\)][^ \n\)]*)/
+                # when /\A([^-0-9\. \n\)][^ \n\)]*)/
+              when /\A([^ \n\)]+)/
                 # puts "#{Regexp.last_match[1]} - #{@@lines}"
                 Regexp.last_match[1].sym.affect{ |sym| sym.file, sym.line = [BusScheme.loaded_files.last, @@lines] }
               else
