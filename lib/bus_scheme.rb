@@ -21,7 +21,7 @@ module BusScheme
 
   PROMPT = '> '
   INCOMPLETE_PROMPT = ' ... '
-  LOAD_PATH = ["#{File.dirname(__FILE__)}/scheme/", './']
+  LOAD_PATH = ["#{File.dirname(__FILE__)}/scheme/", File.expand_path('.')]
   
   class BusSchemeError < StandardError; end
   class ParseError < BusSchemeError; end

@@ -31,6 +31,8 @@ end
 desc "Show todo items"
 task :todo do
   puts File.read('README.txt').match(/== Todo(.*)== Requirements/m)[1].split("\n").grep(/^(\*|===)/).join("\n")
+  puts "Within the code:"
+  system "grep -r TODO lib"
 end
 
 desc "Show tests that have been commented out"

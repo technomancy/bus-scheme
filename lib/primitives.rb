@@ -37,12 +37,12 @@ module BusScheme
 
   # TODO: hacky to coerce everything to sexps... won't work once we start using vectors
   special_form 'quote', lambda { |arg| arg.sexp }
-  special_form 'if', lambda { |q, yes, *no| eval(q) ? eval(yes) : eval([:begin] + no) }
+  special_form 'if', lambda { |q, yes, *no| eval(eval(q) ? yes : [:begin] + no) }
   special_form 'begin', lambda { |*args| args.map{ |arg| eval(arg) }.last }
   special_form 'lambda', lambda { |args, *form| Lambda.new(args, form) }
   special_form 'define', lambda { |sym, definition| Lambda[sym] = eval(definition); sym }
   special_form 'set!', lambda { |sym, value| raise EvalError.new unless Lambda.in_scope?(sym)
-      Lambda[sym] = eval(value); sym }
+    Lambda[:define.sym].call(sym, value) }
 
   # TODO: once we have macros, this can be defined in scheme
   special_form 'and', lambda { |*args| args.all? { |x| eval(x) } }

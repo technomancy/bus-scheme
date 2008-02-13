@@ -22,7 +22,4 @@ class WebTest < Test::Unit::TestCase
     eval '(http-listen (lambda (req) "hello world"))'
     assert_equal 'hello world', open('http://localhost:3500/').read
   end
-
-#   def test_returns_html_at_root
-#   end
 end

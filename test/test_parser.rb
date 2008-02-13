@@ -157,10 +157,6 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_equal "(eval)", tree.cdr.car.file
   end
   
-#   def test_accepts_multiline_strings_in_repl
-#     # oh crap
-#   end
-  
   private
 
   def assert_parses_to(actual_string, expected)

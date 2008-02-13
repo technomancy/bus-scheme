@@ -88,30 +88,26 @@ Bus Scheme is currently missing pieces of functionality:
 === Parser
 * character literals
 * multiline strings
-* escape sequences in strings
-* string interpolation
 * dotted cons cells
-* Ruby blocks?
-* XML literals?
 
 === General
-* stack traces on error plz
 * test framework needs work
 * macros
-* custom call behaviour
 * continuations
-
-=== Web
-* defresource
-* oh man... so much to do here!
 
 Failing tests for some of these are already included (commented out,
 mostly) in the relevant test files.
 
 === Long Term (post 1.0)
+* web functions (defresource and friends)
 * (lambda (arg1 arg2 . args) body) for rest args
+* string interpolation
+* escape sequences in strings
+* Ruby blocks inline?
+* XML literals?
 * optimize tail call recursion
 * compile to Rubinius bytecode
+* custom call behaviour
 * parse rationals, scientific, complex, and polar complex numbers
 
 == Requirements
