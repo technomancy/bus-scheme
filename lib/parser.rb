@@ -68,12 +68,12 @@ module BusScheme
                 Regexp.last_match[1].to_f
               when /\A(-?[0-9]+)/ # integer
                 Regexp.last_match[1].to_i
-              when /\A("(.*?)")/ # string
+              when /\A("(.*?)")/m # string
                 Regexp.last_match[2]
               # Official Scheme valid identifiers:
               # when /\A([A-Za-z!\$%&\*\.\/:<=>\?@\^_~][A-Za-z0-9!\$%&\*\+\-\.\/:<=>\?@\^_~]*)/ # symbol
                 # when /\A([^-0-9\. \n\)][^ \n\)]*)/
-              when /\A([^ \n\)]+)/
+              when /\A([^ \n\)]+)/ # symbols
                 # puts "#{Regexp.last_match[1]} - #{@@lines}"
                 Regexp.last_match[1].sym.affect{ |sym| sym.file, sym.line = [BusScheme.loaded_files.last, @@lines] }
               else

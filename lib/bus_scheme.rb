@@ -38,7 +38,7 @@ module BusScheme
              input = Readline.readline(PROMPT)
              exit if input.nil? # only Ctrl-D produces nil here it seems
              begin # allow for multiline input
-               BusScheme.eval_string input
+               BusScheme.eval_string(input).inspect
              rescue IncompleteError
                input += "\n" + Readline.readline(INCOMPLETE_PROMPT)
                retry

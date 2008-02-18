@@ -66,7 +66,7 @@ class Sym < String
   end
   
   def inspect
-    ";#{self}"
+    self
   end
 
   def to_s
