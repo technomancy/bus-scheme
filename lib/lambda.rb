@@ -10,7 +10,7 @@ module BusScheme
     def initialize(formals, body)
       @formals, @body, @enclosing_scope = [formals, body, Lambda.scope]
       @car = :lambda.sym
-      @cdr = Cons.new(@formals, Cons.new(@body))
+      @cdr = Cons.new(@formals.sexp, Cons.new(@body.sexp))
     end
     
     # execute Lambda with given arg_values

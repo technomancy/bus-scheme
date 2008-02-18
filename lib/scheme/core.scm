@@ -1,5 +1,5 @@
 (define string->symbol
-  (lambda (sym) (send sym 'intern)))
+  (lambda (sym) (send sym 'sym)))
 
 (define substring
   (lambda (string to from) (send string (quote []) to from)))

@@ -27,6 +27,10 @@ $ bus -e "(do some stuff)"
 
 $ bus foo.scm # load a file
 
+== Tutorial
+
+See http://technomancy.us/104 for a "Getting Started" tutorial.
+
 == What makes Bus Scheme different?
 
 Well, for starters it's implemented on the bus. No other Scheme

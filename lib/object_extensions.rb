@@ -27,6 +27,8 @@ class String
   def sym
     Sym.new(self)
   end
+
+  alias_method :call, :[]
 end
 
 class Symbol
