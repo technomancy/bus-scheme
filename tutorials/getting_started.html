@@ -1,0 +1,164 @@
+<p>This is a DRAFT document. It's been posted for the purposes of
+getting feedback <b>only</b>. Please do not post the URL or
+copies/excerpts of this document in a public place.</p>
+
+<p>So a number of folks have asked me how they should get started with
+Bus Scheme.[<a href='#fn1'>1</a>]. I've mostly just said silly things
+like, "Umm... good question. Maybe read/watch <a
+href='http://mitpress.mit.edu/sicp/'>SICP</a>?", which is silly
+because it doesn't have much to do with the <i>Bus</i> part of Bus
+Scheme, not because <i>The Structure and Interpretation of Computer
+Programs</i> is silly.</p>
+
+<p>There's a poster in <a href='http://www.powells.com/'>my favourite
+bookstore</a> that has Dante's <i>Comedy</i>, the <i>Iliad</i>, and a
+few other classics captioned with something like "Might as well start
+them now; you're going to have to read them eventually anyway." I hold
+the same notion regarding SICP and perhaps <i>The Little Schemer</i>,
+but I could see how it'd be helpful to have an introduction to Scheme
+from a Rubyist's perspective since reading a book like that can be
+large-ish mental investment.</p>
+
+<p>Scheme is a programming language directly descended from Lisp. It's
+most often compared to Common Lisp, which is in some senses its big
+brother. Scheme is usually considered less "kitchen-sink"-ish than
+Common Lisp in that it only defines an extremely clean small core
+language and allows developers to extend it seamlessly to do what they
+need. In the words of the creators of Scheme:</p>
+
+<blockquote>
+Programming languages should be designed not by piling feature on top
+of feature, but by removing the weaknesses and restrictions that make
+additional features appear necessary.	    
+</blockquote>
+
+<p>(As a potential student of Scheme, you should be encouraged by this
+notion as it directly translates into fewer concepts to learn.)</p>
+
+<p>Ruby draws a lot of its heritage from Scheme, though Matz does not
+share the idea that a language should be limited to a very small
+number of core axioms from which everything else can be defined. [<a
+href='#fn2'>2</a>] Destructive method names ending in "!" and
+predicates ending in "?" were inspired by Scheme. Matz himself has
+even jokingly referred to Ruby as "MatzLisp". So this is a language
+that at the core should not feel too foreign to a Rubyist, even if the
+syntax looks quite different.</p>
+
+<p>Let's dive in. <tt>sudo gem install bus-scheme</tt> if you haven't
+got it installed. Go ahead and launch Bus Scheme. Like <tt>irb</tt>,
+running the <tt>bus</tt> executable drops you into a REPL, or
+Read-Eval-Print Loop. Feel free to experiment with entering values and
+seeing what gets returned.</p>
+
+<p>Scheme programs are made up of expressions. Each expression is
+either an atom or a list. Atoms are simple "indivisible" values, like
+symbols, numeric values, and strings. Some atoms evaluate to
+themselves just like in Ruby, so entering <tt>12</tt> into the REPL
+returns (and echoes) 12. <tt>"foo"</tt> works the same way. Symbols
+are a little different. Ruby uses a colon before the symbol's name,
+but in Scheme you refer to a symbol just using its name. So
+<tt>baz</tt> refers to the symbol with the name "baz". But if you
+enter <tt>baz</tt> into the REPL, Bus Scheme complains:</p>
+
+<pre class='code'>&gt; baz
+Error: Undefined symbol: baz</pre>
+
+<p>This is because symbols aren't treated as literals; they don't
+evaluate to themselves. When Bus Scheme encounters a symbol in this
+context, it treats it as a variable and returns the value that's bound
+to it. So let's bind that sucker.</p>
+
+<pre class='code'>&gt; (define baz 12)
+baz</pre>
+
+<p>Now when Bus Scheme encounters the <tt>baz</tt> symbol it returns
+12, since that's the value the "baz" identifier is bound to in this
+context. But what's this we've just entered? That's actually a list
+made up of the symbol <tt>define</tt>, the symbol <tt>baz</tt>, and
+the literal numeric value 12. In normal contexts, a list is
+interpreted as a function call. TODO: explain function calls and
+evaluation rules more clearly. Scheme determines what function to call
+by evaluating the first element of the list. In this case, it's the
+symbol <tt>define</tt>, which evaluates to a built-in (primitive)
+function that binds its second argument to its first argument. Then it
+evaluates each of the arguments [<a href='#fn3'>3</a>] and passes
+those values to the function.</p>
+
+<p>That's the basics of how program execution happens, but you won't
+get far without having a few more functions under your belt. Here are
+a some to get you rolling:</p>
+
+<dl>
+  <dt>+, -, *, and /</dt>
+  <dd>I'm sure you recognize your old friends from grade-school
+  days. + and * support any number of arguments, but - and / take
+  two. In regular Scheme these all only work for numerical types, but
+  Bus Scheme borrows Ruby's methods and lets you pass strings to + and
+  *.</dd>
+
+  <dt>if</dt>
+  <dd>The most basic conditional is <tt>if</tt>. Use it like this:
+  <tt>(if x "x is true" "x is false")</tt>. <tt>if</tt> evaluates its
+  first argument, which in this case is x. If it returns a true value
+  (in Scheme every value is true except <tt>#f</tt>, which is
+  equivalent to Ruby's <tt>false</tt>) then its second argument gets
+  evaluated and returned. If it's false then the remaining arguments
+  (if any) are evaluated and the last one is returned.</dd>
+
+  <dt>list</dt>
+  <dd>If you want a list of numbers, you may think you get this by
+  entering <tt>(1 2 3)</tt>. The problem with this is that it gets
+  treated like a function call, and it will complain that 1 is not a
+  function. (No joke, thanks for pointing that out.) What you can do
+  instead is <tt>(list 1 2 3)</tt>.</dd>
+
+  <dt>quote</dt>
+  <dd>Remember when we entered the name of a symbol above and it
+  returned the value that was bound to the symbol? If you really just
+  want the symbol itself, you can pass it to quote: <tt>(quote
+  baz)</tt> returns <tt>baz</tt>. You can also quote lists [<a
+  href='#fn4'>4</a>] if you want their literal value returned instead
+  of having them evaluated: <tt>(quote (define baz 12))</tt> returns
+  <tt>(define baz 12)</tt>. Quote allows you to get around the way
+  Scheme evaluates things to get at literal values.</dd>
+
+  <dt>map</dt>
+  <dd>This works like Ruby's map, but it's a freestanding function
+  instead of a method. So instead of <tt>[1, 2, 3].map {|x| x +
+  3}</tt> you would do <tt>(map (lambda (x) (+ x 3)) (list 1 2
+  3)</tt>, which would return <tt>(4 5 6)</tt>.</dd>
+</dl>
+
+<p>Well, that's enough for now. You may not know enough to be
+dangerous, but I hope you know enough to explore. Tune in next time
+when I uncover the true Secrets of Lisp &tm; by explaining
+<tt>cons</tt> and <tt>lambda</tt>.</p>
+
+<hr />
+
+<p><a name='fn1'>1</a> - I didn't say it was a large number.</p>
+
+<p><a name='fn2'>2</a> - I imagine this causes <a
+href='http://blog.fallingsnow.net'>Evan</a> and <a
+href='http://headius.blogspot.com/'>Charles</a> some varying amounts
+of distress.</p>
+
+<p><a name='fn3'>3</a> - This isn't strictly true here;
+<tt>define</tt> is a special form, which means that not all its
+arguments get evaluated before they get passed to the function. This
+is why it works to pass <tt>define</tt> the symbol
+<tt>baz</tt>&mdash;it doesn't try to look up the value that
+<tt>baz</tt> is bound to. TODO: uh... too pedantic for a first
+article?</p>
+
+<p><a name='fn4'>4</a> - So what's the difference between
+<tt>list</tt> and <tt>quote</tt> then? Well, quote doesn't evaluate
+its arguments:</p>
+
+<p><tt>(list 1 2 (+ 1 2))</tt> &rarr; <tt>(1 2 3)</tt></p>
+
+<p><tt>(quote (1 2 (+ 1 2)))</tt> &rarr; <tt>(1 2 (+ 1 2))</tt></p>
+
+<p>&copy; 2008 <a href='http://technomancy.us'>Phil
+Hagelberg</a>. Please send feedback to technomancy at google's mail
+service.</p>
