@@ -1,6 +1,6 @@
 module BusScheme
   # Lambdas are closures.
-  class Lambda
+  class Lambda < Cons
     include Traceable
     @@stack = []
 
@@ -9,6 +9,8 @@ module BusScheme
     # create new Lambda object
     def initialize(formals, body)
       @formals, @body, @enclosing_scope = [formals, body, Lambda.scope]
+      @car = :lambda.sym
+      @cdr = Cons.new(@formals, Cons.new(@body))
     end
     
     # execute Lambda with given arg_values
