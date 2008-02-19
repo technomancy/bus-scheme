@@ -14,7 +14,7 @@ class CoreTest < Test::Unit::TestCase
   end
 
   def test_string_functions
-    assert_evals_to :hi, ['string->symbol'.sym, 'hi']
+    assert_evals_to :hi.sym, ['string->symbol'.sym, 'hi']
     assert_evals_to 'lo', [:substring.sym, 'hello', 3, 5]
   end
 

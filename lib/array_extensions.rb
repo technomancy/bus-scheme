@@ -8,7 +8,7 @@ class Array
   alias_method :cdr, :rest
 
   def to_list
-    if self.cdr.empty?
+    if self.cdr.nil? or self.cdr.empty?
       BusScheme::Cons.new(self.car, nil)
     else
       BusScheme::Cons.new(self.car, self.cdr.to_list)

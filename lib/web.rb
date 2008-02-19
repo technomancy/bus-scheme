@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'mongrel'
 
+# TODO: this should be rewritten as a Rack adapter.
+
 module BusScheme
   module HTTP
     HTTP_SERVERS = {}

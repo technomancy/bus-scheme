@@ -6,8 +6,8 @@ module BusScheme
   end
 
   def self.special_form(identifier, value)
+    value.special_form = true
     SYMBOL_TABLE[identifier.sym] = value
-    SYMBOL_TABLE[identifier.sym].special_form = true
   end
 
   define '#t', true
