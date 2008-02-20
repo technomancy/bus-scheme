@@ -9,12 +9,8 @@ Every programmer must implement Scheme as a rite of passage; this is
 mine. Note that at least half of the implementation of Bus Scheme must
 be written while on a bus. Documentation, tests, and administrivia may
 be accomplished elsewhere, but the majority of actual implementation
-code is strictly bus-driven. Patches are welcome especially if they were
-written while riding a bus. (If your daily commute does not involve a
-bus but you want to submit a patch, we may be able to work something
-out regarding code written on trains, ferries, or perhaps even carpool
-lanes.) Bus Scheme is primarily a toy; using it for anything serious
-is (right now) ill-advised.
+code is strictly bus-driven. Bus Scheme is primarily a toy; using it
+for anything serious is (right now) ill-advised.
 
 Bus Scheme aims for general Scheme usefulness optimized for learning
 and fun. It's not targeting R5RS or anything like that.
@@ -95,6 +91,7 @@ Bus Scheme is currently missing pieces of functionality:
 * dotted cons cells
 
 === General
+* stack traces for primitives
 * test framework needs work
 * macros
 * continuations
@@ -118,6 +115,16 @@ mostly) in the relevant test files.
 == Requirements
 
 Bus Scheme should run on (at least) Ruby 1.8, Ruby 1.9, and Rubinius.
+
+== Contributing
+
+Patches are welcome especially if they were written while riding a
+bus. If your daily commute does not involve a bus but you want to
+submit a patch, we may be able to work something out regarding code
+written on trains, ferries, or perhaps even carpool lanes.
+
+Join the mailing list to ask questions and discuss:
+http://rubyforge.org/mail/?group_id=5094
 
 == Bonus Fact
 
