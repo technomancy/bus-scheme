@@ -25,7 +25,7 @@ module BusScheme
           if element == :'('
             list << parse_list(tokens)
           else
-            list << element
+            list << element unless (element == '.'.to_sym)
           end
         end
         raise IncompleteError unless element == :')'
@@ -66,6 +66,8 @@ module BusScheme
                         :')']
               when /\A(-?\+?[0-9]*\.[0-9]+)/ # float
                 Regexp.last_match[1].to_f
+              when /\A(\.)/ # dot (for pair notation), comes after float to pick up any dots that float doesn't accept
+                        '.'.to_sym
               when /\A(-?[0-9]+)/ # integer
                 Regexp.last_match[1].to_i
               when /\A("(.*?)")/m # string

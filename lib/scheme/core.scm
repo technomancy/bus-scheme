@@ -28,3 +28,6 @@
 ;; and friends
 (define cadr
   (lambda (lst) (car (cdr lst))))
+
+;; cond
+(define else #t)
