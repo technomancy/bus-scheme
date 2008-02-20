@@ -37,6 +37,20 @@ class BusSchemeParserTest < Test::Unit::TestCase
   def test_parse_list_of_numbers
     assert_parses_to "(2 2)", [2, 2]
   end
+  
+  def test_parse_dotted_cons
+
+    string = "(2 . 2)"
+
+    assert_equal :'(', BusScheme.pop_token(string)
+    assert_equal 2, BusScheme.pop_token(string)
+    assert_equal :'.', BusScheme.pop_token(string)
+    assert_equal 2, BusScheme.pop_token(string)
+    assert_equal :")", BusScheme.pop_token(string)
+
+    assert_parses_to "(2 . 2)", [2, 2]
+    assert_parses_equal "(2 2)", "(2 . 2)"
+  end
 
   def test_parse_list_of_atoms
     assert_parses_to "(+ 2 2)", [:+.sym, 2, 2]
