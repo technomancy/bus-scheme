@@ -1,5 +1,8 @@
 module Callable
   # allows for (mylist 4) => mylist[4]
+  def call_as(sym, *args)
+    self.call(*args)
+  end
   def call(*args)
     self.[](*args)
   end
@@ -37,6 +40,21 @@ end
 
 class Proc
   attr_accessor :'special_form'
+  
+  def call_as(called_as, *args)
+    @called_as = called_as
+    self.call(*args)
+  end
+
+  alias_method :old_call, :call
+#   def call(*args)
+#     BusScheme::Lambda.stack << self
+#     begin
+#       old_call(*args)
+#     ensure
+#       BusScheme::Lambda.stack.pop
+#     end
+#   end
   
   def special_form?
     @special_form ||= false

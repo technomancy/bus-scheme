@@ -63,13 +63,16 @@ module BusScheme
 
     # shorthand for assignment in the currently relevant scope
     def self.[]=(sym, val)
-      # val.defined_as(sym) if val.respond_to?(:defined_as)
       self.scope[sym] = val
     end
 
     # where were we called from?
     def self.stacktrace
       @@stack.reverse.map { |fn| fn.trace }
+    end
+
+    def self.stack
+      @@stack
     end
   end
 end

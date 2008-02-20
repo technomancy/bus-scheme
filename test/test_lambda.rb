@@ -86,7 +86,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   end
 
   def test_stacktrace
-    eval "(trace)
+    eval ";;(trace)
 (define gimme-trace (lambda () (stacktrace)))
 
 (define nest-trace (lambda ()
@@ -99,5 +99,17 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
                   ["(eval)", 1, 'lambda'],
                   ["(eval)", 1, nil]],
                  eval("((lambda () (nest-trace)))"))
+#    eval "(trace)"
+  end
+
+  def test_stack_grows # WTF!
+    eval "(define stack-growth
+(lambda () (ruby \"raise 'wtf' if Lambda.stack.size < 1\")))"
+    eval "(stack-growth)"
+  end
+
+  def test_stack_grows_with_primitives
+    BusScheme::define 'stack-growth', lambda { assert Lambda.stack.size > 1 }
+    eval "(stack-growth)"
   end
 end
