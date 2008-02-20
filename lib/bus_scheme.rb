@@ -73,5 +73,5 @@ module BusScheme
     (@loaded_files ||= ["(eval)"])
   end
 
-  ['core.scm', 'test.scm'].each { |file| load(file) }
+  ['core.scm', 'test.scm', 'list.scm'].each { |file| load(file) }
 end
