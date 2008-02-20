@@ -2,7 +2,7 @@ module BusScheme
   class << self
     # Turn an input string into an S-expression
     def parse(input)
-      @@lines = 0
+      @@lines = 1
       # TODO: should sexp it as it's being constructed, not after
       parse_tokens(tokenize(input).flatten).sexp
     end

@@ -102,10 +102,10 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
     eval "(load \"#{filename}\")"
     assert Lambda.scope[:fib.sym].is_a?(Lambda)
-    assert_equal 1, Lambda.scope[:fib.sym].line
+    assert_equal 2, Lambda.scope[:fib.sym].line
 
     eval "#{"\n" * 7} (define fab 'warble)"
-    assert_equal 7, Lambda[:fab.sym].line
+    assert_equal 8, Lambda[:fab.sym].line
   end
 
   def test_stack_gets_popped
@@ -113,10 +113,15 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   end
   
   def test_stacktrace
-    eval "(define gimme-trace (lambda () (stacktrace)))"
-    eval "(define nest-trace (lambda () (gimme-trace)))"
-    assert_equal([["(eval)", 0, :'gimme-trace'.sym],
-                  ["(eval)", 0, :'nest-trace'.sym]],
+    eval "
+
+(define gimme-trace (lambda () (stacktrace)))
+
+(define nest-trace (lambda () (gimme-trace)))"
+
+    assert_equal([["(eval)", 3, :'gimme-trace'.sym],
+                  ["(eval)", 5, :'nest-trace'.sym],
+                  ["(eval)", 1, nil]],
                  eval("(nest-trace)"))
   end
 end
