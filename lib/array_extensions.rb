@@ -15,9 +15,8 @@ class Array
     end
   end
 
-  # allows for (mylist 4) => mylist[4]
-  alias_method :call, :[]
   alias_method :sexp, :to_list
+  include Callable
 end
 
 module Enumerable # for 1.9, zip is defined on Enumerable

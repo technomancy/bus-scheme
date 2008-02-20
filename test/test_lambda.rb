@@ -85,43 +85,19 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_evals_to [:a.sym, :b.sym, :c.sym].to_list, "(rest 'a 'b 'c)"
   end
 
-  def test_lambdas_know_what_file_they_were_defined_in
-    assert_equal "(primitive)", Lambda[:if.sym].file
-    
-    eval "(define fab (lambda () \"warble\"))"
-    assert_equal "(eval)", Lambda[:fab.sym].file
-
-    filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
-    eval "(load \"#{filename}\")"
-    assert_equal filename, Lambda[:fib.sym].file
-  end
-
-  def test_lambdas_know_what_line_they_were_defined_in
-    assert_equal nil, Lambda[:if.sym].line
-    
-    filename = File.expand_path("#{File.dirname(__FILE__)}/../examples/fib.scm")
-    eval "(load \"#{filename}\")"
-    assert Lambda.scope[:fib.sym].is_a?(Lambda)
-    assert_equal 2, Lambda.scope[:fib.sym].line
-
-    eval "#{"\n" * 7} (define fab 'warble)"
-    assert_equal 8, Lambda[:fab.sym].line
-  end
-
-  def test_stack_gets_popped
-    # TODO: 
-  end
-  
   def test_stacktrace
-    eval "
-
+    eval "(trace)
 (define gimme-trace (lambda () (stacktrace)))
 
-(define nest-trace (lambda () (gimme-trace)))"
+(define nest-trace (lambda ()
+  (gimme-trace)))"
 
-    assert_equal([["(eval)", 3, :'gimme-trace'.sym],
+    assert_equal ["(eval)", 1, '(top-level)'], eval("(stacktrace)")
+    
+    assert_equal([["(eval)", 2, :'gimme-trace'.sym],
                   ["(eval)", 5, :'nest-trace'.sym],
+                  ["(eval)", 1, 'lambda'],
                   ["(eval)", 1, nil]],
-                 eval("(nest-trace)"))
+                 eval("((lambda () (nest-trace)))"))
   end
 end

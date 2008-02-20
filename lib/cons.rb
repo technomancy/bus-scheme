@@ -43,6 +43,7 @@ module BusScheme
     def call(nth)
       nth == 0 ? @car : @cdr.call(nth - 1)
     end
+    include Callable
   end
 
   def cons(car, cdr = nil)

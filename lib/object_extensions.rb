@@ -1,8 +1,7 @@
-module Traceable
-  attr_reader :symbol, :file, :line
-
-  def defined_as(symbol, file, line)
-    @symbol, @file, @line = [symbol, file, line]
+module Callable
+  # allows for (mylist 4) => mylist[4]
+  def call(*args)
+    self.[](*args)
   end
 end
 
@@ -17,52 +16,38 @@ class Object
   def sexp
     self
   end
-
+  
   def special_form?
     false
   end
 end
 
 class String
+  include Callable
   def sym
     Sym.new(self)
   end
-
-  alias_method :call, :[]
 end
 
 class Symbol
   def sym
     Sym.new(self.to_s)
   end
-
-  def file
-    "(primitive)"
-  end
 end
 
 class Proc
-  include Traceable
   attr_accessor :'special_form'
   
   def special_form?
     @special_form ||= false
     @special_form
   end
-
-  def file
-    "(primitive)"
-  end
-
-  def line
-    nil
-  end
 end
 
 class Sym < String
   attr_accessor :file, :line
 
-  # TODO: refactor
+  # TODO: refactor?
   def special_form?
     BusScheme::Lambda[self].special_form?
   end
@@ -72,10 +57,14 @@ class Sym < String
   end
 
   def to_s
-    self.intern.to_s
+    self
+  end
+
+  def trace
+    "#{@file}:#{@line} in #{self}"
   end
 end
 
 class Hash
-  alias_method :call, :[]
+  include Callable
 end
