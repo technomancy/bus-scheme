@@ -1,5 +1,7 @@
 module BusScheme
   class << self
+    INVALID_IDENTIFER_BEGIN = ('0' .. '9').to_a + ['+', '-', '.']
+    
     # Turn an input string into an S-expression
     def parse(input)
       @@lines = 1
@@ -77,7 +79,11 @@ module BusScheme
                 # when /\A([^-0-9\. \n\)][^ \n\)]*)/
               when /\A([^ \n\)]+)/ # symbols
                 # puts "#{Regexp.last_match[1]} - #{@@lines}"
-                Regexp.last_match[1].sym.affect{ |sym| sym.file, sym.line = [BusScheme.loaded_files.last, @@lines] }
+                # cannot begin with a character that may begin a number
+                sym = Regexp.last_match[1].sym
+                sym.file, sym.line = [BusScheme.loaded_files.last, @@lines]
+                raise ParseError, "Invalid identifier: #{sym}" if INVALID_IDENTIFER_BEGIN.include? sym[0 .. 0] and sym.size > 1
+                sym
               else
                 raise ParseError if input =~ /[^\s ]/
               end
