@@ -28,7 +28,7 @@ module BusScheme
 
       # named functions (non-literal lambdas) need this info for tracing
       if function_sym.is_a?(Sym)
-        function.call_as(function_sym, *args)
+        function.call_as(function_sym, Lambda.stack.last, *args)
       else
         function.call(*args)
       end

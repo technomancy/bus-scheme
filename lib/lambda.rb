@@ -10,11 +10,12 @@ module BusScheme
     def initialize(formals, body)
       @formals, @body, @enclosing_scope = [formals, body, Lambda.scope]
       @car = :lambda.sym
-      @cdr = Cons.new(@formals.sexp, Cons.new(@body.sexp))
+      @cdr = Cons.new(@formals.sexp, @body.sexp)
     end
 
     # call the function with given args
-    def call_as(called_as, *args)
+    def call_as(called_as, from, *args)
+      @called_from = from || '(top-level)'
       @called_as = called_as
       call(*args)
     end
@@ -43,7 +44,11 @@ module BusScheme
     end
 
     def trace
-      [@called_as.file, @called_as.line, @called_as]
+      if @called_as
+        [@called_as.file, @called_as.line, @called_from]
+      else
+        ['anonymous']
+      end
     end
     
     # What's the current scope?
