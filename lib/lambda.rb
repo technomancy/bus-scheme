@@ -11,7 +11,7 @@ module BusScheme
       @cdr = Cons.new(@formals.sexp, @body.sexp)
     end
 
-    # execute Lambda with given arg_values
+    # execute body with args bound to formals
     def call(*args)
       locals = if @formals.is_a? Sym # rest args
                  { @formals => args.to_list }
@@ -23,8 +23,11 @@ module BusScheme
                end
 
       @scope = RecursiveHash.new(locals, @enclosing_scope)
+      BusScheme.stack.push self.dup
       
-      @body.map{ |form| BusScheme.eval(form) }.last
+      val = @body.map{ |form| BusScheme.eval(form) }.last
+      BusScheme.stack.pop
+      return val
     end
   end
 end

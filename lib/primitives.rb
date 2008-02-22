@@ -25,7 +25,7 @@ module BusScheme
   define 'eval', lambda { |code| eval(code) }
   define 'stacktrace', lambda { BusScheme.stacktrace }
   define 'trace', lambda { @trace = !@trace }
-  define 'fail', lambda { |message| raise AssertionFailed, "#{message}\n  #{Lambda.stacktrace.join("\n  ")}" }
+  define 'fail', lambda { |message| raise AssertionFailed, "#{message}\n  #{BusScheme.stacktrace.join("\n  ")}" }
   
   define 'ruby', lambda { |*code| Kernel.eval code.join('') }
   define 'send', lambda { |obj, *message| obj.send(*message) }

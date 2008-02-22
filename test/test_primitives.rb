@@ -13,7 +13,7 @@ class PrimitivesTest < Test::Unit::TestCase
 
   def test_load_file
     eval "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")"
-    assert Lambda[:fib.sym]
+    assert BusScheme[:fib.sym]
     assert_evals_to 5, "(+ (fib 3) (fib 4))"
     assert_evals_to [1, 1, 2, 3, 5, 8].to_list, "(map fib (list 1 2 3 4 5 6))"
   end
@@ -21,12 +21,12 @@ class PrimitivesTest < Test::Unit::TestCase
   def test_load_path
     LOAD_PATH << File.dirname(__FILE__) + '/../examples/'
     eval "(load \"fib.scm\")"
-    assert Lambda[:fib.sym]
+    assert BusScheme[:fib.sym]
     
     clear_symbols :fib.sym
     LOAD_PATH << File.dirname(__FILE__)
     eval "(load \"../examples/fib.scm\")"
-    assert Lambda[:fib.sym]
+    assert BusScheme[:fib.sym]
   end
 
   def test_set!

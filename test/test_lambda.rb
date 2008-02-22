@@ -73,6 +73,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 		  1
                  (+ (fib (- x 1)) (fib (- x 2))))))"
 
+    assert BusScheme.in_scope?(:fib.sym)
     assert_evals_to 5, "(fib 5)"
   end
 
@@ -93,7 +94,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
   def test_stack_grows
     eval "(define stack-growth
-(lambda () (ruby \"raise 'wtf' if Lambda.stack.size < 1\")))"
+(lambda () (ruby \"raise 'wtf' if BusScheme.stack.size < 1\")))"
     eval "(stack-growth)"
   end
 
