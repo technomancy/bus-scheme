@@ -25,7 +25,7 @@ module BusScheme
     args = args.to_a
     args.map!{ |arg| eval(arg) } unless function_sym.special_form?
     function = eval(function_sym)
-    
+
     function.call(*args)
   end
 

@@ -40,10 +40,15 @@ end
 
 class Proc
   attr_accessor :'special_form'
-  
-  def call_as(called_as, from, *args)
-    @called_as = called_as
-    self.call(*args)
+
+  alias_method :old_call, :call
+  def call(*args)
+    BusScheme.stack.push self
+    self.old_call(*args).affect { BusScheme.stack.pop }
+  end
+
+  def scope # HACK HACK HACK
+    BusScheme.stack.reverse.detect{ |f| f.is_a? BusScheme::Lambda }.scope rescue BusScheme::SYMBOL_TABLE
   end
 
   def special_form?
