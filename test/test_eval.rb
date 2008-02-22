@@ -12,12 +12,12 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_set_symbol
-    Lambda.scope[:hi] = 'hi'
-    assert Lambda.scope[:hi]
+    BusScheme.current_scope[:hi] = 'hi'
+    assert BusScheme.current_scope[:hi]
   end
   
   def test_eval_symbol
-    Lambda.scope[:hi.sym] = 13
+    BusScheme.current_scope[:hi.sym] = 13
     assert_evals_to 13, :hi.sym
   end
 
@@ -63,15 +63,15 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_eval_multiple_forms
-    assert_raises(AssertionFailed) do
-      BusScheme.eval_string "(+ 2 2) (assert #f)"
+    assert_raises(EvalError) do
+      BusScheme.eval_string "(+ 2 2) (undefined-symbol)"
     end
   end
 
   def test_define_after_load
     BusScheme.eval_string "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")
 (define greeting \"hi\")"
-    assert Lambda.in_scope?(:greeting.sym)
+    assert BusScheme.in_scope?(:greeting.sym)
   end
 
   def test_funcall_list_means_nth

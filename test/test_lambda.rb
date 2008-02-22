@@ -3,10 +3,6 @@ require 'test_helper'
 
 class BusScheme::Lambda
   attr_accessor :body, :formals, :enclosing_scope
-
-  def self.stack
-    @@stack
-  end
 end
 
 class BusSchemeLambdaTest < Test::Unit::TestCase
@@ -17,7 +13,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_equal [], l.formals
 
     eval("(define foo (lambda () (+ 1 1)))")
-    assert Lambda[:foo.sym].is_a?(Lambda)
+    assert BusScheme[:foo.sym].is_a?(Lambda)
     assert_evals_to 2, [:foo.sym]
   end
 
@@ -38,9 +34,9 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_lambda_args_dont_stay_in_scope
     clear_symbols(:x, :foo)
     eval("(define foo (lambda (x) (+ x 1)))")
-    assert_nil Lambda[:x]
+    assert ! BusScheme.in_scope?(:x)
     assert_evals_to 2, [:foo, 1]
-    assert_nil Lambda[:x]
+    assert ! BusScheme.in_scope?(:x)
   end
 
   def test_lambda_calls_lambda
@@ -101,8 +97,8 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     eval "(stack-growth)"
   end
 
-#   def test_primitives_live_on_stack
-#     BusScheme::define 'stack-growth', lambda { assert Lambda.stack.size > 1 }
-#     eval "(stack-growth)"
-#   end
+  def test_primitives_live_on_stack
+    BusScheme::define 'stack-growth', lambda { assert BusScheme.stack.size > 1 }
+    eval "(stack-growth)"
+  end
 end

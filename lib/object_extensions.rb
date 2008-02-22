@@ -57,7 +57,7 @@ class Sym < String
 
   # TODO: refactor?
   def special_form?
-    BusScheme::Lambda[self].special_form?
+    BusScheme[self].special_form?
   end
   
   def inspect
@@ -65,6 +65,10 @@ class Sym < String
   end
 
   def to_s
+    self
+  end
+
+  def sym
     self
   end
 
