@@ -1,13 +1,11 @@
 module BusScheme
-  SYMBOL_TABLE = {}
-
   def self.define(identifier, value)
-    SYMBOL_TABLE[identifier.sym] = value
+    Lambda[identifier.sym] = value
   end
 
   def self.special_form(identifier, value)
     value.special_form = true
-    SYMBOL_TABLE[identifier.sym] = value
+    Lambda[identifier.sym] = value
   end
 
   define '#t', true
@@ -34,7 +32,7 @@ module BusScheme
 
   define 'load', lambda { |filename| BusScheme.load filename }
   define 'exit', lambda { exit }
-  define 'quit', lambda { exit }
+  define 'quit', Lambda['exit'.sym]
 
   # TODO: hacky to coerce everything to sexps... won't work once we start using vectors
   special_form 'quote', lambda { |arg| arg.sexp }

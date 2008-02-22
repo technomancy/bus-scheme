@@ -85,22 +85,15 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_evals_to [:a.sym, :b.sym, :c.sym].to_list, "(rest 'a 'b 'c)"
   end
 
-  def test_stacktrace
-    eval "
-(define gimme-trace (lambda () (stacktrace)))
-
-(define nest-trace (lambda ()
-  (gimme-trace)))"
-
-    assert_equal ["(eval)", 1, '(top-level)'], eval("(gimme-trace)")
+#   def test_stacktrace
+#     eval '(load "test/tracer.scm")'
+#     assert_equal [["(eval)", 1, '(top-level)']], eval("(f)")
     
-    assert_equal([["(eval)", 2, :'gimme-trace'.sym],
-                  ["(eval)", 5, :'nest-trace'.sym],
-                  ['anonymous'],
-                  ["(eval)", 1, '(top-level)']],
-                 eval("((lambda () (nest-trace)))"))
-#    eval "(trace)"
-  end
+#     assert_equal([["test/tracer.scm", 1, :'f'.sym],
+#                   ["test/tracer.scm", 4, :'g'.sym],
+#                   ['(eval)', 1, 'anonymous']],
+#                  eval("((lambda () (g)))"))
+#   end
 
   def test_stack_grows
     eval "(define stack-growth
@@ -108,7 +101,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     eval "(stack-growth)"
   end
 
-#   def test_stack_grows_with_primitives
+#   def test_primitives_live_on_stack
 #     BusScheme::define 'stack-growth', lambda { assert Lambda.stack.size > 1 }
 #     eval "(stack-growth)"
 #   end

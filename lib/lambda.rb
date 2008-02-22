@@ -1,9 +1,12 @@
 module BusScheme
+  # top-level
+  SYMBOL_TABLE = {}
+
   # Lambdas are closures.
   class Lambda < Cons
     @@stack = []
 
-    attr_reader :scope, :called_as
+    attr_reader :scope
     attr_accessor :special_form
     
     # create new Lambda object
@@ -11,13 +14,6 @@ module BusScheme
       @formals, @body, @enclosing_scope = [formals, body, Lambda.scope]
       @car = :lambda.sym
       @cdr = Cons.new(@formals.sexp, @body.sexp)
-    end
-
-    # call the function with given args
-    def call_as(called_as, from, *args)
-      @called_from = from || '(top-level)'
-      @called_as = called_as
-      call(*args)
     end
 
     # execute Lambda with given arg_values
@@ -34,7 +30,6 @@ module BusScheme
       @scope = RecursiveHash.new(locals, @enclosing_scope)
       # we dupe the lambda so that @scope is unique for each call of the function
       @@stack << self.dup
-      @called_as = nil # the dup we pushed to the stack has @called_as set
       
       begin
         return @body.map{ |form| BusScheme.eval(form) }.last
@@ -43,14 +38,6 @@ module BusScheme
       end
     end
 
-    def trace
-      if @called_as
-        [@called_as.file, @called_as.line, @called_from]
-      else
-        ['anonymous']
-      end
-    end
-    
     # What's the current scope?
     def self.scope
       @@stack.empty? ? SYMBOL_TABLE : @@stack.last.scope
@@ -73,7 +60,7 @@ module BusScheme
 
     # where were we called from?
     def self.stacktrace
-      @@stack.reverse.map { |fn| fn.trace }
+      @@stack
     end
 
     def self.stack

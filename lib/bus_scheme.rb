@@ -12,9 +12,9 @@ require 'recursive_hash'
 
 require 'parser'
 require 'eval'
-require 'primitives'
 require 'cons'
 require 'lambda'
+require 'primitives'
 
 module BusScheme
   VERSION = "0.7.5"

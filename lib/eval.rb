@@ -26,12 +26,7 @@ module BusScheme
       args.map!{ |arg| eval(arg) } unless function_sym.special_form?
       function = eval(function_sym)
 
-      # named functions (non-literal lambdas) need this info for tracing
-      if function_sym.is_a?(Sym)
-        function.call_as(function_sym, Lambda.stack.last, *args)
-      else
-        function.call(*args)
-      end
+      function.call(*args)
     end
   end
 end
