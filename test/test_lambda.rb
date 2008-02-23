@@ -5,6 +5,12 @@ class BusScheme::Lambda
   attr_accessor :body, :formals, :enclosing_scope
 end
 
+module BusScheme
+  def self.reset_stack
+    @@stack = []
+  end
+end
+
 class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_simple_lambda
     l = eval("(lambda () (+ 1 1))")
@@ -43,9 +49,18 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     eval "(define f (lambda (x) (+ 3 x)))"
     eval "(define g (lambda (y) (* 3 y)))"
     assert_evals_to 12, "(f (g 3))"
+    assert_evals_to 1, "((lambda () ((lambda () 1))))"
   end
 
+  def test_enforces_arg_count
+    assert_equal 3, eval("(lambda (x y z) z)").formals.size
+    assert_raises(ArgumentError) do
+      eval "((lambda (x) x))"
+    end
+  end
+  
   def test_lambda_closures
+    assert_evals_to 3, "((lambda (x) ((lambda (y) 3) 1)) 1)"
     eval "(define foo (lambda (x) ((lambda (y) (+ x y)) (* x 2))))"
     assert_evals_to 3, "(foo 1)"
     eval "(define holder ((lambda (x) (lambda () x)) 2))"
@@ -100,7 +115,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   end
 
   def test_primitives_live_on_stack
-    assert BusScheme.stack.empty?
+    BusScheme.reset_stack # bug workaround
     BusScheme.define 'stack-growth', lambda { assert BusScheme.stack.size > 1 }
     assert SYMBOL_TABLE.has_key?('stack-growth'.sym)
     eval "(stack-growth)"

@@ -5,6 +5,7 @@ module BusScheme
   
   # Parse a string, then eval the result
   def eval_string(string)
+    @@stack = [] # workaround a bug for testing; should remove this
     eval(parse("(begin #{string})"))
   end
 

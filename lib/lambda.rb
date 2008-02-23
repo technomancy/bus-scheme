@@ -23,13 +23,16 @@ module BusScheme
                end
 
       @scope = RecursiveHash.new(locals, @enclosing_scope)
+      
       BusScheme.stack.push self.dup
       begin
         val = @body.map{ |form| BusScheme.eval(form) }.last
-      ensure
+      rescue => e
+        raise e
         BusScheme.stack.pop
-        return val
       end
+      BusScheme.stack.pop
+      return val
     end
   end
 
@@ -45,10 +48,13 @@ module BusScheme
       BusScheme.stack.push self
       begin
         val = @body.call(*args)
-      ensure
+      rescue => e
+        raise e
         BusScheme.stack.pop
-        return val
       end
+      BusScheme.stack.pop
+      return val
     end
   end
 end
+
