@@ -47,7 +47,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
   def test_lambda_closures
     eval "(define foo (lambda (x) ((lambda (y) (+ x y)) (* x 2))))"
-    assert_evals_to 3, [:foo, 1]
+    assert_evals_to 3, "(foo 1)"
     eval "(define holder ((lambda (x) (lambda () x)) 2))"
     assert_evals_to 2, "(holder)"
   end

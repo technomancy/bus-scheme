@@ -30,4 +30,21 @@ module BusScheme
       return val
     end
   end
+
+  class Primitive < Lambda
+    def initialize body
+      @body = body
+      @enclosing_scope = BusScheme.current_scope
+    end
+
+    def call(*args)
+      # TODO: define needs to be smart enough not to put things in its own scope!
+      @scope = RecursiveHash.new({}, @enclosing_scope)
+      BusScheme.stack.push self
+      
+      val = @body.call(*args)
+      BusScheme.stack.pop
+      return val
+    end
+  end
 end

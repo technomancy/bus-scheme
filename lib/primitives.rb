@@ -1,9 +1,13 @@
 module BusScheme
   def self.define(identifier, value)
+    # TODO: fix if this turns out to be a good idea
+    value = Primitive.new(value) if value.is_a? Proc
     BusScheme[identifier.sym] = value
   end
 
   def self.special_form(identifier, value)
+    # TODO: fix if this turns out to be a good idea
+    value = Primitive.new(value) if value.is_a? Proc
     value.special_form = true
     BusScheme[identifier.sym] = value
   end

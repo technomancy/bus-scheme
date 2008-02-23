@@ -23,8 +23,8 @@ module BusScheme
   # Call a function with given args
   def apply(function_sym, args)
     args = args.to_a
-    args.map!{ |arg| eval(arg) } unless function_sym.special_form?
     function = eval(function_sym)
+    args.map!{ |arg| eval(arg) } unless function.special_form
 
     function.call(*args)
   end
