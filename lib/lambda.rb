@@ -24,10 +24,12 @@ module BusScheme
 
       @scope = RecursiveHash.new(locals, @enclosing_scope)
       BusScheme.stack.push self.dup
-      
-      val = @body.map{ |form| BusScheme.eval(form) }.last
-      BusScheme.stack.pop
-      return val
+      begin
+        val = @body.map{ |form| BusScheme.eval(form) }.last
+      ensure
+        BusScheme.stack.pop
+        return val
+      end
     end
   end
 
@@ -38,13 +40,15 @@ module BusScheme
     end
 
     def call(*args)
-      # TODO: define needs to be smart enough not to put things in its own scope!
+      # TODO: define needs to be smart enough not to put things in its own scope! 
       @scope = RecursiveHash.new({}, @enclosing_scope)
       BusScheme.stack.push self
-      
-      val = @body.call(*args)
-      BusScheme.stack.pop
-      return val
+      begin
+        val = @body.call(*args)
+      ensure
+        BusScheme.stack.pop
+        return val
+      end
     end
   end
 end

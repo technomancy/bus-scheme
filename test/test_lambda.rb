@@ -54,6 +54,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
   def test_changes_to_enclosed_variables_are_in_effect_after_lambda_execution
     assert_evals_to 2, "((lambda (x) (begin ((lambda () (set! x 2))) x)) 1)"
+    assert BusScheme.stack.empty?
   end
 
   def test_implicit_begin
@@ -82,15 +83,15 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_evals_to [:a.sym, :b.sym, :c.sym].to_list, "(rest 'a 'b 'c)"
   end
 
-#   def test_stacktrace
-#     eval '(load "test/tracer.scm")'
-#     assert_equal [["(eval)", 1, '(top-level)']], eval("(f)")
-    
-#     assert_equal([["test/tracer.scm", 1, :'f'.sym],
-#                   ["test/tracer.scm", 4, :'g'.sym],
-#                   ['(eval)', 1, 'anonymous']],
-#                  eval("((lambda () (g)))"))
-#   end
+  #   def test_stacktrace
+  #     eval '(load "test/tracer.scm")'
+  #     assert_equal [["(eval)", 1, '(top-level)']], eval("(f)")
+  
+  #     assert_equal([["test/tracer.scm", 1, :'f'.sym],
+  #                   ["test/tracer.scm", 4, :'g'.sym],
+  #                   ['(eval)', 1, 'anonymous']],
+  #                  eval("((lambda () (g)))"))
+  #   end
 
   def test_stack_grows
     eval "(define stack-growth
@@ -99,7 +100,9 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   end
 
   def test_primitives_live_on_stack
-    BusScheme::define 'stack-growth', lambda { assert BusScheme.stack.size > 1 }
+    assert BusScheme.stack.empty?
+    BusScheme.define 'stack-growth', lambda { assert BusScheme.stack.size > 1 }
+    assert SYMBOL_TABLE.has_key?('stack-growth'.sym)
     eval "(stack-growth)"
   end
 end
