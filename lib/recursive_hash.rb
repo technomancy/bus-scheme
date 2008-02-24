@@ -27,5 +27,10 @@ module BusScheme
         immediate_set symbol, value
       end
     end
+
+    alias_method :old_inspect, :inspect
+    def inspect
+      "#{old_inspect} / #{@parent.inspect}"
+    end
   end
 end

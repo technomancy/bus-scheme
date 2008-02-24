@@ -9,6 +9,7 @@ module BusScheme
       @formals, @body, @enclosing_scope = [formals, body, BusScheme.current_scope]
       @car = :lambda.sym
       @cdr = Cons.new(@formals.sexp, @body.sexp)
+      p BusScheme.stack.last.scope
     end
 
     # execute body with args bound to formals
@@ -39,12 +40,10 @@ module BusScheme
   class Primitive < Lambda
     def initialize body
       @body = body
-      @enclosing_scope = BusScheme.current_scope
     end
 
     def call(*args)
-      # TODO: define needs to be smart enough not to put things in its own scope! 
-      @scope = RecursiveHash.new({}, @enclosing_scope)
+      @scope = BusScheme.current_scope
       BusScheme.stack.push self
       begin
         val = @body.call(*args)

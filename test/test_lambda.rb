@@ -1,16 +1,6 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
-class BusScheme::Lambda
-  attr_accessor :body, :formals, :enclosing_scope
-end
-
-module BusScheme
-  def self.reset_stack
-    @@stack = []
-  end
-end
-
 class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_simple_lambda
     l = eval("(lambda () (+ 1 1))")
@@ -61,8 +51,10 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   
   def test_lambda_closures
     assert_evals_to 3, "((lambda (x) ((lambda (y) 3) 1)) 1)"
-    eval "(define foo (lambda (x) ((lambda (y) (+ x y)) (* x 2))))"
-    assert_evals_to 3, "(foo 1)"
+    eval "(define foo (lambda (xx) ((lambda (y) (+ xx y)) (* xx 2))))"
+    assert foo = BusScheme[:foo.sym]
+    
+    assert_evals_to 3, foo.call(1)
     eval "(define holder ((lambda (x) (lambda () x)) 2))"
     assert_evals_to 2, "(holder)"
   end
@@ -115,7 +107,6 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   end
 
   def test_primitives_live_on_stack
-    BusScheme.reset_stack # bug workaround
     BusScheme.define 'stack-growth', lambda { assert BusScheme.stack.size > 1 }
     assert SYMBOL_TABLE.has_key?('stack-growth'.sym)
     eval "(stack-growth)"
