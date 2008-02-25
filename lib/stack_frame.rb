@@ -1,13 +1,13 @@
 module BusScheme
   class StackFrame < Hash
-    attr_reader :called_as, :file, :line
+    attr_reader :called_as, :file, :line, :called_from
     
     # takes a hash and a parent
-    def initialize(hash, parent, called_as)
+    def initialize(locals, parent, called_as)
       @parent, @called_as = [parent, called_as]
-      @file = @called_as.file if @called_as.respond_to? :file
-      @line = @called_as.line if @called_as.respond_to? :line
-      @called_as = 'anonymous' if called_as.is_a?(Cons) or called_as.is_a?(Array)
+      @file = @called_as.respond_to?(:file) ? @called_as.file : '(eval)'
+      @line = @called_as.respond_to?(:line) ? @called_as.line : 0
+      @called_as = '(anonymous)' if called_as.is_a?(Cons) or called_as.is_a?(Array)
 
       @called_from = if BusScheme.stack.empty? or !BusScheme.stack.last.respond_to? :called_as
                        '(top-level)'
@@ -15,7 +15,7 @@ module BusScheme
                        BusScheme.stack.last.called_as
                      end
       
-      hash.each { |k, v| immediate_set k, v }
+      locals.each { |k, v| immediate_set k, v }
     end
 
     alias_method :immediate_has_key?, :has_key?

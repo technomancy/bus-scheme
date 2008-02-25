@@ -8,12 +8,12 @@ end
 $LOAD_PATH << File.dirname(__FILE__)
 require 'object_extensions'
 require 'array_extensions'
-require 'recursive_hash'
 
 require 'parser'
 require 'eval'
 require 'cons'
 require 'lambda'
+require 'stack_frame'
 require 'primitives'
 
 module BusScheme

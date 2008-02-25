@@ -49,12 +49,7 @@ module BusScheme
     end
 
     def call(*args)
-      # TODO: should create new frame here
-      # @frame = StackFrame.new({}, BusScheme.current_scope, @called_as)
-
-      @frame = BusScheme.current_scope
-
-      BusScheme.stack.push @frame
+      BusScheme.stack.push StackFrame.new({}, BusScheme.current_scope, @called_as)
       begin
         val = @body.call(*args)
       rescue => e

@@ -46,11 +46,12 @@ module BusScheme
   special_form 'quote', lambda { |arg| arg.sexp }
   special_form 'if', lambda { |q, yes, *no| eval(eval(q) ? yes : [:begin] + no) }
   special_form 'begin', lambda { |*args| args.map{ |arg| eval(arg) }.last }
+  special_form 'begin-notrace', lambda { |*args| args.map{ |arg| eval(arg) }.last }
   special_form 'lambda', lambda { |args, *form| Lambda.new(args, form) }
   # TODO: does define always create top-level bindings, or local?
-  special_form 'define', lambda { |sym, value| BusScheme[sym] = eval(value); sym }
+  special_form 'define', lambda { |sym, value| BusScheme::SYMBOL_TABLE[sym] = eval(value); sym }
   special_form 'set!', lambda { |sym, value| raise EvalError.new unless BusScheme.in_scope?(sym)
-    BusScheme[:define.sym].call(sym, value) }
+    BusScheme[sym.sym] = value }
 
   # TODO: once we have macros, this can be defined in scheme
   special_form 'and', lambda { |*args| args.all? { |x| eval(x) } }

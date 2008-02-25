@@ -93,11 +93,13 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
     def test_stacktrace
       eval '(load "test/tracer.scm")'
-      # assert_equal ["(eval):1 in (top-level)"], eval("(f)")
+      assert_equal ["(eval):1 in (top-level)"], eval("(stacktrace)")
   
       assert_equal(["test/tracer.scm:1 in f",
                     "test/tracer.scm:4 in g",
-                    "(eval):1 in anonymous"],
+                    "(eval):1 in (anonymous)",
+                    "(eval):1 in (top-level)"
+                   ],
                    eval("((lambda () (g)))"))
     end
 
