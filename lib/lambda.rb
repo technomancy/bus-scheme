@@ -24,7 +24,7 @@ module BusScheme
 
       @scope = RecursiveHash.new(locals, @enclosing_scope)
       
-      BusScheme.stack.push self.dup
+      BusScheme.stack.push @scope
       begin
         val = @body.map{ |form| BusScheme.eval(form) }.last
       rescue => e
@@ -44,7 +44,7 @@ module BusScheme
 
     def call(*args)
       @scope = BusScheme.current_scope
-      BusScheme.stack.push self
+      BusScheme.stack.push @scope
       begin
         val = @body.call(*args)
       rescue => e

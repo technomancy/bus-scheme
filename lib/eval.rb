@@ -29,7 +29,7 @@ module BusScheme
   end
 
   def current_scope
-    @@stack.empty? ? SYMBOL_TABLE : @@stack.last.scope
+    @@stack.empty? ? SYMBOL_TABLE : @@stack.last
   end
 
   def in_scope?(sym)

@@ -25,6 +25,10 @@ module BusScheme
   define 'list', lambda { |*members| members.to_list }
   define 'vector', lambda { |*members| members.to_a }
   define 'map', lambda { |fn, list| list.map(lambda { |n| fn.call(n) }).sexp }
+
+  define 'read', lambda { gets }
+  define 'write', lambda { |obj| puts obj.inspect; 0 }
+  define 'display', lambda { |obj| puts obj }
   
   define 'eval', lambda { |code| eval(code) }
   define 'stacktrace', lambda { BusScheme.stacktrace }
