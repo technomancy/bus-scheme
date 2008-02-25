@@ -9,6 +9,7 @@ module BusScheme
       @formals, @body, @enclosing_scope = [formals, body, BusScheme.current_scope]
       @car = :lambda.sym
       @cdr = Cons.new(@formals.sexp, @body.sexp)
+      @called_as = nil # avoid warnings
     end
 
     # execute body with args bound to formals
@@ -22,9 +23,9 @@ module BusScheme
                  @formals.zip(args).to_hash
                end
 
-      @scope = RecursiveHash.new(locals, @enclosing_scope)
+      @frame = StackFrame.new(locals, @enclosing_scope, @called_as)
       
-      BusScheme.stack.push @scope
+      BusScheme.stack.push @frame
       begin
         val = @body.map{ |form| BusScheme.eval(form) }.last
       rescue => e
@@ -33,6 +34,11 @@ module BusScheme
       end
       BusScheme.stack.pop
       return val
+    end
+
+    def call_as(called_as, *args)
+      @called_as = called_as
+      call(*args)
     end
   end
 
@@ -43,8 +49,12 @@ module BusScheme
     end
 
     def call(*args)
-      @scope = BusScheme.current_scope
-      BusScheme.stack.push @scope
+      # TODO: should create new frame here
+      # @frame = StackFrame.new({}, BusScheme.current_scope, @called_as)
+
+      @frame = BusScheme.current_scope
+
+      BusScheme.stack.push @frame
       begin
         val = @body.call(*args)
       rescue => e

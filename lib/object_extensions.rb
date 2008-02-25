@@ -57,10 +57,6 @@ class Sym < String
   def sym
     self
   end
-
-  def trace
-    "#{@file}:#{@line} in #{self}"
-  end
 end
 
 class Hash

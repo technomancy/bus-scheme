@@ -91,15 +91,15 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_evals_to [:a.sym, :b.sym, :c.sym].to_list, "(rest 'a 'b 'c)"
   end
 
-  #   def test_stacktrace
-  #     eval '(load "test/tracer.scm")'
-  #     assert_equal [["(eval)", 1, '(top-level)']], eval("(f)")
+    def test_stacktrace
+      eval '(load "test/tracer.scm")'
+      # assert_equal ["(eval):1 in (top-level)"], eval("(f)")
   
-  #     assert_equal([["test/tracer.scm", 1, :'f'.sym],
-  #                   ["test/tracer.scm", 4, :'g'.sym],
-  #                   ['(eval)', 1, 'anonymous']],
-  #                  eval("((lambda () (g)))"))
-  #   end
+      assert_equal(["test/tracer.scm:1 in f",
+                    "test/tracer.scm:4 in g",
+                    "(eval):1 in anonymous"],
+                   eval("((lambda () (g)))"))
+    end
 
   def test_stack_grows
     eval "(define stack-growth

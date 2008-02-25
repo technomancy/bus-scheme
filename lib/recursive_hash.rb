@@ -1,9 +1,20 @@
 module BusScheme
-  # RecursiveHash is needed to store Lambda environments
-  class RecursiveHash < Hash
+  class StackFrame < Hash
+    attr_reader :called_as, :file, :line
+    
     # takes a hash and a parent
-    def initialize(hash, parent)
-      @parent = parent
+    def initialize(hash, parent, called_as)
+      @parent, @called_as = [parent, called_as]
+      @file = @called_as.file if @called_as.respond_to? :file
+      @line = @called_as.line if @called_as.respond_to? :line
+      @called_as = 'anonymous' if called_as.is_a?(Cons) or called_as.is_a?(Array)
+
+      @called_from = if BusScheme.stack.empty? or !BusScheme.stack.last.respond_to? :called_as
+                       '(top-level)'
+                     else
+                       BusScheme.stack.last.called_as
+                     end
+      
       hash.each { |k, v| immediate_set k, v }
     end
 
@@ -32,9 +43,8 @@ module BusScheme
       end
     end
 
-    alias_method :old_inspect, :inspect
-    def inspect
-      "#{old_inspect} / #{@parent.inspect}"
+    def trace
+      "#{@file}:#{@line} in #{@called_from}"
     end
   end
 end

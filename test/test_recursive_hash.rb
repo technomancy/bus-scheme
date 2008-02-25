@@ -1,15 +1,11 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
-class RecursiveHash
-  attr_reader :parent
-end
-
-class RecursiveHashTest < Test::Unit::TestCase
+class StackFrameTest < Test::Unit::TestCase
   def setup
     @parent = {:foo => "FOO", :baz => 'BAZ'}
-    @h = RecursiveHash.new({:foo => 'foo', :bar => 'bar'},
-                           @parent)
+    @h = StackFrame.new({:foo => 'foo', :bar => 'bar'},
+                           @parent, eval("(lambda () 1)"))
   end
   
   def test_has_key?

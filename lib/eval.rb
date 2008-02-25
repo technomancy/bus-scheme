@@ -25,7 +25,8 @@ module BusScheme
     function = eval(function_sym)
     args.map!{ |arg| eval(arg) } unless function.special_form
     puts ' ' * stack.length + Cons.new(function_sym, args.sexp).inspect if (@trace ||= false)
-    function.call(*args)
+
+    function.call_as(function_sym, *args)
   end
 
   def current_scope
@@ -46,7 +47,8 @@ module BusScheme
   end
 
   def stacktrace
-    @@stack.reverse.map{ |frame| frame }
+    # (stacktrace)'s own frame shouldn't be included...
+    @@stack.reverse.map{ |frame| frame.trace if frame.respond_to? :trace }.compact
   end
 
   def stack
