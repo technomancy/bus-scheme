@@ -13,7 +13,7 @@ code is strictly bus-driven. Bus Scheme is primarily a toy; using it
 for anything serious is (right now) ill-advised.
 
 Bus Scheme aims for general Scheme usefulness optimized for learning
-and fun. It's not targeting R5RS or anything like that.
+and fun. It's loosely targeting R5RS, but varies in huge ways.
 
 == Usage
 
@@ -42,11 +42,11 @@ corresponding to the value of key instead of (gethash myhash key).
 TODO: This notation is flexible, and other data types may have
 their own "call behaviour" specified.
 
-=== Mongrel integration
+=== Web functionality
 
-Web and RESTful application development are part of the package. Bus
-Scheme uses the wonderful Mongrel web server to allow scheme programs
-to serve web applications. TODO: Representations of data can be easily
+Planned: Web and RESTful application development are part of the
+package. Bus Scheme uses the Rack library to allow scheme programs to
+serve web applications. Representations of data can be easily
 translated between s-expressions, HTML, and JSON.
 
 === Written in a high-level language
@@ -58,13 +58,6 @@ Ruby allows the implementation code to remain compact and concise. Bus
 Scheme should run on Ruby 1.8, Ruby 1.9, and Rubinius at least. Bus
 Scheme also allows you to drop into Ruby when that's convenient. TODO:
 allow real inline Ruby blocks instead of access via a function call.
-
-=== XML integration
-
-TODO: Bus Scheme has a notion of XML literals so that it may be
-inlined into your Scheme code, much like the way ECMAScript uses
-E4X. If you'd prefer, you can leverage convenient s-expression -> XML
-conversion facilities.
 
 === Test-Driven
 
@@ -91,10 +84,8 @@ Bus Scheme is currently missing pieces of functionality:
 * dotted cons cells
 
 === General
-* stack traces for primitives
-* test framework needs work
-* macros
 * continuations
+* macros
 
 Failing tests for some of these are already included (commented out,
 mostly) in the relevant test files.
@@ -114,7 +105,8 @@ mostly) in the relevant test files.
 
 == Requirements
 
-Bus Scheme should run on (at least) Ruby 1.8, Ruby 1.9, and Rubinius.
+Bus Scheme should run on (at least) Ruby 1.8, Ruby 1.9, and
+Rubinius. Any support for Windows is entirely accidental.
 
 == Contributing
 

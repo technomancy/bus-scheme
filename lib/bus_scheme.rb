@@ -21,7 +21,8 @@ module BusScheme
 
   PROMPT = '> '
   INCOMPLETE_PROMPT = ' ... '
-  LOAD_PATH = ["#{File.dirname(__FILE__)}/scheme/", File.expand_path('.')]
+  BusScheme['load-path'.sym] = Cons.new("#{File.dirname(__FILE__)}/scheme/",
+                                        Cons.new(File.expand_path('.')))
   
   class BusSchemeError < StandardError; end
   class ParseError < BusSchemeError; end
@@ -63,10 +64,9 @@ module BusScheme
     loaded_files.pop
   end
 
-  # TODO: expose load path in scheme
   def self.add_load_path(filename)
     return filename if filename.match(/^\//) or File.exist? filename
-    LOAD_PATH.map { |path| return path + filename if File.exist? path + filename }
+    BusScheme['load-path'.sym].sexp.map Proc.new { |path| return path + '/' + filename if File.exist? path + '/' + filename }
     raise LoadError, "File not found: #{filename}"
   end
 

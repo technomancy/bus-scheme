@@ -20,12 +20,14 @@ class PrimitivesTest < Test::Unit::TestCase
   end
 
   def test_load_path
-    LOAD_PATH << File.dirname(__FILE__) + '/../examples/'
+    examples = File.dirname(__FILE__) + '/../examples/'
+    eval "(set! load-path (cons \"#{examples}\" load-path))"
     eval "(load \"fib.scm\")"
     assert BusScheme[:fib.sym]
     
     clear_symbols :fib.sym
-    LOAD_PATH << File.dirname(__FILE__)
+    current = File.dirname(__FILE__)
+    eval "(set! load-path (cons \"#{current}\" load-path))"
     eval "(load \"../examples/fib.scm\")"
     assert BusScheme[:fib.sym]
   end
