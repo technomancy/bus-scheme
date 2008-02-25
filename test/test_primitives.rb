@@ -15,6 +15,7 @@ class PrimitivesTest < Test::Unit::TestCase
     eval "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")"
     assert BusScheme[:fib.sym]
     assert_evals_to 5, "(+ (fib 3) (fib 4))"
+    assert_evals_to 8, "(fib 6)"
     assert_evals_to [1, 1, 2, 3, 5, 8].to_list, "(map fib (list 1 2 3 4 5 6))"
   end
 

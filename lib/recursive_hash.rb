@@ -11,17 +11,21 @@ module BusScheme
     alias_method :immediate_set, :[]=
     alias_method :immediate_lookup, :[]
 
-    # Just your regular has stuff, only it takes the parent into account
+    # Just your regular hash stuff, only it takes the parent into account
     def has_key?(symbol)
       immediate_has_key?(symbol) or @parent && @parent.has_key?(symbol)
     end
 
     def [](symbol)
-      immediate_lookup(symbol) or @parent && @parent[symbol]
+      if immediate_has_key?(symbol)
+        immediate_lookup(symbol)
+      else
+        @parent && @parent[symbol]
+      end
     end
 
     def []=(symbol, value)
-      if !immediate_has_key?(symbol) and @parent and @parent.has_key?(symbol)
+      if !immediate_has_key?(symbol) and @parent && @parent.has_key?(symbol)
         @parent[symbol] = value
       else
         immediate_set symbol, value

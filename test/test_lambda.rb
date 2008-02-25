@@ -59,8 +59,9 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_evals_to 2, "(holder)"
   end
 
-  def test_changes_to_enclosed_variables_are_in_effect_after_lambda_execution
-    assert_evals_to 2, "((lambda (x) (begin ((lambda () (set! x 2))) x)) 1)"
+  def test_changes_to_enclosed_variables_alter_original_bindings
+    BusScheme.reset_stack # TODO: shouldn't reqire this
+    assert_evals_to 2, "((lambda (x) ((lambda () (set! x 2))) x) 1)"
     assert BusScheme.stack.empty?
   end
 

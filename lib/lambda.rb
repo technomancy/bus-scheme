@@ -9,7 +9,6 @@ module BusScheme
       @formals, @body, @enclosing_scope = [formals, body, BusScheme.current_scope]
       @car = :lambda.sym
       @cdr = Cons.new(@formals.sexp, @body.sexp)
-      p BusScheme.stack.last.scope
     end
 
     # execute body with args bound to formals
@@ -39,6 +38,7 @@ module BusScheme
 
   class Primitive < Lambda
     def initialize body
+      @car = @cdr = nil # avoid "Not initialized" warnings
       @body = body
     end
 

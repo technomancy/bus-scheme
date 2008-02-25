@@ -11,7 +11,6 @@ module BusScheme
   # Eval a form passed in as an array
   def eval(form)
     if (form.is_a?(Cons) or form.is_a?(Array)) and form.first
-      puts ' ' * stack.length + form.inspect if (@trace ||= false)
       apply(form.first, form.rest)
     elsif form.is_a? Sym or form.is_a? Symbol # TODO: can we remove Symbol here?
       self[form.sym]
@@ -25,7 +24,7 @@ module BusScheme
     args = args.to_a
     function = eval(function_sym)
     args.map!{ |arg| eval(arg) } unless function.special_form
-
+    puts ' ' * stack.length + Cons.new(function_sym, args.sexp).inspect if (@trace ||= false)
     function.call(*args)
   end
 
@@ -38,10 +37,7 @@ module BusScheme
   end
   
   def [](sym)
-    unless in_scope?(sym)
-#      p current_scope
-      raise EvalError.new("Undefined symbol: #{sym.inspect}")
-    end
+    raise EvalError.new("Undefined symbol: #{sym.inspect}") unless in_scope?(sym)
     current_scope[sym]
   end
 
