@@ -38,7 +38,11 @@ end
 desc "Show tests that have been commented out"
 task :commented_tests do
   Dir.glob('test/test_*.rb').each do |file|
-    puts File.read(file).grep(/^\s*#\s*def (test_[^ ]*)/)
+    puts File.read(file).grep(/^\s*#+\s*def (test_[^ ]*)/)
+  end
+
+  Dir.glob('test/test_*.scm').each do |file|
+    puts File.read(file).grep(/^\s*;+\s*\(assert/)
   end
 end
 
@@ -54,8 +58,7 @@ end
 
 desc 'Run scheme tests in bus scheme'
 task :scheme_test do
-  require 'bus_scheme'
   Dir.glob('test/test_*.scm').each do |file|
-    BusScheme.eval_string("(load \"#{file}\")")
+    BusScheme.load(file)
   end
 end

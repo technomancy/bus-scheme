@@ -31,7 +31,9 @@ module BusScheme
           list << element unless (element == '.'.to_sym)
         end
       end
-      raise IncompleteError unless element == :')'
+      if element != :')'
+        raise IncompleteError, "Incomplete expression: #{BusScheme.loaded_files.last}:#{@@lines}"
+      end
     end
   end
 

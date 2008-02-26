@@ -179,6 +179,10 @@ class BusSchemeParserTest < Test::Unit::TestCase
     tree = BusScheme.parse("(define foo 23)")
     assert_equal "(eval)", tree.cdr.car.file
   end
+
+  def test_parser_allows_comments_after_last_expression
+    assert_parses_to [2], "2 ;; comments at the end"
+  end
   
   private
 

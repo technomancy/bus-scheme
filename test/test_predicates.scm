@@ -1,3 +1,5 @@
+;; still to test: number? vector? procedure? char? port?
+
 (assert (boolean? (> 3 2)))
 (assert (boolean? (> 1 2)))
 (assert (not (boolean? 3)))
@@ -16,4 +18,7 @@
 (assert (not (cons? #t)))
 (assert (pair? (cons 1 2)))
 
-;; still to test: string? number? vector? procedure? char? port?
+(assert (string? "h"))
+(assert (string? "hello"))
+(assert (not (string? 'hi)))
+(assert (not (string? string?)))
