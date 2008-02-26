@@ -1,0 +1,11 @@
+(assert (boolean? (> 3 2)))
+(assert (boolean? (> 1 2)))
+(assert (not (boolean? 3)))
+(assert (not (boolean? "hi")))
+(assert (not (boolean? >)))
+
+(assert (symbol? 'hi))
+(assert (symbol? (quote hullo)))
+(assert (not (symbol? "hi")))
+(assert (not (symbol? 23)))
+(assert (not (symbol? assert)))
