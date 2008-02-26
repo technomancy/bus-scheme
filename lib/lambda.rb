@@ -6,6 +6,7 @@ module BusScheme
     
     # create new Lambda object
     def initialize(formals, body)
+      @special_form = false
       @formals, @body, @enclosing_scope = [formals, body, BusScheme.current_scope]
       @car = :lambda.sym
       @cdr = Cons.new(@formals.sexp, @body.sexp)

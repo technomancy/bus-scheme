@@ -2,60 +2,29 @@
 
 == Parsing
 
-"a sequence of letters, digits, and "extended alphabetic characters
-that begins with a character that cannot begin a number is an
-identifier"
+Unsupported:
+* Quasiquote, unquote, unquote-splice
+* Backslash in strings
+* Character literals
+* Alternate-base numbers
+* Alternate define lambda forms
 
-Extended chars: 
-! $ % & * + - . / : < = > ? @ ^ _ ~
-
-Quasiquote, unquote, unquote-splice
-
-Backslash in strings
-
-[]{}| - reserved
-
-Character literals
-
-Alternate-base numbers
-
-Alternate lambda forms
+* []{}| should be reserved
 
 == Functions
 
 === Basic
-read
-cond
-case
-let*
-letrec
-do
-delay
+Unsupported:
+* cond
+* case
+* let*
+* letrec
+* do
+* delay
+* read - uses Ruby's gets
 
-=== Predicates
-boolean?
-symbol?
-char?
-vector?
-procedure?
-pair?
-number?
-string?
-port?
-
-== Errors
-
-Mutating constant values
-Using invalid identifiers
-
-== Macros
-
-...
-
-== Other
-
+== General
 Tail-recursion
 
 Continuations
 
-Gone through the doc through section 4

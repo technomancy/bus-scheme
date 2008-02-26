@@ -8,7 +8,9 @@ class PrimitivesTest < Test::Unit::TestCase
   end
 
   def test_run_scheme_tests
-    BusScheme.load(File.dirname(__FILE__) + '/test_primitives.scm')
+    Dir.glob(File.dirname(__FILE__) + '/test_*.scm').each do |f|
+      BusScheme.load f
+    end
   end
 
   def test_load_file

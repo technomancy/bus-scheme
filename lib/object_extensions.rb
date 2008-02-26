@@ -1,12 +1,24 @@
-module Callable
-  # allows for (mylist 4) => mylist[4]
-  def call_as(sym, *args)
-    self.call(*args)
+class Sym < String
+  attr_accessor :file, :line
+
+  # TODO: refactor?
+  def special_form
+    BusScheme[self].special_form
   end
-  def call(*args)
-    self.[](*args)
+  
+  def inspect
+    self
+  end
+
+  def to_s
+    self
+  end
+
+  def sym
+    self
   end
 end
+
 
 class Object
   # Return self after evaling block
@@ -25,6 +37,16 @@ class Object
   end
 end
 
+module Callable
+  # allows for (mylist 4) => mylist[4]
+  def call_as(sym, *args)
+    self.call(*args)
+  end
+  def call(*args)
+    self.[](*args)
+  end
+end
+
 class String
   include Callable
   def sym
@@ -35,27 +57,6 @@ end
 class Symbol
   def sym
     Sym.new(self.to_s)
-  end
-end
-
-class Sym < String
-  attr_accessor :file, :line
-
-  # TODO: refactor?
-  def special_form?
-    BusScheme[self].special_form?
-  end
-  
-  def inspect
-    self
-  end
-
-  def to_s
-    self
-  end
-
-  def sym
-    self
   end
 end
 

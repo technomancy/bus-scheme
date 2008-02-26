@@ -13,7 +13,11 @@ code is strictly bus-driven. Bus Scheme is primarily a toy; using it
 for anything serious is (right now) ill-advised.
 
 Bus Scheme aims for general Scheme usefulness optimized for learning
-and fun. It's loosely targeting R5RS, but varies in huge ways.
+and fun. It's loosely targeting R5RS, but varies in huge ways. (For
+the purposes of this project we pretend that R6RS never happened.) See
+the file R5RS.diff for ways in which Bus Scheme differs from the
+standard, both things that are yet unimplemented and things that are
+intentionally different.
 
 == Usage
 

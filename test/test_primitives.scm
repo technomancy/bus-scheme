@@ -17,6 +17,8 @@
 (assert-equal 9 (begin (define foo 779) 9))
 (assert-equal 779 foo)
 
+(assert (null? (cdr (cons 3))))
+
 ;; define
 (define foo 5)
 (define bar (quote (5 5 5)))

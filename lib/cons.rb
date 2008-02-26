@@ -1,7 +1,8 @@
 module BusScheme
   class Cons
     attr_accessor :car, :cdr
-    
+
+    # TODO: figure out default values
     def initialize(car, cdr = nil)
       @car, @cdr = [car, cdr]
     end

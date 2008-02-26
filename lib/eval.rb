@@ -48,7 +48,7 @@ module BusScheme
   end
 
   def stacktrace
-    # (stacktrace)'s own frame shouldn't be included...
+    # TODO: notrace is super-duper-hacky!
     @@stack.reverse.map{ |frame| frame.trace if frame.respond_to? :trace and frame.called_from != 'begin-notrace'}.compact
   end
 

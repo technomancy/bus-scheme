@@ -21,7 +21,7 @@ module BusScheme
   define '/', lambda { |x, y| x / y }
 
   define 'concat', lambda { |*args| args.join('') }
-  define 'cons', lambda { |car, cdr| Cons.new(car, cdr) }
+  define 'cons', lambda { |*args| Cons.new(*args) }
   define 'list', lambda { |*members| members.to_list }
   define 'vector', lambda { |*members| members.to_a }
   define 'map', lambda { |fn, list| list.map(lambda { |n| fn.call(n) }).sexp }
@@ -36,7 +36,7 @@ module BusScheme
   define 'fail', lambda { |message| raise AssertionFailed, "#{message}\n  #{BusScheme.stacktrace.join("\n  ")}" }
   
   define 'ruby', lambda { |*code| Kernel.eval code.join('') }
-  define 'send', lambda { |obj, *message| obj.send(*message) }
+  define 'send', lambda { |obj, message, *args| obj.send(message.to_sym, *args) }
 
   define 'load', lambda { |filename| BusScheme.load filename }
   define 'exit', lambda { exit }

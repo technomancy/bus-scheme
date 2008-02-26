@@ -48,7 +48,7 @@ task :rbx_test do
   if ENV['test']
     system "#{BIN} test/test_#{ENV['test']}.rb"
   else
-    system "#{BIN} -w -Ilib:ext:bin:test -e '#{Dir.glob('test/test_*.rb').map{ |f| "require \"" + f + "\" "}.join('; ')}'"
+    system "#{BIN} -w -Ilib:test -e '#{Dir.glob('test/test_*.rb').map{ |f| "require \"" + f + "\" "}.join('; ')}'"
   end
 end
 
