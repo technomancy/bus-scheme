@@ -9,3 +9,11 @@
 (assert (not (symbol? "hi")))
 (assert (not (symbol? 23)))
 (assert (not (symbol? assert)))
+
+(assert (cons? (cons 1 2)))
+(assert (cons? cons?))
+(assert (not (cons? 2)))
+(assert (not (cons? #t)))
+(assert (pair? (cons 1 2)))
+
+;; still to test: string? number? vector? procedure? char? port?
