@@ -26,11 +26,11 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_eval_function_call
-    assert_evals_to 2, [:+, 1, 1]
+    assert_evals_to 2, "(+ 1 1)"
   end
 
   def test_nested_arithmetic
-    assert_evals_to 6, [:+, 1, [:+, 1, [:*, 2, 2]]]
+    assert_evals_to 6, "(+ 1 (+ 1 (* 2 2)))"
   end
 
   def test_blows_up_with_undefined_symbol

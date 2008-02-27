@@ -15,7 +15,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
   def test_lambda_with_arg
     eval("(define foo (lambda (x) (+ x 1)))")
-    assert_evals_to 2, [:foo, 1]
+    assert_evals_to 2, "(foo 1)"
   end
 
   def test_eval_literal_lambda
@@ -24,14 +24,14 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
   def test_lambda_with_incorrect_arity
     eval("(define foo (lambda (x) (+ x 1)))")
-    assert_raises(ArgumentError) { assert_evals_to 2, [:foo, 1, 3] }
+    assert_raises(ArgumentError) { assert_evals_to 2, "(foo 1 3)" }
   end
 
   def test_lambda_args_dont_stay_in_scope
     clear_symbols(:x, :foo)
     eval("(define foo (lambda (x) (+ x 1)))")
     assert ! BusScheme.in_scope?(:x)
-    assert_evals_to 2, [:foo, 1]
+    assert_evals_to 2, "(foo 1)"
     assert ! BusScheme.in_scope?(:x)
   end
 

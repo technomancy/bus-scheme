@@ -13,7 +13,7 @@ module BusScheme
   def eval(form)
     if (form.is_a?(Cons) or form.is_a?(Array)) and form.first
       apply(form.first, form.rest)
-    elsif form.is_a? Sym or form.is_a? Symbol # TODO: can we remove Symbol here?
+    elsif form.is_a? Sym
       self[form.sym]
     else # well it must be a literal then
       form

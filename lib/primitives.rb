@@ -44,7 +44,7 @@ module BusScheme
 
   # TODO: hacky to coerce everything to sexps... won't work once we start using vectors
   special_form 'quote', lambda { |arg| arg.sexp }
-  special_form 'if', lambda { |q, yes, *no| eval(eval(q) ? yes : [:begin] + no) }
+  special_form 'if', lambda { |q, yes, *no| eval(eval(q) ? yes : [:begin.sym] + no) }
   special_form 'begin', lambda { |*args| args.map{ |arg| eval(arg) }.last }
   special_form 'begin-notrace', lambda { |*args| args.map{ |arg| eval(arg) }.last }
   special_form 'lambda', lambda { |args, *form| Lambda.new(args, form) }
