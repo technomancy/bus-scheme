@@ -47,7 +47,7 @@ task :commented_tests do
 end
 
 # TODO: use multiruby, duh
-desc "Run tests in Rubinius"
+desc "Run ruby tests in Rubinius"
 task :rbx_test do
   if ENV['test']
     system "#{BIN} test/test_#{ENV['test']}.rb"
@@ -56,9 +56,11 @@ task :rbx_test do
   end
 end
 
-desc 'Run scheme tests in bus scheme'
+desc 'Run tests written in Scheme'
 task :scheme_test do
   Dir.glob('test/test_*.scm').each do |file|
     BusScheme.load(file)
   end
 end
+
+task :default => [:test, :scheme_test]

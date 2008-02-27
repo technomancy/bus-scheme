@@ -7,12 +7,6 @@ class PrimitivesTest < Test::Unit::TestCase
     assert_raises(AssertionFailed) { eval "(fail \"EPIC FAIL\")" }
   end
 
-  def test_run_scheme_tests
-    Dir.glob(File.dirname(__FILE__) + '/test_*.scm').each do |f|
-      BusScheme.load f
-    end
-  end
-
   def test_load_file
     eval "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")"
     assert BusScheme[:fib.sym]

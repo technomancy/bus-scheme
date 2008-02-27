@@ -1,4 +1,4 @@
-Bus Scheme
+= Bus Scheme
     by Phil Hagelberg (c) 2007 - 2008
     http://bus-scheme.rubyforge.org
 
