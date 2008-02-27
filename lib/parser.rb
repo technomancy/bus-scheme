@@ -23,20 +23,29 @@ module BusScheme
   
   # Nest a list from a 1-dimensional list of tokens
   def parse_list(tokens)
-    [].affect do |list|
+    list = [].affect do |list|
       while element = tokens.shift and element != :')'
         if element == :'('
           list << parse_list(tokens)
         else
-          list << element unless (element == '.'.to_sym)
+          list << element
         end
       end
-      if element != :')'
-        raise IncompleteError, "Incomplete expression: #{BusScheme.loaded_files.last}:#{@@lines}"
-      end
+      raise IncompleteError unless element == :')'
     end
+    parse_dots_into_cons list
   end
 
+  # Parse a "dotted cons" (1 . 2) into (cons 1 2)
+  def parse_dots_into_cons(list)
+    if(list && list.length > 0 && list[1] == :'.')
+      list = list.dup
+      list.delete_at 1
+      list.unshift(:cons.sym)
+    end
+    list
+  end
+    
   # Split an input string into lexically valid tokens
   def tokenize(input)
     [].affect do |tokens|
@@ -72,7 +81,7 @@ module BusScheme
             when /\A(-?\+?[0-9]*\.[0-9]+)/ # float
               Regexp.last_match[1].to_f
             when /\A(\.)/ # dot (for pair notation), comes after float to pick up any dots that float doesn't accept
-              '.'.to_sym
+              :'.'
             when /\A(-?[0-9]+)/ # integer
               Regexp.last_match[1].to_i
             when /\A("(.*?)")/m # string
