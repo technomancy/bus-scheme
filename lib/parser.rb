@@ -23,27 +23,26 @@ module BusScheme
   
   # Nest a list from a 1-dimensional list of tokens
   def parse_list(tokens)
-    list = [].affect do |list|
-      while element = tokens.shift and element != :')'
-        if element == :'('
-          list << parse_list(tokens)
-        else
-          list << element
-        end
+    list = []
+    while element = tokens.shift and element != :')'
+      if element == :'('
+        list << parse_list(tokens)
+      else
+        list << element
       end
-      raise IncompleteError unless element == :')'
     end
+    raise IncompleteError unless element == :')'
+
     parse_dots_into_cons list
   end
 
   # Parse a "dotted cons" (1 . 2) into (cons 1 2)
   def parse_dots_into_cons(list)
     if(list && list.length > 0 && list[1] == :'.')
-      list = list.dup
-      list.delete_at 1
-      list.unshift(:cons.sym)
+      [:cons.sym, list.first, *list[2 .. -1]]
+    else
+      list
     end
-    list
   end
     
   # Split an input string into lexically valid tokens
