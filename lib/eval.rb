@@ -30,6 +30,7 @@ module BusScheme
     function.call_as(function_sym, *args)
   end
 
+  # Scoping methods:
   def current_scope
     @@stack.empty? ? SYMBOL_TABLE : @@stack.last
   end
@@ -47,6 +48,7 @@ module BusScheme
     current_scope[sym] = val
   end
 
+  # Tracing methods:
   def stacktrace
     # TODO: notrace is super-duper-hacky!
     @@stack.reverse.map{ |frame| frame.trace if frame.respond_to? :trace and frame.called_from != 'begin-notrace'}.compact
