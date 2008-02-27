@@ -48,14 +48,6 @@ task :rbx_test do
   if ENV['test']
     system "#{BIN} test/test_#{ENV['test']}.rb"
   else
-    system "#{BIN} -w -Ilib:ext:bin:test -e '#{Dir.glob('test/test_*.rb').map{ |f| "require \"" + f + "\" "}.join('; ')}'"
-  end
-end
-
-desc 'Run scheme tests in bus scheme'
-task :scheme_test do
-  require 'bus_scheme'
-  Dir.glob('test/test_*.scm').each do |file|
-    BusScheme.eval_string("(load \"#{file}\")")
+    system "#{BIN} -w -Ilib:test -e '#{Dir.glob('test/test_*.rb').map{ |f| "require \"" + f + "\" "}.join('; ')}'"
   end
 end

@@ -39,17 +39,9 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
   
   def test_parse_dotted_cons
-
-    string = "(2 . 2)"
-
-    assert_equal :'(', BusScheme.pop_token(string)
-    assert_equal 2, BusScheme.pop_token(string)
-    assert_equal :'.', BusScheme.pop_token(string)
-    assert_equal 2, BusScheme.pop_token(string)
-    assert_equal :")", BusScheme.pop_token(string)
-
-    assert_parses_to "(2 . 2)", [2, 2]
-    assert_parses_equal "(2 2)", "(2 . 2)"
+    assert_parses_to "(22 . 11)", [:cons.sym, 22, 11]
+    assert_parses_to "((+ 2 2) . 11)", [:cons.sym, [:+.sym, 2, 2], 11]
+    assert_parses_to "(11 . (+ 2 2))", [:cons.sym, 11, [:+.sym, 2, 2]]
   end
 
   def test_parse_list_of_atoms
@@ -89,11 +81,6 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to "#(1 (2 3 4))", [:vector.sym, 1, [2, 3, 4]]
   end
   
-#   def test_parses_dotted_cons
-#     assert_parses_to "(22 . 11)", [:cons, 22, 11]
-#     assert_parses_to "((+ 2 2) . 11)", [:cons, [:+, 2, 2], 11]
-#   end
-
   def test_floats
     assert_parses_to "44.9", 44.9
     assert_parses_to "0.22", 0.22
