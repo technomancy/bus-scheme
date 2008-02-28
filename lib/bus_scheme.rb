@@ -1,11 +1,7 @@
 #!/usr/bin/env ruby
 
-begin
-  require 'readline'
-rescue LoadError
-end
-
 $LOAD_PATH << File.dirname(__FILE__)
+require 'readline'
 require 'object_extensions'
 require 'array_extensions'
 
@@ -59,15 +55,21 @@ module BusScheme
 
   # Load a file if on the load path or absolute
   def self.load(filename)
-    loaded_files.push filename
-    eval_string File.read(add_load_path(filename))
-    loaded_files.pop
+    begin
+      loaded_files.push filename
+      eval_string File.read(add_load_path(filename))
+      loaded_files.pop
+    rescue
+      loaded_files.pop
+      raise
+    end
   end
 
-  def self.add_load_path(filename)
+  def self.add_load_path(filename, load_path = BusScheme['load-path'.sym])
     return filename if filename.match(/^\//) or File.exist? filename
-    BusScheme['load-path'.sym].sexp.map Proc.new { |path| return path + '/' + filename if File.exist? path + '/' + filename }
-    raise LoadError, "File not found: #{filename}"
+    raise LoadError, "File not found: #{filename}" if load_path.empty?
+    return load_path.car + '/' + filename if File.exist? load_path.car + '/' + filename
+    return add_load_path(filename, load_path.cdr)
   end
 
   # For stack traces
@@ -76,5 +78,5 @@ module BusScheme
   end
 
   ['core.scm', 'test.scm', 'list.scm', 'predicates.scm'
-  ].each { |file| load(file) }
+  ].each { |f| load(f) }
 end

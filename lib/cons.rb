@@ -29,6 +29,10 @@ module BusScheme
       end
     end
 
+    def empty?
+      @car.nil? && @cdr.nil?
+    end
+
     def inspect(open = '(', close = ')')
       str = open + @car.inspect
       if @cdr.nil?

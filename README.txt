@@ -85,7 +85,6 @@ Bus Scheme is currently missing pieces of functionality:
 === Parser
 * character literals
 * multiline strings
-* dotted cons cells
 
 === General
 * continuations
