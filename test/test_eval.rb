@@ -1,5 +1,6 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
+require 'timeout'
 
 class BusSchemeEvalTest < Test::Unit::TestCase
   def test_eval_empty_list
@@ -85,4 +86,10 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   def test_funcall_hash_means_lookup
     assert_evals_to 3, "((hash (1 1) (2 2) (3 3)) 3)"
   end
+
+#   def test_tail_call_optimization
+#     Timeout.timeout(1) do
+#       assert_nothing_raised { eval "((lambda (x) (x x)) (lambda (x) (x x)))" }
+#     end
+#   end
 end
