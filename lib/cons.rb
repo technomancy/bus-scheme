@@ -18,6 +18,11 @@ module BusScheme
     def map(mapper)
       Cons.new(mapper.call(@car), @cdr ? @cdr.map(mapper) : @cdr)
     end
+
+    def each(&block)
+      yield @car
+      @cdr.each(&block) if @cdr && @cdr.respond_to?(:each)
+    end
     
     def to_a
       if @cdr.respond_to? :to_a

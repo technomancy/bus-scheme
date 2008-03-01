@@ -12,6 +12,12 @@ require 'lambda'
 require 'stack_frame'
 require 'primitives'
 
+begin
+  require 'web'
+rescue LoadError
+  puts "Could not load web functionality."
+end
+
 module BusScheme
   VERSION = "0.7.5"
 
