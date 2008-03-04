@@ -14,6 +14,10 @@ class Sym < String
     self
   end
 
+  def to_html
+    self
+  end
+
   def sym
     self
   end

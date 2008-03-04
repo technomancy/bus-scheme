@@ -49,6 +49,10 @@ module BusScheme
       end
     end
 
+    def to_list
+      self
+    end
+
     # allows for (mylist 4) => (nth mylist 4)
     def call(nth)
       nth == 0 ? @car : @cdr.call(nth - 1)
