@@ -14,10 +14,6 @@ class Sym < String
     self
   end
 
-  def to_html
-    self
-  end
-
   def sym
     self
   end
@@ -55,6 +51,10 @@ class String
   include Callable
   def sym
     Sym.new(self)
+  end
+
+  def to_html
+    self
   end
 end
 

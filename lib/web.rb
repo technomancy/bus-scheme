@@ -10,8 +10,8 @@ module BusScheme
   module_function
   def serve(port = 2000)
     # TODO: fallback to webrick if mongrel is not found
-    @server ||= lambda { |env| Resource[env['PATH_INFO']].call(env) }
-    @web_thread ||= Thread.new { Rack::Handler::Mongrel.run @server, :Port => port }
+    @web_server ||= lambda { |env| Resource[env['PATH_INFO']].call(env) }
+    @web_thread ||= Thread.new { Rack::Handler::Mongrel.run @web_server, :Port => port }
   end
 
   class Resource
@@ -20,14 +20,13 @@ module BusScheme
     
     def initialize(path, contents)
       @path, @contents = [path, contents]
-      Resource.resources[path] = self
+      Resource[path] = self
       BusScheme.serve # imdepotent; can call multiple times without effect
     end
 
     def call(env)
       @env = env
-      [200, headers, representation]
-      @env = nil
+      [200, headers, representation].affect { @env = nil }
     end
 
     def headers
@@ -42,8 +41,12 @@ module BusScheme
       lambda { |e| [404, @@default_headers, "<h1>404 Not Found</h1>"] }
     end
 
-    def self.resources
-      (@resources ||= {})
+    def self.[](path)
+      (@resources ||= {})[path] || not_found
+    end
+    
+    def self.[]=(path, resource)
+      (@resources ||= {})[path] = resource
     end
   end
 

@@ -7,6 +7,7 @@ module BusScheme
   module Xml
     module_function
     def create(args, builder = Builder::XmlMarkup.new(:indent => 2))
+      args = args.to_a # TODO: maybe keep them as lists?
       tag_name = args.shift
       attributes = extract_attributes(args)
 
@@ -16,7 +17,6 @@ module BusScheme
           Xml::create(arg, builder) if arg.is_a? Cons or arg.is_a? Array
         end
       end
-      builder.target!
     end
 
     def extract_attributes(args)
