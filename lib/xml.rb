@@ -27,4 +27,10 @@ module BusScheme
       end
     end
   end
+
+  class Cons
+    def to_html
+      Xml.create(self)
+    end
+  end
 end
