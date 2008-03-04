@@ -39,7 +39,8 @@ class WebTest < Test::Unit::TestCase
   def test_serves_list_resource
     get '/'
     assert_response_code 200
-    assert_response ""
+    # TODO: make this a little less picky.
+    assert_response "<html>\n  <head>\n    <title>\nConcourse    </title>\n  </head>\n  <body>\n    <div id=\"container\">\n      <h1>\nWelcome to Concourse!      </h1>\n      <form action=\"/login\">\n        <input type=\"text\" name=\"email\">\n        </input>\n        <input type=\"password\" name=\"password\">\n        </input>\n        <input type=\"submit\" value=\"Log in\">\n        </input>\n      </form>\n    </div>\n  </body>\n</html>\n"
   end
 
   def test_serves_404
