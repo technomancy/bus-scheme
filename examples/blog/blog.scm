@@ -7,5 +7,7 @@
 					   (list 'h1 title)
 					   body))))))
 
+(collection "/" (resources "/\d+"))
+
 (load "posts/1.sexp")
 (load "posts/2.sexp")

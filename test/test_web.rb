@@ -40,7 +40,15 @@ if defined? BusScheme::Resource
     def test_serves_list_resource
       get '/'
       assert_response_code 200
-      assert_response "<html>\n  <head>\n    <title>\nConcourse    </title>\n  </head>\n  <body>\n    <div id=\"container\">\n      <h1>\nWelcome to Concourse!      </h1>\n      <form action=\"/login\">\n        <input type=\"text\" name=\"email\">\n        </input>\n        <input type=\"password\" name=\"password\">\n        </input>\n        <input type=\"submit\" value=\"Log in\">\n        </input>\n      </form>\n    </div>\n  </body>\n</html>\n"
+      assert_response "<html> <head> <title> Concourse </title> </head>
+<body> <div id=\"container\"> <h1> Welcome to Concourse! </h1>
+<p> Concourse is ... </p>
+<form action=\"/login\">
+  <input name=\"email\" type=\"text\" />
+  <input name=\"password\" type=\"password\" />
+  <input type=\"submit\" value=\"Log in\" />
+</form>
+</div> </body> </html>"
     end
 
     def test_serves_404
@@ -51,15 +59,17 @@ if defined? BusScheme::Resource
 
     def test_serves_collection_of_resources
       eval '(collection "/numbers" (list ' +
-        (1 .. 10).map { |i| eval "(resource \"/#{i}\" \"#{i}\")" }.join(' ') +
+        '(resource "/1" "1")' + 
+        '(resource "/2" "2")' + 
+        '(resource "/3" "3")' + 
         '))'
 
       get '/numbers'
       assert_response_code 200
-      assert_response ""
+      assert_response_match /<ul><li>1<\/li>/
     end
 
-    def test_serves_collection_of_resources
+    def test_serves_collection_of_resources_by_regex
     end
     
     private

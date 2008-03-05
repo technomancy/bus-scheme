@@ -17,6 +17,7 @@ module BusScheme
   class Resource
     attr_reader :path, :contents
     @@default_headers = {'Content-Type' => 'text/html'}
+    @resources = {}
     
     def initialize(path, contents)
       @path, @contents = [path, contents]
@@ -43,11 +44,15 @@ module BusScheme
     end
 
     def self.[](path)
-      (@resources ||= {})[path] || not_found
+      if path.is_a? String
+        @resources[path] || not_found
+      elsif path.is_a? Regexp
+        @resources.values_at(*@resources.keys.grep(path))
+      end
     end
     
     def self.[]=(path, resource)
-      (@resources ||= {})[path] = resource
+      @resources[path] = resource
     end
   end
 
@@ -55,8 +60,9 @@ module BusScheme
 
   class Collection < Resource
     def representation
-      Xml.create cons(:ul.sym,
-                      @contents.to_a.map{ |c| cons(:li.sym, cons(c)) })
+      Xml.create Cons.new(:ul.sym,
+                          @contents.to_a.map{ |c| Cons.new(:li.sym,
+                                                           Cons.new(c)) })
     end
   end
 end

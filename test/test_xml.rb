@@ -28,7 +28,7 @@ begin
 
     # TODO: NFI why this explodes!
     def test_list_with_symbol_and_child
-      assert_equal_xml("<div id=\"container\"> <p> hi</p></div>",
+      assert_equal_xml("<div id=\"container\"> <p> hi </p> </div>",
                        eval("(xml (div id \"container\" (p \"hi\")))"))
     end
     
@@ -47,6 +47,7 @@ begin
 			    (input type "submit" value "Log in")))))'
       xml_text = "<html> <head> <title> Concourse </title> </head>
 <body> <div id=\"container\"> <h1> Welcome to Concourse! </h1>
+<p> Concourse is ... </p>
 <form action=\"/login\">
   <input name=\"email\" type=\"text\" />
   <input name=\"password\" type=\"password\" />
