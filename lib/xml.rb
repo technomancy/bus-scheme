@@ -11,6 +11,7 @@ module BusScheme
       tag_name = args.shift
       attributes = extract_attributes(args)
 
+      # puts "Sending #{tag_name} with args #{args.inspect}"
       builder.method_missing(tag_name, attributes) do
         args.each do |arg|
           builder.text! arg if arg.is_a? String

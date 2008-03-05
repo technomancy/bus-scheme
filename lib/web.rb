@@ -38,6 +38,10 @@ module BusScheme
       # TODO: allow other representation formats
       @contents.to_html
     end
+
+    def link_to(text)
+      Xml.create [:a.sym, :href.sym, @path, text]
+    end
     
     def self.not_found
       lambda { |e| [404, @@default_headers, "<h1>404 Not Found</h1>"] }
@@ -60,9 +64,8 @@ module BusScheme
 
   class Collection < Resource
     def representation
-      Xml.create Cons.new(:ul.sym,
-                          @contents.to_a.map{ |c| Cons.new(:li.sym,
-                                                           Cons.new(c)) })
+      Xml.create [:ul.sym,
+                  *@contents.to_a.map{ |c| [:li.sym, c.contents]} ]
     end
   end
 end

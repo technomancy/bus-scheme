@@ -40,15 +40,29 @@ if defined? BusScheme::Resource
     def test_serves_list_resource
       get '/'
       assert_response_code 200
-      assert_response "<html> <head> <title> Concourse </title> </head>
-<body> <div id=\"container\"> <h1> Welcome to Concourse! </h1>
-<p> Concourse is ... </p>
-<form action=\"/login\">
-  <input name=\"email\" type=\"text\" />
-  <input name=\"password\" type=\"password\" />
-  <input type=\"submit\" value=\"Log in\" />
-</form>
-</div> </body> </html>"
+      assert_response "<html>
+  <head>
+    <title>
+Concourse    </title>
+  </head>
+  <body>
+    <div id=\"container\">
+      <h1>
+Welcome to Concourse!      </h1>
+      <p>
+Concourse is ...      </p>
+      <form action=\"/login\">
+        <input type=\"text\" name=\"email\">
+        </input>
+        <input type=\"password\" name=\"password\">
+        </input>
+        <input type=\"submit\" value=\"Log in\">
+        </input>
+      </form>
+    </div>
+  </body>
+</html>
+"
     end
 
     def test_serves_404
@@ -66,9 +80,15 @@ if defined? BusScheme::Resource
 
       get '/numbers'
       assert_response_code 200
-      assert_response_match /<ul><li>1<\/li>/
+      assert_response_match /<ul>\s*<li>\s*1\s*<\/li>/
     end
 
+    def test_link_to_resource
+      r = Resource.new('/foobar', "foo bar baz")
+      # TODO: this whitespace is getting old
+      assert_equal "<a href=\"/foobar\">\nbaz</a>\n", r.link_to('baz')
+    end
+    
     def test_serves_collection_of_resources_by_regex
     end
     
