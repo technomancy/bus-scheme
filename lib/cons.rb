@@ -63,4 +63,5 @@ module BusScheme
   def cons(car, cdr = nil)
     Cons.new(car, cdr)
   end
+  module_function :cons
 end

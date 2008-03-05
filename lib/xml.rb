@@ -24,7 +24,7 @@ module BusScheme
         while !args.empty? and  args.first.is_a?(Sym) do
           attributes[args.shift.to_sym] = args.shift
         end
-      end
+       end
     end
   end
 

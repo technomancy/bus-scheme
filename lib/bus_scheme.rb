@@ -14,6 +14,7 @@ require 'primitives'
 
 begin
   require 'web'
+  require 'xml'
 rescue LoadError
   puts "Could not load web functionality."
 end

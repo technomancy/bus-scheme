@@ -1,6 +1,9 @@
 (define string->symbol
   (lambda (sym) (send sym 'sym)))
 
+(define number->string
+  (lambda (number) (send number 'to_s)))
+
 (define substring
   (lambda (string to from) (send string (quote []) to from)))
 

@@ -21,7 +21,7 @@ module BusScheme
     def initialize(path, contents)
       @path, @contents = [path, contents]
       Resource[path] = self
-      BusScheme.serve # imdepotent; can call multiple times without effect
+      BusScheme.serve # imdepotent
     end
 
     def call(env)
@@ -34,6 +34,7 @@ module BusScheme
     end
 
     def representation
+      # TODO: allow other representation formats
       @contents.to_html
     end
     
@@ -50,6 +51,12 @@ module BusScheme
     end
   end
 
+  define 'collection', lambda { |*args| Collection.new(*args) }
+
   class Collection < Resource
+    def representation
+      Xml.create cons(:ul.sym,
+                      @contents.to_a.map{ |c| cons(:li.sym, cons(c)) })
+    end
   end
 end

@@ -26,6 +26,12 @@ begin
                        eval("(xml (a href \"http://bus-scheme.rubyforge.org\" \"Bus Scheme\"))"))
     end
 
+    # TODO: NFI why this explodes!
+    def test_list_with_symbol_and_child
+      assert_equal_xml("<div id=\"container\"> <p> hi</p></div>",
+                       eval("(xml (div id \"container\" (p \"hi\")))"))
+    end
+    
     # TODO: no idea why this puts {} on stdout
     def test_splash_page_generation
       sexp = '(html

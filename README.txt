@@ -85,8 +85,10 @@ Bus Scheme is currently missing pieces of functionality:
 === Parser
 * character literals
 * multiline strings
+* regular expressions
 
 === General
+* filter stacktrace
 * continuations
 * macros
 
