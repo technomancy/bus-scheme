@@ -37,6 +37,11 @@ class BusSchemeParserTest < Test::Unit::TestCase
   def test_parse_list_of_numbers
     assert_parses_to "(2 2)", [2, 2]
   end
+
+  def test_parses_regex
+    $trace = true
+    assert_parses_to "/hi/", /hi/
+  end
   
   def test_parse_dotted_cons
     assert_parses_to "(22 . 11)", [:cons.sym, 22, 11]

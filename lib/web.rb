@@ -1,12 +1,12 @@
 require 'bus_scheme'
 require 'rubygems'
 require 'rack'
-require 'yaml'
 require 'xml'
 
 module BusScheme
   define 'resource', lambda { |*args| Resource.new(*args) }
-
+  define 'resources', lambda { |arg| Resource[arg] }
+  
   module_function
   def serve(port = 2000)
     # TODO: fallback to webrick if mongrel is not found
