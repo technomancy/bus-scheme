@@ -76,7 +76,7 @@ to be written test-first.
 
 For the source:
 
-* git clone git://git.caboo.se/bus_scheme.git
+* git clone git://github.com/technomancy/bus-scheme.git
 
 == Todo
 

@@ -50,7 +50,8 @@ module BusScheme
     # special forms should not be shown in stack traces
     # neither should 'begin'
     def filtered?
-      @called_as and @called_as.special_form
+      return false unless @called_as
+      @called_as.special_form or @called_as == :begin.sym
     end
   end
 end

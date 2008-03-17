@@ -54,8 +54,8 @@ module BusScheme
       begin
         val = @body.call(*args)
       rescue => e
-        raise e
         BusScheme.stack.pop
+        raise e
       end
       BusScheme.stack.pop
       return val

@@ -8,7 +8,9 @@
   (lambda (string to from) (send string (quote []) to from)))
 
 (define null?
-  (lambda (expr) (= expr ())))
+  (lambda (expr) (or 
+		  (= expr ()) ;; hacky?
+		  (= expr (ruby "nil")))))
 
 (define >
   (lambda (x y) (send x '> y)))
