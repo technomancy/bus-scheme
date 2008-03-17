@@ -5,8 +5,7 @@ module BusScheme
   
   # Parse a string, then eval the result
   def eval_string(string)
-    # TODO: hacky hacky hacky!
-    eval(parse("(begin-notrace #{string})"))
+    eval(parse("(top-level #{string})"))
   end
 
   # Eval a form passed in as an array
@@ -51,7 +50,7 @@ module BusScheme
   # Tracing methods:
   def stacktrace
     # TODO: notrace is super-duper-hacky!
-    @@stack.reverse.map{ |frame| frame.trace if frame.respond_to? :trace and frame.called_from != 'begin-notrace'}.compact
+    @@stack.reverse.map{ |frame| frame.trace if frame.respond_to? :trace }.compact
   end
 
   def stack

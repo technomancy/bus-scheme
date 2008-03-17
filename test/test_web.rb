@@ -68,7 +68,7 @@ Concourse is ...      </p>
     def test_serves_404
       get '/404'
       assert_response_code 404
-      assert_response_match /not found/i
+      assert_response_match(/not found/i)
     end
 
     def test_serves_collection_of_resources
@@ -80,7 +80,7 @@ Concourse is ...      </p>
 
       get '/numbers'
       assert_response_code 200
-      assert_response_match /<ul>\s*<li>\s*1\s*<\/li>/
+      assert_response_match(/<ul>\s*<li>\s*1\s*<\/li>/)
     end
 
     def test_link_to_resource

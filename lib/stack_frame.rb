@@ -44,7 +44,13 @@ module BusScheme
     end
 
     def trace
-      "#{@file}:#{@line} in #{@called_from}"
+      "#{@file}:#{@line} in #{@called_from}" unless filtered?
+    end
+
+    # special forms should not be shown in stack traces
+    # neither should 'begin'
+    def filtered?
+      @called_as and @called_as.special_form
     end
   end
 end

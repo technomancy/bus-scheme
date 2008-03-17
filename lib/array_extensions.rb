@@ -8,12 +8,12 @@ class Array
   alias_method :cdr, :rest
 
   def to_list(recursive = false)
-    self[0] = first.to_list(recursive) if recursive and first.respond_to?(:to_list)
+    self[0] = first.sexp(recursive) if recursive
 
     if self.cdr.nil? or self.cdr.empty?
       BusScheme::Cons.new(car, nil)
     else
-      BusScheme::Cons.new(car, self.cdr.to_list(recursive))
+      BusScheme::Cons.new(car, self.cdr.sexp(recursive))
     end
   end
 

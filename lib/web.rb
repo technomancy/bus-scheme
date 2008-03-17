@@ -1,6 +1,7 @@
 require 'bus_scheme'
 require 'rubygems'
 require 'rack'
+require 'mongrel'
 require 'yaml'
 require 'xml'
 

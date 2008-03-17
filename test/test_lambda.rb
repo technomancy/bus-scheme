@@ -71,8 +71,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
   def test_let
     assert_evals_to 2, "(let ((n 2)) n)"
-    assert_evals_to 2, "(let ((n 2)) n)"
-    assert_evals_to 2, "(let ((n 2)) n)"
+    assert_evals_to 5, "(let ((n 2) (m 3)) (+ n m))"
   end
 
   def test_shadowed_vars_dont_stay_in_scope
@@ -99,12 +98,12 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
   def test_stacktrace
     eval '(load "test/tracer.scm")'
-    assert_equal ["(eval):1 in (top-level)"], eval("(stacktrace)")
+    assert_equal ["(eval):1 in top-level"], eval("(stacktrace)")
     
     assert_equal(["test/tracer.scm:1 in f",
                   "test/tracer.scm:4 in g",
                   "(eval):1 in (anonymous)",
-                  "(eval):1 in (top-level)"
+                  "(eval):0 in top-level"
                  ],
                  eval("((lambda () (g)))"))
   end
