@@ -170,7 +170,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
   private
 
   def assert_parses_to(actual_string, expected)
-    assert_equal expected.sexp, BusScheme.parse(actual_string)
+    assert_equal expected.sexp(true), BusScheme.parse(actual_string)
   end
 
   def assert_parses_equal(one, two, message = nil)

@@ -7,7 +7,7 @@ module BusScheme
   def parse(input)
     @@lines = 1
     # TODO: should sexp it as it's being constructed, not after
-    parse_tokens(tokenize(input).flatten).sexp
+    parse_tokens(tokenize(input).flatten).sexp(true)
   end
 
   # Turn a list of tokens into a properly-nested array

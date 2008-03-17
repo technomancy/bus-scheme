@@ -15,6 +15,17 @@ module BusScheme
     alias_method :first, :car
     alias_method :rest, :cdr
 
+    def length
+      # TODO: actually calculate this
+      self.to_a.length
+    end
+
+    alias_method :size, :length
+    def last
+      # TODO: do this list-style
+      self.to_a.last
+    end
+    
     def map(mapper)
       Cons.new(mapper.call(@car), @cdr ? @cdr.map(mapper) : @cdr)
     end

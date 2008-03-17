@@ -5,7 +5,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_simple_lambda
     l = eval("(lambda () (+ 1 1))")
     assert l.is_a?(Lambda)
-    assert_equal [[:+.sym, 1, 1]], l.body
+    assert_equal [[:+.sym, 1, 1]].to_list(true), l.body
     assert_equal [], l.formals
 
     eval("(define foo (lambda () (+ 1 1)))")

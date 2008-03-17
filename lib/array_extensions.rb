@@ -7,15 +7,13 @@ class Array
   alias_method :car, :first
   alias_method :cdr, :rest
 
-  def to_list
-    car = self.car
-    # TODO: make this car-recursive?
-    # car = car.to_list if car.respond_to?(:to_list)
+  def to_list(recursive = false)
+    self[0] = first.to_list(recursive) if recursive and first.respond_to?(:to_list)
 
     if self.cdr.nil? or self.cdr.empty?
-      BusScheme::Cons.new(car, nil)
+      BusScheme::Cons.new(car)
     else
-      BusScheme::Cons.new(car, self.cdr.to_list)
+      BusScheme::Cons.new(car, self.cdr.to_list(recursive))
     end
   end
 
