@@ -3,7 +3,7 @@ module BusScheme
     attr_accessor :car, :cdr
 
     # TODO: figure out default values
-    def initialize(car, cdr = nil)
+    def initialize(car, cdr)
       @car, @cdr = [car, cdr]
     end
 

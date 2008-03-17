@@ -11,7 +11,7 @@ class Array
     self[0] = first.to_list(recursive) if recursive and first.respond_to?(:to_list)
 
     if self.cdr.nil? or self.cdr.empty?
-      BusScheme::Cons.new(car)
+      BusScheme::Cons.new(car, nil)
     else
       BusScheme::Cons.new(car, self.cdr.to_list(recursive))
     end
