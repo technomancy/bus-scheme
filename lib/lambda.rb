@@ -21,7 +21,7 @@ module BusScheme
                  raise BusScheme::ArgumentError, "Wrong number of args:
   expected #{@formals.size}, got #{args.size}
   #{BusScheme.stacktrace.join("\n")}" if @formals.length != args.length
-                 @formals.zip(args).to_hash
+                 @formals.to_a.zip(args).to_hash
                end
 
       @frame = StackFrame.new(locals, @enclosing_scope, @called_as)

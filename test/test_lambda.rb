@@ -5,8 +5,8 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_simple_lambda
     l = eval("(lambda () (+ 1 1))")
     assert l.is_a?(Lambda)
-    assert_equal [[:+.sym, 1, 1]].to_list(true), l.body
-    assert_equal [], l.formals
+    assert_equal [[:+.sym, 1, 1].to_list], l.body
+    assert_equal 0, l.formals.length
 
     eval("(define foo (lambda () (+ 1 1)))")
     assert BusScheme[:foo.sym].is_a?(Lambda)
@@ -67,6 +67,12 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
 
   def test_implicit_begin
     assert_evals_to 3, "((lambda () (string->symbol \"hi\") (+ 2 2) (* 1 3)))"
+  end
+
+  def test_let
+    assert_evals_to 2, "(let ((n 2)) n)"
+    assert_evals_to 2, "(let ((n 2)) n)"
+    assert_evals_to 2, "(let ((n 2)) n)"
   end
 
   def test_shadowed_vars_dont_stay_in_scope

@@ -16,8 +16,10 @@ module BusScheme
     alias_method :rest, :cdr
 
     def length
-      # TODO: actually calculate this
-      self.to_a.length
+      return 0 if @car.nil? and @cdr.nil?
+      return 1 if @cdr.nil?
+      return 2 if !@cdr.respond_to? :length
+      1 + @cdr.length
     end
 
     alias_method :size, :length
@@ -26,7 +28,8 @@ module BusScheme
       self.to_a.last
     end
     
-    def map(mapper)
+    def map(mapper = nil, &block)
+      mapper ||= block
       Cons.new(mapper.call(@car), @cdr ? @cdr.map(mapper) : @cdr)
     end
 
