@@ -1,4 +1,5 @@
 COPYING
+History.txt
 Manifest.txt
 R5RS.diff
 README.txt
@@ -6,6 +7,7 @@ Rakefile
 bin/bus
 examples/fib.scm
 lib/array_extensions.rb
+lib/bus-scheme.rb
 lib/bus_scheme.rb
 lib/cons.rb
 lib/eval.rb
@@ -18,6 +20,8 @@ lib/scheme/list.scm
 lib/scheme/predicates.scm
 lib/scheme/test.scm
 lib/stack_frame.rb
+lib/web.rb
+lib/xml.rb
 test/foo.scm
 test/test_core.rb
 test/test_eval.rb
@@ -29,5 +33,7 @@ test/test_predicates.scm
 test/test_primitives.rb
 test/test_primitives.scm
 test/test_stack_frame.rb
+test/test_web.rb
+test/test_xml.rb
 test/tracer.scm
 tutorials/getting_started.html
