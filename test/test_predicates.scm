@@ -22,3 +22,11 @@
 (assert (string? "hello"))
 (assert (not (string? 'hi)))
 (assert (not (string? string?)))
+
+(assert (char? "h"))
+(assert (char? #\h))
+(assert (char? #\space))
+(assert (char? #\newline))
+(assert (not (char? "hi")))
+(assert (not (char? 'hi)))
+(assert (not (char? char?)))

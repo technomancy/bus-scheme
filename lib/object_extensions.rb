@@ -56,6 +56,11 @@ class String
   def to_html
     self
   end
+  
+  def rest
+    return nil if self.length == 1
+    self[1, self.length]
+  end
 end
 
 class Symbol
