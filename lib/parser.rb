@@ -90,6 +90,7 @@ module BusScheme
               # when /\A([^-0-9\. \n\)][^ \n\)]*)/
             when /\A#\\(.)/ # Character literal
               char = Regexp.last_match[1]
+              # TODO: generalize this. shouldn't be littered with literal numbers
               input[0 ... 2] = ''
               if input[0 ... 5] == 'space'
                 input[0 ... 5] = ''
