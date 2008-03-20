@@ -88,6 +88,19 @@ module BusScheme
               # Official Scheme valid identifiers:
               # when /\A([A-Za-z!\$%&\*\.\/:<=>\?@\^_~][A-Za-z0-9!\$%&\*\+\-\.\/:<=>\?@\^_~]*)/ # symbol
               # when /\A([^-0-9\. \n\)][^ \n\)]*)/
+            when /\A#\\(.)/ # Character literal
+              char = Regexp.last_match[1]
+              input[0 ... 2] = ''
+              if input[0 ... 5] == 'space'
+                input[0 ... 5] = ''
+                char = ' '
+              elsif input[0 ... 7] == 'newline'
+                input[0 ... 7] = ''
+                char = "\n"
+              else
+                input[0 ... 1] = ''
+              end
+              return char
             when /\A([^ \n\)]+)/ # symbols
               # puts "#{Regexp.last_match[1]} - #{@@lines}"
               # cannot begin with a character that may begin a number

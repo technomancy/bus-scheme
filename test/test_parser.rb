@@ -106,13 +106,14 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to "+0.10", 0.1
   end
 
-#   def test_character_literals
-#     assert_parses_to "#\e", "e"
-#     assert_parses_to "#\A", "A"
-#     assert_parses_to "#\(", "("
-#     assert_parses_to "#\space", ' '
-#     assert_parses_to "#\newline", "\n"
-#   end
+   def test_character_literals
+     # must escape ruby string with backslask
+     assert_parses_to "#\\e", "e"
+     assert_parses_to "#\\A", "A"
+     assert_parses_to "#\\(", "("
+     assert_parses_to "#\\space", ' '
+     assert_parses_to "#\\newline", "\n"
+   end
   
   def test_quote
     assert_parses_to "'foo", [:quote.sym, :foo.sym]
