@@ -88,6 +88,7 @@ Bus Scheme is currently missing pieces of functionality:
 * regular expressions
 
 === General
+* should get error loading incomplete s-expressions in a file
 * filter stacktrace
 * continuations
 * macros

@@ -7,7 +7,11 @@
 					   (list 'h1 title)
 					   body))))))
 
-(collection "/" (resources "/\d+"))
+(collection "/" (list 
+		 (post 1 "hello world"
+		       "This is my bus scheme blog"
+		       (now))
 
-(load "posts/1.sexp")
-(load "posts/2.sexp")
+		 (post 2 "hello bus scheme"
+		       "This is the awesome blog"
+		       (now))))
