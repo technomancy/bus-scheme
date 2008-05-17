@@ -21,6 +21,7 @@ class Array
   include Callable
 end
 
+# TODO: Use Hash[*a] instead
 module Enumerable # for 1.9, zip is defined on Enumerable
   def to_hash
     {}.affect do |hash|
