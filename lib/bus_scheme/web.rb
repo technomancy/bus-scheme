@@ -1,8 +1,9 @@
-require 'bus_scheme'
 require 'rubygems'
 require 'rack'
 require 'mongrel'
-require 'xml'
+
+require 'bus_scheme'
+require 'bus_scheme/xml'
 
 module BusScheme
   define 'resource', lambda { |*args| Resource.new(*args) }

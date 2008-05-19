@@ -2,19 +2,20 @@
 
 $LOAD_PATH << File.dirname(__FILE__)
 require 'readline'
-require 'object_extensions'
-require 'array_extensions'
 
-require 'parser'
-require 'eval'
-require 'cons'
-require 'lambda'
-require 'stack_frame'
-require 'primitives'
+require 'bus_scheme/object_extensions'
+require 'bus_scheme/array_extensions'
+
+require 'bus_scheme/parser'
+require 'bus_scheme/eval'
+require 'bus_scheme/cons'
+require 'bus_scheme/lambda'
+require 'bus_scheme/stack_frame'
+require 'bus_scheme/primitives'
 
 begin
-  require 'web'
-  require 'xml'
+  require 'bus_scheme/web'
+  require 'bus_scheme/xml'
 rescue LoadError
   puts "Could not load web functionality."
 end
@@ -24,7 +25,7 @@ module BusScheme
 
   PROMPT = '> '
   INCOMPLETE_PROMPT = ' ... '
-  BusScheme['load-path'.sym] = Cons.new("#{File.dirname(__FILE__)}/scheme/",
+  BusScheme['load-path'.sym] = Cons.new("#{File.dirname(__FILE__)}/bus_scheme/scheme/",
                                         Cons.new(File.expand_path('.'), nil))
   
   class BusSchemeError < StandardError; end
