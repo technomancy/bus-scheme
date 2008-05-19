@@ -44,7 +44,7 @@ module BusScheme
   end
 
   class Primitive < Lambda
-    def initialize body
+    def initialize(body)
       @car = @cdr = nil # avoid "Not initialized" warnings
       @body = body
     end
@@ -60,6 +60,10 @@ module BusScheme
       BusScheme.stack.pop
       return val
     end
+  end
+  
+  def self.primitive(&block)
+    Primitive.new(block)
   end
 end
 

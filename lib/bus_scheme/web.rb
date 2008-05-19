@@ -6,8 +6,8 @@ require 'bus_scheme'
 require 'bus_scheme/xml'
 
 module BusScheme
-  define 'resource', lambda { |*args| Resource.new(*args) }
-  define 'resources', lambda { |arg| Resource[arg] }
+  define 'resource', primitive { |*args| Resource.new(*args) }
+  define 'resources', primitive { |arg| Resource[arg] }
   
   module_function
   def serve(port = 2000)
@@ -62,7 +62,7 @@ module BusScheme
     end
   end
 
-  define 'collection', lambda { |*args| Collection.new(*args) }
+  define 'collection', primitive { |*args| Collection.new(*args) }
 
   class Collection < Resource
     def representation

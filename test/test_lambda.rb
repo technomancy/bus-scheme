@@ -117,7 +117,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   end
 
   def test_primitives_live_on_stack
-    BusScheme.define 'stack-growth', lambda { assert BusScheme.stack.size > 1 }
+    BusScheme.define 'stack-growth', BusScheme.primitive { assert BusScheme.stack.size > 1 }
     assert SYMBOL_TABLE.has_key?('stack-growth'.sym)
     eval "(stack-growth)"
   end

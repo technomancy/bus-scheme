@@ -2,7 +2,6 @@ module BusScheme
   class Cons
     attr_accessor :car, :cdr
 
-    # TODO: figure out default values
     def initialize(car, cdr)
       @car, @cdr = [car, cdr]
     end
@@ -24,8 +23,13 @@ module BusScheme
 
     alias_method :size, :length
     def last
-      # TODO: do this list-style
-      self.to_a.last
+      if @cdr.nil?
+        @car
+      elsif @cdr.is_a? Cons
+        @cdr.last
+      else
+        @cdr
+      end
     end
     
     def map(mapper = nil, &block)

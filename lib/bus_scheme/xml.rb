@@ -2,7 +2,7 @@ require 'rubygems'
 require 'builder'
 
 module BusScheme
-  special_form "xml", lambda { |args| Xml.create(args) }
+  special_form "xml", primitive { |args| Xml.create(args) }
   
   module Xml
     module_function

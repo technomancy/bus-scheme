@@ -6,17 +6,11 @@ class Sym < String
     BusScheme[self].special_form
   end
   
-  def inspect
-    self
-  end
-
   def to_s
     self
   end
-
-  def sym
-    self
-  end
+  alias_method :inspect, :to_s
+  alias_method :sym, :to_s
 end
 
 
