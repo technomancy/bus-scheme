@@ -48,7 +48,7 @@ module BusScheme
   special_form 'top-level', BusScheme[:begin.sym]
   special_form 'begin-notrace', primitive { |*args| args.map{ |arg| eval(arg) }.last }
   special_form 'lambda', primitive { |args, *form| Lambda.new(args, form) }
-  # TODO: does define always create top-level bindings, or local?
+  # TODO: define doesn't always create a top-level binding
   special_form 'define', primitive { |sym, value| BusScheme::SYMBOL_TABLE[sym] = eval(value); sym }
   special_form 'set!', primitive { |sym, value| raise EvalError.new unless BusScheme.in_scope?(sym)
     BusScheme[sym.sym] = value }

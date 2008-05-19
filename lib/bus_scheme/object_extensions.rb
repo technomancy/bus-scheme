@@ -1,7 +1,6 @@
 class Sym < String
   attr_accessor :file, :line
 
-  # TODO: refactor?
   def special_form
     BusScheme[self].special_form
   end

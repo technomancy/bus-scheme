@@ -1,5 +1,6 @@
 ;; Test list functions defined in list.scm
 
+;; TODO: fix these!
 ;; (assert-equal (list 1 2) (append (list 1) (list 2)))
 
 ;; (assert-equal (quote (1 2 3 4)) (append (quote ()) (quote (1 2 3 4))))

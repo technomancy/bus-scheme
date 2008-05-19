@@ -83,12 +83,11 @@ For the source:
 Bus Scheme is currently missing pieces of functionality:
 
 === Parser
-* character literals
 * multiline strings
 * regular expressions
 
 === General
-* should get error loading incomplete s-expressions in a file
+* should get error evaling incomplete s-expressions
 * filter stacktrace
 * continuations
 * macros
