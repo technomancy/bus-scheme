@@ -29,6 +29,8 @@ if defined? BusScheme::Resource
 			    (input type "password" name "password")
 			    (input type "submit" value "Log in")))))))'
       eval '(define-resource "/" concourse-splash)'
+
+      eval '(define-resource "/time" (lambda (env) (send (now) (quote to_s))))'
     end
     
     def test_serves_string_resource
@@ -76,8 +78,15 @@ Concourse is ...      </p>
       # TODO: this whitespace is getting old
       assert_equal "<a href=\"/foobar\">\nbaz</a>\n", r.link('baz')
     end
+
+    def test_lambda_resource
+      get '/time'
+      assert_response_code 200
+      assert_response_match /\d\d-\d\d-\d\d \d\d:\d\d/
+    end
     
     private
+    
     def get path
       @response = Rack::MockRequest.new(BusScheme.web_server).get(path)
     end

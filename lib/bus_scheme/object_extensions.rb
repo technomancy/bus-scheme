@@ -65,3 +65,9 @@ end
 class Hash
   include Callable
 end
+
+class Time
+  def to_s
+    strftime('%y-%m-%d %H:%M')
+  end
+end

@@ -27,7 +27,13 @@ module BusScheme
     end
 
     def call(env)
-      [200, headers(env), representation(env)]
+      begin
+        [200, headers(env), representation(env)]
+      rescue => e
+        [500, @@default_headers, "<h1>Application Error</h1>
+<h4>#{e.message}</h4>
+<pre>#{e.backtrace.join("\n")}</pre>"]
+      end
     end
 
     def headers(env)
@@ -35,8 +41,11 @@ module BusScheme
     end
 
     def representation(env)
-      # TODO: allow other representation formats
-      @contents.to_html
+      if @contents.is_a? Lambda
+        @contents.call(env).to_html
+      else
+        @contents.to_html
+      end
     end
 
     def link(text)
