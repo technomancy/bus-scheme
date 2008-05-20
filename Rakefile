@@ -59,7 +59,11 @@ end
 desc 'Run tests written in Scheme'
 task :scheme_test do
   Dir.glob('test/test_*.scm').each do |file|
-    BusScheme.load(file)
+    begin
+      BusScheme.load(file)
+    rescue => e
+      puts "Error: #{e.message} in #{file}\n#{e.backtrace.join("\n")}"
+    end
   end
 end
 

@@ -75,7 +75,7 @@ module BusScheme
 
   def self.add_load_path(filename, load_path = BusScheme['load-path'.sym])
     return filename if filename.match(/^\//) or File.exist? filename
-    raise LoadError, "File not found: #{filename}" if load_path.empty?
+    raise LoadError, "File not found: #{filename}" if load_path.nil?
     return load_path.car + '/' + filename if File.exist? load_path.car + '/' + filename
     return add_load_path(filename, load_path.cdr)
   end

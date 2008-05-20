@@ -87,6 +87,7 @@ Bus Scheme is currently missing pieces of functionality:
 * regular expressions
 
 === General
+* comments at the end of files cause parse errors
 * should get error evaling incomplete s-expressions
 * filter stacktrace
 * continuations
