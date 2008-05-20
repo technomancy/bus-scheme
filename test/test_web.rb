@@ -4,12 +4,12 @@ require 'open-uri'
 
 module BusScheme
   module_function
-  def web_server # need to expose this for MockRequest
+  def Web.web_server # need to expose this for MockRequest
     @web_server
   end
 end
 
-if defined? BusScheme::Resource
+if defined? BusScheme::Web::Resource
   class WebTest < Test::Unit::TestCase
     def setup
       @response = nil
@@ -74,7 +74,7 @@ Concourse is ...      </p>
     end
 
     def test_link_to_resource
-      r = Resource.new('/foobar', "foo bar baz")
+      r = Web::Resource.new('/foobar', "foo bar baz")
       # TODO: this whitespace is getting old
       assert_equal "<a href=\"/foobar\">\nbaz</a>\n", r.link('baz')
     end
@@ -88,7 +88,7 @@ Concourse is ...      </p>
     private
     
     def get path
-      @response = Rack::MockRequest.new(BusScheme.web_server).get(path)
+      @response = Rack::MockRequest.new(BusScheme::Web.web_server).get(path)
     end
     
     def assert_response expected, message = nil
