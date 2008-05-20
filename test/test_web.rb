@@ -15,7 +15,7 @@ if defined? BusScheme::Resource
       @response = nil
 
       @die_roboter = "User-agent: *\nAllow: *"
-      eval "(resource \"/robots.txt\" \"#{@die_roboter}\")"
+      eval "(define-resource \"/robots.txt\" \"#{@die_roboter}\")"
       
       eval '(define concourse-splash (quote (html
 		(head
@@ -28,7 +28,7 @@ if defined? BusScheme::Resource
 			    (input type "text" name "email")
 			    (input type "password" name "password")
 			    (input type "submit" value "Log in")))))))'
-      eval '(resource "/" concourse-splash)'
+      eval '(define-resource "/" concourse-splash)'
     end
     
     def test_serves_string_resource
@@ -71,25 +71,10 @@ Concourse is ...      </p>
       assert_response_match(/not found/i)
     end
 
-    def test_serves_collection_of_resources
-      eval '(collection "/numbers" (list ' +
-        '(resource "/1" "1")' + 
-        '(resource "/2" "2")' + 
-        '(resource "/3" "3")' + 
-        '))'
-
-      get '/numbers'
-      assert_response_code 200
-      assert_response_match(/<ul>\s*<li>\s*1\s*<\/li>/)
-    end
-
     def test_link_to_resource
       r = Resource.new('/foobar', "foo bar baz")
       # TODO: this whitespace is getting old
-      assert_equal "<a href=\"/foobar\">\nbaz</a>\n", r.link_to('baz')
-    end
-    
-    def test_serves_collection_of_resources_by_regex
+      assert_equal "<a href=\"/foobar\">\nbaz</a>\n", r.link('baz')
     end
     
     private

@@ -8,8 +8,6 @@
 (assert-equal 4 (+ 1 1 1 1))
 (assert-equal 2 (* 1 2 1 1))
 
-;; TODO: uncommenting this causes a blow-upey thing to happen
-;; (assert-equal 23 (eval '(+ 20 3)))
 (assert-equal "foobar" (concat "foo" "bar"))
 (assert-equal "foofoofoo" (ruby "'foo' * 3"))
 (assert-equal 7 (send 3 (string->symbol "+") 4))
@@ -17,7 +15,7 @@
 (assert-equal 9 (begin (define foo 779) 9))
 (assert-equal 779 foo)
 
-;; (assert (null? (cdr (cons 3))))
+(assert (null? (cdr (cons 3 ()))))
 
 ;; define
 (define foo 5)
@@ -48,3 +46,5 @@
 (assert-equal #t (or #f #t))
 (assert-equal #f (or #f #f))
 
+;; TODO: parse error if this isn't the last thing in the file.
+(assert-equal 23 (eval '(+ 20 3)))

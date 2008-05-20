@@ -62,7 +62,7 @@ task :scheme_test do
     begin
       BusScheme.load(file)
     rescue => e
-      puts "Error: #{e.message} in #{file}\n#{e.backtrace.join("\n")}"
+      puts "Error: #{e.message} in #{file}"
     end
   end
 end

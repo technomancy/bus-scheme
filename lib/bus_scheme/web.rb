@@ -6,8 +6,7 @@ require 'bus_scheme'
 require 'bus_scheme/xml'
 
 module BusScheme
-  define 'resource', primitive { |*args| Resource.new(*args) }
-  define 'resources', primitive { |arg| Resource[arg] }
+  define 'define-resource', primitive { |*args| Resource.new(*args) }
   
   module_function
   def serve(port = 2000)
@@ -28,20 +27,19 @@ module BusScheme
     end
 
     def call(env)
-      @env = env
-      [200, headers, representation].affect { @env = nil }
+      [200, headers(env), representation(env)]
     end
 
-    def headers
+    def headers(env)
       @@default_headers
     end
 
-    def representation
+    def representation(env)
       # TODO: allow other representation formats
       @contents.to_html
     end
 
-    def link_to(text)
+    def link(text)
       Xml.create [:a.sym, :href.sym, @path, text]
     end
     
@@ -50,24 +48,14 @@ module BusScheme
     end
 
     def self.[](path)
-      if path.is_a? String
-        @resources[path] || not_found
-      elsif path.is_a? Regexp
-        @resources.values_at(*@resources.keys.grep(path))
-      end
+      @resources[path] or
+        @resources.detect { |matcher, r|
+        path =~ matcher if matcher.is_a? Regexp
+      } or not_found
     end
     
     def self.[]=(path, resource)
       @resources[path] = resource
-    end
-  end
-
-  define 'collection', primitive { |*args| Collection.new(*args) }
-
-  class Collection < Resource
-    def representation
-      Xml.create [:ul.sym,
-                  *@contents.to_a.map{ |c| [:li.sym, c.contents]} ]
     end
   end
 end
