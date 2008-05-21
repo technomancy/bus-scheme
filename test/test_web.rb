@@ -2,6 +2,9 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 require 'open-uri'
 
+# mainline rack's mock stuff doesn't allow for a req. body. =\
+require 'rack'
+
 module BusScheme
   module_function
   def Web.web_server # need to expose this for MockRequest
@@ -15,7 +18,7 @@ if defined? BusScheme::Web::Resource
       @response = nil
 
       @die_roboter = "User-agent: *\nAllow: *"
-      eval "(define-resource \"/robots.txt\" \"#{@die_roboter}\")"
+      eval "(defresource \"/robots.txt\" \"#{@die_roboter}\")"
       
       eval '(define concourse-splash (quote (html
 		(head
@@ -28,9 +31,9 @@ if defined? BusScheme::Web::Resource
 			    (input type "text" name "email")
 			    (input type "password" name "password")
 			    (input type "submit" value "Log in")))))))'
-      eval '(define-resource "/" concourse-splash)'
+      eval '(defresource "/" concourse-splash)'
 
-      eval '(define-resource "/time" (lambda (env) (send (now) (quote to_s))))'
+      eval '(defresource "/time" (lambda (env) (send (now) (quote to_s))))'
     end
     
     def test_serves_string_resource
@@ -75,7 +78,6 @@ Concourse is ...      </p>
 
     def test_link_to_resource
       r = Web::Resource.new('/foobar', "foo bar baz")
-      # TODO: this whitespace is getting old
       assert_equal "<a href=\"/foobar\">\nbaz</a>\n", r.link('baz')
     end
 
@@ -84,11 +86,60 @@ Concourse is ...      </p>
       assert_response_code 200
       assert_response_match /\d\d-\d\d-\d\d \d\d:\d\d/
     end
-    
+
+    def test_puts_existing_resource
+      put '/robots.txt', "\"User-agent: *\nDeny: *\""
+      assert_response_code 201
+      assert_response_match /Deny/
+      
+      get '/robots.txt'
+      assert_response_code 200
+      assert_response_match /Deny/
+    end
+
+    def test_puts_new_resource
+      put '/die_roboter.txt', "\"Das-User-Agent: *\nNein: *\""
+      assert_response_code 201
+      assert_response_match /Nein/
+
+      get '/die_roboter.txt'
+      assert_response_code 200
+      assert_response_match /Nein/
+
+      put '/my-crazy-list', '(ul (li "hey dood") (li "second item"))'
+      assert_response_code 201
+      assert_response "<ul>\n  <li>\nhey dood  </li>\n  <li>\nsecond item  </li>\n</ul>\n"
+    end
+
+    def test_deletes_resource
+      delete '/robots.txt'
+      assert_response_code 302
+      get '/robots.txt'
+      assert_response_code 404
+    end
+
+    def test_returns_forbidden_when_unauthorized
+    end
     private
     
-    def get path
-      @response = Rack::MockRequest.new(BusScheme::Web.web_server).get(path)
+    def get(path)
+      @response = mock_request.get(path)
+    end
+
+    def put(path, contents)
+      @response = mock_request.put(path, { :input => contents })
+    end
+
+    def post(path, contents)
+      @response = mock_request.post(path, contents)
+    end
+    
+    def delete(path)
+      @response = mock_request.delete(path)
+    end
+        
+    def mock_request
+      Rack::MockRequest.new(BusScheme::Web.web_server)
     end
     
     def assert_response expected, message = nil

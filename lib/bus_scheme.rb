@@ -13,13 +13,6 @@ require 'bus_scheme/lambda'
 require 'bus_scheme/stack_frame'
 require 'bus_scheme/primitives'
 
-begin
-  require 'bus_scheme/web/resource'
-  require 'bus_scheme/xml'
-rescue LoadError
-  puts "Could not load web functionality. Missing Mongrel or Builder?"
-end
-
 module BusScheme
   VERSION = "0.7.7"
 
@@ -87,4 +80,11 @@ module BusScheme
 
   ['core.scm', 'test.scm', 'list.scm', 'predicates.scm'
   ].each { |f| load(f) }
+end
+
+begin
+  require 'bus_scheme/web'
+  require 'bus_scheme/xml'
+rescue LoadError
+  puts "Could not load web functionality. Missing Mongrel or Builder?"
 end

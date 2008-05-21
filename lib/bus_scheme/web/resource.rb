@@ -1,21 +1,7 @@
-require 'rubygems'
-require 'rack'
-require 'mongrel'
-
-require 'bus_scheme'
-require 'bus_scheme/xml'
-
 module BusScheme
-  define 'define-resource', primitive {|*args| Web::Resource.new(*args)}
-
   module Web
-    module_function
-    def serve(port = 2000)
-      # TODO: fallback to webrick if mongrel is not found
-      @web_server ||= lambda { |env| Resource[env['PATH_INFO']].call(env) }
-      @web_thread ||= Thread.new { Rack::Handler::Mongrel.run @web_server, :Port => port }
-    end
-
+    class Forbidden < BusSchemeError; end
+    
     class Resource
       attr_reader :path, :contents
       @@default_headers = {'Content-Type' => 'text/html'}
@@ -28,8 +14,12 @@ module BusScheme
       end
 
       def call(env)
+        @env = env # Hrm; this doesn't get cleared after requests. problem?
         begin
-          [200, headers(env), representation(env)]
+          raise Forbidden if not authorized?
+          send(env['REQUEST_METHOD'].downcase)
+        rescue Forbidden => e
+          [401, @@default_headers, '<h1>Forbidden</h1>']
         rescue => e
           [500, @@default_headers, "<h1>Application Error</h1>
 <h4>#{e.message}</h4>
@@ -37,13 +27,29 @@ module BusScheme
         end
       end
 
-      def headers(env)
+      # TODO: implement somehow
+      def authorized?; true; end
+
+      def get
+        [200, headers, representation]
+      end
+
+      def post
+      end
+
+      def delete
+        Resource[@path] = nil
+        Web.redirect('/')
+      end
+
+      def headers
+        # TODO: Uh, yeah.
         @@default_headers
       end
 
-      def representation(env)
+      def representation
         if @contents.is_a? Lambda
-          @contents.call(env).to_html
+          @contents.call(@env).to_html
         else
           @contents.to_html
         end
@@ -53,19 +59,30 @@ module BusScheme
         Xml.create [:a.sym, :href.sym, @path, text]
       end
       
-      def self.not_found
+      def self.not_found_handler
         lambda { |e| [404, @@default_headers, "<h1>404 Not Found</h1>"] }
       end
 
-      def self.[](path)
-        @resources[path] or
-          @resources.detect { |matcher, r|
-          path =~ matcher if matcher.is_a? Regexp
-        } or not_found
+      def self.[](env)
+        path = env['PATH_INFO']
+        # PUT doesn't require target to exist
+        if env['REQUEST_METHOD'] == 'PUT'
+          lambda { |env| Resource.put(env) }
+        else
+          @resources[path] or not_found_handler
+        end
       end
       
       def self.[]=(path, resource)
         @resources[path] = resource
+      end
+
+      def self.put(env)
+        new_resource = !! Resource[env['PATH_INFO']]
+        # Accepts an S-expression
+        r = Resource.new(env['PATH_INFO'], BusScheme.parse(env['rack.input'].read))
+        [(new_resource ? 201 : 200),
+         r.headers, r.representation]
       end
     end
   end
