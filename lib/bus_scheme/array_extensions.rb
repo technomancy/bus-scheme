@@ -17,15 +17,14 @@ class Array
     end
   end
 
+  def to_hash
+    Hash[*self.flatten_non_recursive]
+  end
+
+  def flatten_non_recursive
+    [].affect { |flat| each{ |elt| elt.each{ |e| flat << e } } } 
+  end
+  
   alias_method :sexp, :to_list
   include Callable
-end
-
-# TODO: why doesn't Hash[*self] work here?
-module Enumerable # for 1.9, zip is defined on Enumerable
-  def to_hash
-    {}.affect do |hash|
-      self.each { |pair| hash[pair.first] = pair.last }
-    end
-  end
 end

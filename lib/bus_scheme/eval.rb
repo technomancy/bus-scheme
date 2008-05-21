@@ -49,7 +49,6 @@ module BusScheme
 
   # Tracing methods:
   def stacktrace
-    # TODO: notrace is super-duper-hacky!
     @@stack.reverse.map{ |frame| frame.trace if frame.respond_to? :trace }.compact
   end
 

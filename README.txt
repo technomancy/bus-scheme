@@ -83,11 +83,12 @@ For the source:
 Bus Scheme is currently missing pieces of functionality:
 
 === Parser
+* comments at the end of files cause parse errors
 * multiline strings
 * regular expressions
+* look into using sexp gem
 
 === General
-* comments at the end of files cause parse errors
 * should get error evaling incomplete s-expressions
 * filter stacktrace
 * continuations

@@ -15,5 +15,4 @@
 (define char? (lambda (x) (and (isa? x "String")
 			       (= 1 (length x)))))
 
-;;; TODO:
-;;; port?
+;;; TODO: port?

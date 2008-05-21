@@ -121,4 +121,10 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert SYMBOL_TABLE.has_key?('stack-growth'.sym)
     eval "(stack-growth)"
   end
+
+  def test_array_to_hash
+    a = [[1, 2], [3, 4], [5, 6]]
+    assert_equal [1, 2, 3, 4, 5, 6], a.flatten_non_recursive
+    assert_equal({ 1 => 2, 3 => 4, 5 => 6 }, a.to_hash)
+  end
 end

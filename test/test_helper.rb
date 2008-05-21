@@ -1,6 +1,11 @@
 $LOAD_PATH << File.dirname(__FILE__) + '/../lib/'
 require 'test/unit'
 require 'bus_scheme'
+require 'fileutils'
+
+$VERBOSE = false
+
+FileUtils.cd(File.dirname(__FILE__) + '/..')
 
 module BusScheme
   def self.reset_stack

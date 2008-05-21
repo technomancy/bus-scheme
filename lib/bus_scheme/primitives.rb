@@ -46,7 +46,6 @@ module BusScheme
   special_form 'if', primitive { |q, yes, *no| eval(eval(q) ? yes : [:begin.sym] + no) }
   special_form 'begin', primitive { |*args| args.map{ |arg| eval(arg) }.last }
   special_form 'top-level', BusScheme[:begin.sym]
-  special_form 'begin-notrace', primitive { |*args| args.map{ |arg| eval(arg) }.last }
   special_form 'lambda', primitive { |args, *form| Lambda.new(args, form) }
   # TODO: define doesn't always create a top-level binding
   special_form 'define', primitive { |sym, value| BusScheme::SYMBOL_TABLE[sym] = eval(value); sym }

@@ -35,6 +35,7 @@ module Callable
   def call_as(sym, *args)
     self.call(*args)
   end
+
   def call(*args)
     self.[](*args)
   end

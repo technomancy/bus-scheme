@@ -7,5 +7,3 @@
 (post 2 "hello again"
       (quote (p "this is my" (b "second") "post"))
       (now))
-
-;; TODO: test this stuff!
