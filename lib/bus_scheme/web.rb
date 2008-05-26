@@ -4,11 +4,11 @@ require 'mongrel'
 
 require 'bus_scheme'
 require 'bus_scheme/xml'
+require 'bus_scheme/web/client'
 require 'bus_scheme/web/resource'
 require 'bus_scheme/web/collection'
 
 module BusScheme
-  define 'defresource', primitive {|*args| Web::Resource.new(*args)}
   module Web
     def self.serve(port = 2000)
       # TODO: fallback to webrick if mongrel is not found

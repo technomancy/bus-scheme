@@ -86,7 +86,6 @@ Bus Scheme is currently missing pieces of functionality:
 * comments at the end of files cause parse errors
 * multiline strings
 * regular expressions
-* look into using sexp gem
 
 === General
 * should get error evaling incomplete s-expressions

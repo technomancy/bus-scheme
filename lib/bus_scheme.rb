@@ -86,5 +86,5 @@ begin
   require 'bus_scheme/web'
   require 'bus_scheme/xml'
 rescue LoadError
-  puts "Could not load web functionality. Missing Mongrel or Builder?"
+  STDERR.puts "Could not load web functionality. Missing Mongrel/Rack/Builder?"
 end

@@ -2,17 +2,14 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 require 'open-uri'
 
-# mainline rack's mock stuff doesn't allow for a req. body. =\
-require 'rack'
-
-module BusScheme
-  module_function
-  def Web.web_server # need to expose this for MockRequest
-    @web_server
-  end
-end
-
 if defined? BusScheme::Web::Resource
+  module BusScheme
+    module_function
+    def Web.web_server # need to expose this for MockRequest
+      @web_server
+    end
+  end
+
   class WebTest < Test::Unit::TestCase
     def setup
       @response = nil
@@ -119,6 +116,14 @@ Concourse is ...      </p>
     end
 
     def test_returns_forbidden_when_unauthorized
+    end
+
+    def test_client
+      assert BusScheme['http-method'].body
+      eval "(define root-string \"This is the root of our HTTP!\")
+(defresource \"/\" root-string)
+
+(http-get \"http://localhost:2000/\")"
     end
     private
     

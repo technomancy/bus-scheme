@@ -1,11 +1,12 @@
 module BusScheme
+  define 'defresource', primitive {|*args| Web::Resource.new(*args)}
   module Web
     class Forbidden < BusSchemeError; end
     
     class Resource
       attr_reader :path, :contents
       @@default_headers = {'Content-Type' => 'text/html'}
-      @resources = {}
+      BusScheme['resources'] = {}
       
       def initialize(path, contents)
         @path, @contents = [path, contents]
@@ -69,18 +70,19 @@ module BusScheme
         if env['REQUEST_METHOD'] == 'PUT'
           lambda { |env| Resource.put(env) }
         else
-          @resources[path] or not_found_handler
+          BusScheme['resources'][path] or not_found_handler
         end
       end
       
       def self.[]=(path, resource)
-        @resources[path] = resource
+        BusScheme['resources'][path] = resource
       end
 
       def self.put(env)
         new_resource = !! Resource[env['PATH_INFO']]
         # Accepts an S-expression
-        r = Resource.new(env['PATH_INFO'], BusScheme.parse(env['rack.input'].read))
+        r = Resource.new(env['PATH_INFO'],
+                         BusScheme.parse(env['rack.input'].read))
         [(new_resource ? 201 : 200),
          r.headers, r.representation]
       end

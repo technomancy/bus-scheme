@@ -5,8 +5,6 @@ require 'hoe'
 require './lib/bus_scheme.rb'
 require 'rake/testtask'
 
-BIN = ENV['bin'] || "~/src/rubinius/shotgun/rubinius"
-
 Hoe.new('bus-scheme', BusScheme::VERSION) do |p|
   p.rubyforge_name = 'bus-scheme'
   p.author = 'Phil Hagelberg'
@@ -49,6 +47,7 @@ end
 # TODO: use multiruby, duh
 desc "Run ruby tests in Rubinius"
 task :rbx_test do
+  BIN = ENV['bin'] || "~/src/rubinius/shotgun/rubinius"
   if ENV['test']
     system "#{BIN} test/test_#{ENV['test']}.rb"
   else
