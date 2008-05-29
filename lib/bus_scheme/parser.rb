@@ -1,5 +1,13 @@
 module BusScheme
   INVALID_IDENTIFER_BEGIN = ('0' .. '9').to_a + ['+', '-', '.']
+  CHARACTER_LITERALS = {        # All single characters are assumed (eg: #\a -> 'a')
+    "space" => ' ',
+    "sp" => ' ',
+    "newline" => "\n",
+    "nl" => "\n" ,
+    "tab" => "\t" ,
+    "ht" => "\t"
+  }
   
   module_function
 
@@ -13,7 +21,7 @@ module BusScheme
   # Turn a list of tokens into a properly-nested array
   def parse_tokens(tokens)
     token = tokens.shift
-    if token == :'('
+    if token == :'(' 
       parse_list(tokens)
     else
       raise ParseError unless tokens.empty?
@@ -44,7 +52,22 @@ module BusScheme
       list
     end
   end
-    
+  
+  def parse_character_literal(input, char)
+    input.shift 2
+    # try each key in CHARACTER_LITERALS, if no matches, assume single character literal
+    found = false
+    CHARACTER_LITERALS.each_key do |key|
+      if input[0 ... key.length] == key
+        found = true
+        char = CHARACTER_LITERALS[key]
+        input.shift key.length
+      end
+    end
+    input.shift unless found
+    return char
+  end
+
   # Split an input string into lexically valid tokens
   def tokenize(input)
     [].affect do |tokens|
@@ -65,10 +88,10 @@ module BusScheme
             when /\A(\(|\))/ # parens
               Regexp.last_match[1].intern
             when /\A#\(/ # vector
-              input[0 ... 2] = ''
+              input.shift 2
               return [:'(', :vector.sym, tokenize(input)]
             when /\A'/ # single-quote
-              input[0 ... 1] = ''
+              input.shift
               return [:'(', :quote.sym,
                       if input[0 ... 1] == '('
                         tokenize(input)
@@ -86,18 +109,7 @@ module BusScheme
               Regexp.last_match[2]
             when /\A#\\(.)/ # Character literal
               char = Regexp.last_match[1]
-              # TODO: generalize this. shouldn't be littered with literal numbers
-              input[0 ... 2] = ''
-              if input[0 ... 5] == 'space'
-                input[0 ... 5] = ''
-                char = ' '
-              elsif input[0 ... 7] == 'newline'
-                input[0 ... 7] = ''
-                char = "\n"
-              else
-                input[0 ... 1] = ''
-              end
-              return char
+              return parse_character_literal(input, char)
             when /\A(\/(.*?)\/)/m # Regex
               Regexp.new(Regexp.escape(Regexp.last_match[2]))
             when /\A([^ \n\)]+)/ # symbols
@@ -115,4 +127,6 @@ module BusScheme
     input[0 .. Regexp.last_match[1].length - 1] = '' if token
     return token
   end
+
 end
+

@@ -110,6 +110,11 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to "+.22", 0.22
     assert_parses_to "+0.10", 0.1
   end
+  
+  def test_boolean_literals
+    assert_parses_to "#t", "#t"
+    assert_parses_to "#f", "#f"
+  end
 
    def test_character_literals
      # must escape ruby string with backslask
@@ -117,7 +122,16 @@ class BusSchemeParserTest < Test::Unit::TestCase
      assert_parses_to "#\\A", "A"
      assert_parses_to "#\\(", "("
      assert_parses_to "#\\space", ' '
+     assert_parses_to "#\\sp", ' '
      assert_parses_to "#\\newline", "\n"
+     assert_parses_to "#\\nl", "\n"
+     assert_parses_to "#\\tab", "\t"
+     assert_parses_to "#\\ht", "\t"
+     # TODO - find ascii codes for these character literals
+     #\backspace	#\bs 
+     #\return	#\cr 
+     #\page	#\np 
+     #\null	#\nul 
    end
   
   def test_quote
