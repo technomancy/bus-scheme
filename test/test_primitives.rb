@@ -37,20 +37,8 @@ class PrimitivesTest < Test::Unit::TestCase
     assert_evals_to 7, :foo.sym
   end
 
-  def test_consing
-    assert_evals_to BusScheme::Cons.new(:foo.sym, :bar.sym), "(cons (quote foo) (quote bar))"
-  end
-
   def test_vectors
     assert_evals_to [1, 2, 3], "#(1 2 3)"
-  end
-
-  def test_inspect
-    assert_equal "()", Cons.new(nil, nil).inspect
-    assert_equal "(1)", [1].to_list.inspect
-    assert_equal "(1 . 1)", Cons.new(1, 1).inspect
-    assert_equal "(1 1 1)", Cons.new(1, Cons.new(1, Cons.new(1, nil))).inspect
-    assert_equal "(1 1 1 . 8)", Cons.new(1, Cons.new(1, Cons.new(1, 8))).inspect
   end
 
   def test_boolean_short_circuit
