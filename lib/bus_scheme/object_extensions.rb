@@ -40,6 +40,12 @@ class String
     return nil if self.length == 1
     self[1, self.length]
   end
+  
+  def shift(chars=1)
+    retval = self[0 ... chars]
+    self[0 ... chars] = ''
+    retval
+  end
 end
 
 class Hash
