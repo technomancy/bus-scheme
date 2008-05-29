@@ -46,6 +46,7 @@ class PrimitivesTest < Test::Unit::TestCase
   end
 
   def test_inspect
+    assert_equal "()", Cons.new(nil, nil).inspect
     assert_equal "(1)", [1].to_list.inspect
     assert_equal "(1 . 1)", Cons.new(1, 1).inspect
     assert_equal "(1 1 1)", Cons.new(1, Cons.new(1, Cons.new(1, nil))).inspect

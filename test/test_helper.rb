@@ -1,3 +1,9 @@
+begin
+  require 'rubygems'
+  gem 'miniunit'
+rescue LoadError
+end
+
 $LOAD_PATH << File.dirname(__FILE__) + '/../lib/'
 require 'test/unit'
 require 'bus_scheme'

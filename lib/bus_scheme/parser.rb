@@ -1,6 +1,7 @@
 module BusScheme
   INVALID_IDENTIFER_BEGIN = ('0' .. '9').to_a + ['+', '-', '.']
-  CHARACTER_LITERALS = {        # All single characters are assumed (eg: #\a -> 'a')
+  CHARACTER_LITERALS = {
+    # All single characters are assumed (eg: #\a -> 'a')
     "space" => ' ',
     "sp" => ' ',
     "newline" => "\n",
@@ -14,15 +15,14 @@ module BusScheme
   # Turn an input string into an S-expression
   def parse(input)
     @@lines = 1
-    # TODO: should sexp it as it's being constructed, not after
-    parse_tokens(tokenize(input).flatten).sexp(true)
+    parse_tokens(tokenize(input).flatten)
   end
 
   # Turn a list of tokens into a properly-nested array
   def parse_tokens(tokens)
     token = tokens.shift
     if token == :'(' 
-      parse_list(tokens)
+      parse_dots_into_cons(parse_list(tokens))
     else
       raise ParseError unless tokens.empty?
       token # atom
@@ -31,31 +31,40 @@ module BusScheme
   
   # Nest a list from a 1-dimensional list of tokens
   def parse_list(tokens)
-    list = []
-    while element = tokens.shift and element != :')'
-      if element == :'('
-        list << parse_list(tokens)
-      else
-        list << element
-      end
-    end
-    raise IncompleteError unless element == :')'
+    raise IncompleteError if tokens.empty?
+    return if (element = tokens.shift) == :')'
 
-    parse_dots_into_cons list
+    if element == :'('
+      cons(parse_list(tokens), parse_list(tokens))
+    else
+      cons(element, parse_list(tokens))
+    end
   end
 
   # Parse a "dotted cons" (1 . 2) into (cons 1 2)
   def parse_dots_into_cons(list)
-    if(list && list.length > 0 && list[1] == :'.')
-      [:cons.sym, list.first, *list[2 .. -1]]
+    if(list && list.length > 2 && list.cdr.car == :'.')
+      cons(:cons.sym, cons(list.car, cons(list.cdr.cdr.car)))
     else
       list
     end
   end
-  
+
+#   # Try each key in CHARACTER_LITERALS, if no matches, assume single
+#   # character literal.
+#   def parse_character_literal(input, char)
+#     CHARACTER_LITERALS.each_key do |key|
+#       if input =~ Regexp.new("^#{key}")
+#         input.shift key.length
+#         return CHARACTER_LITERALS[key]
+#       end
+#     end
+#     return char
+#   end
+
   def parse_character_literal(input, char)
-    input.shift 2
-    # try each key in CHARACTER_LITERALS, if no matches, assume single character literal
+    # try each key in CHARACTER_LITERALS, if no matches, assume single
+    # character literal
     found = false
     CHARACTER_LITERALS.each_key do |key|
       if input[0 ... key.length] == key
@@ -109,6 +118,7 @@ module BusScheme
               Regexp.last_match[2]
             when /\A#\\(.)/ # Character literal
               char = Regexp.last_match[1]
+              input.shift 2
               return parse_character_literal(input, char)
             when /\A(\/(.*?)\/)/m # Regex
               Regexp.new(Regexp.escape(Regexp.last_match[2]))
@@ -127,6 +137,4 @@ module BusScheme
     input[0 .. Regexp.last_match[1].length - 1] = '' if token
     return token
   end
-
 end
-

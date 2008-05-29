@@ -57,6 +57,8 @@ module BusScheme
     end
 
     def inspect(open = '(', close = ')')
+      return open + close if @car.nil? and @cdr.nil?
+
       str = open + @car.inspect
       if @cdr.nil?
         str + close

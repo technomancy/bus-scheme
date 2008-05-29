@@ -59,9 +59,10 @@ Bus Scheme is written in Ruby, which means anyone with experience in
 high-level dynamic languages (like, oh, I don't know... Scheme?)
 should be right at home poking around at the implementation. Using
 Ruby allows the implementation code to remain compact and concise. Bus
-Scheme should run on Ruby 1.8, Ruby 1.9, and Rubinius at least. Bus
-Scheme also allows you to drop into Ruby when that's convenient. TODO:
-allow real inline Ruby blocks instead of access via a function call.
+Scheme should run on Ruby 1.8, Ruby 1.9, Rubinius, and JRuby at
+least. Bus Scheme also allows you to drop into Ruby when that's
+convenient. TODO: allow real inline Ruby blocks instead of access via
+a function call.
 
 === Test-Driven
 
@@ -109,8 +110,8 @@ mostly) in the relevant test files.
 
 == Requirements
 
-Bus Scheme should run on (at least) Ruby 1.8, Ruby 1.9, and
-Rubinius. Any support for Windows is entirely accidental.
+Bus Scheme should run on (at least) Ruby 1.8, Ruby 1.9, Rubinius,
+JRuby. Any support for Windows is entirely accidental.
 
 == Contributing
 

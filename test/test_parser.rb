@@ -17,15 +17,16 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_parses_list
-    assert_parses_to "()", []
+    assert_parses_to "()", Cons.new(nil, nil)
     assert_parses_to "(hey)", [:hey.sym]
     assert_parses_to "(hey there)", [:hey.sym, :there.sym]
   end
 
   def test_tokenize
-    assert_equal [:'(', :'+'.sym, 2, 2, :')'], BusScheme.tokenize("(+ 2 2)")
-    assert_equal [:'(', :'+'.sym, 2, :'(', :'+'.sym, 22, 2, :')', :')'], BusScheme.tokenize("(+ 2 (+ 22 2))")
-    assert_equal [:'(', :plus.sym, 2, 2, :')'], BusScheme.tokenize('(plus 2 2)')
+    assert_equal([:'(', :'+'.sym, 2, 2, :')'], BusScheme.tokenize("(+ 2 2)"))
+    assert_equal([:'(', :'+'.sym, 2, :'(', :'+'.sym, 22, 2, :')', :')'],
+                 BusScheme.tokenize("(+ 2 (+ 22 2))"))
+    assert_equal([:'(', :plus.sym, 2, 2, :')'], BusScheme.tokenize('(plus 2 2)'))
   end
 
   def test_parse_numbers
@@ -37,7 +38,8 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_parses_two_strings
-    assert_parses_to "(concat \"hello\" \"world\")", [:concat.sym, "hello", "world"]
+    assert_parses_to("(concat \"hello\" \"world\")",
+                     [:concat.sym, "hello", "world"])
   end
 
   def test_parse_list_of_numbers
@@ -50,6 +52,11 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
   
   def test_parse_dotted_cons
+    assert_equal([:cons.sym, 22, 11].sexp,
+                 BusScheme.parse_dots_into_cons([22, :'.', 11].sexp))
+    assert_equal([:cons.sym, [:+.sym, 2, 2], 11].sexp(true),
+                 BusScheme.parse_dots_into_cons([[:+.sym, 2, 2], :'.',
+                                                 11].sexp(true)))
     assert_parses_to "(22 . 11)", [:cons.sym, 22, 11]
     assert_parses_to "((+ 2 2) . 11)", [:cons.sym, [:+.sym, 2, 2], 11]
     assert_parses_to "(11 . (+ 2 2))", [:cons.sym, 11, [:+.sym, 2, 2]]
@@ -68,7 +75,8 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_parse_list_of_deeply_nested_sexprs
-    assert_parses_to "(+ 2 (+ 2 (+ 2 2)))", [:+.sym, 2, [:+.sym, 2, [:+.sym, 2, 2]]]
+    assert_parses_to("(+ 2 (+ 2 (+ 2 2)))",
+                     [:+.sym, 2, [:+.sym, 2, [:+.sym, 2, 2]]])
   end
 
   def test_parse_two_consecutive_parens_simple
@@ -76,7 +84,8 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_parse_two_consecutive_parens
-    assert_parses_to "(let ((foo 2)) (+ foo 2))", [:let.sym, [[:foo.sym, 2]], [:+.sym, :foo.sym, 2]]
+    assert_parses_to("(let ((foo 2)) (+ foo 2))",
+                     [:let.sym, [[:foo.sym, 2]], [:+.sym, :foo.sym, 2]])
   end
 
   def test_whitespace_indifferent
@@ -87,7 +96,8 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_parses_vectors
-    assert_equal [:'(', :vector.sym, 1, 2, :')'], BusScheme::tokenize("#(1 2)").flatten
+    assert_equal([:'(', :vector.sym, 1, 2, :')'],
+                 BusScheme::tokenize("#(1 2)").flatten)
     assert_parses_to  "#(1 2)", [:vector.sym, 1, 2]
     assert_parses_to "#(1 (2 3 4))", [:vector.sym, 1, [2, 3, 4]]
   end
@@ -123,7 +133,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
    def test_character_literals
-     # must escape ruby string with backslask
+     # must escape ruby string with backslash
      assert_parses_to "#\\e", "e"
      assert_parses_to "#\\A", "A"
      assert_parses_to "#\\(", "("
@@ -142,9 +152,12 @@ class BusSchemeParserTest < Test::Unit::TestCase
   
   def test_quote
     assert_parses_to "'foo", [:quote.sym, :foo.sym]
-    assert_equal [:'(', :quote.sym, :'(', :foo.sym, :bar.sym, :baz.sym, :')', :')'], BusScheme::tokenize("'(foo bar baz)").flatten
-    assert_parses_to "'(foo bar baz)", [:quote.sym, [:foo.sym, :bar.sym, :baz.sym]]
-    assert_parses_to "'(+ 20 3)", [:quote.sym, [:+.sym, 20, 3]]
+    assert_equal([:'(', :quote.sym, :'(', :foo.sym,
+                  :bar.sym, :baz.sym, :')', :')'],
+                 BusScheme::tokenize("'(foo bar baz)").flatten)
+    assert_parses_to("'(foo bar baz)",
+                     [:quote.sym, [:foo.sym, :bar.sym, :baz.sym]])
+    assert_parses_to("'(+ 20 3)", [:quote.sym, [:+.sym, 20, 3]])
   end
 
   def test_ignore_comments
@@ -171,7 +184,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
     ["lambda", "q", "list->vector", "soup", "+",
      "V17a", "<=?", "a34kTMNs",
      "the-word-recursion-has-many-meanings"].each do |identifier|
-      assert_nothing_raised { BusScheme.parse(identifier) }
+      BusScheme.parse(identifier)
     end
   end
   
@@ -185,7 +198,8 @@ class BusSchemeParserTest < Test::Unit::TestCase
                      [:let.sym, [[:'system-specific-config'.sym,
                               [:concat.sym, "~/.emacs.d/",
                                [:'shell-command-to-string'.sym, "hostname"]]]],
-                      [:if.sym, [:'file-exists-p'.sym, :'system-specific-config'.sym],
+                      [:if.sym, [:'file-exists-p'.sym,
+                                 :'system-specific-config'.sym],
                        [:load.sym, :'system-specific-config'.sym]]])
    end
 
