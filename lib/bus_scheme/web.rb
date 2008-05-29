@@ -2,7 +2,6 @@ require 'rubygems'
 require 'rack'
 require 'mongrel'
 
-require 'bus_scheme'
 require 'bus_scheme/xml'
 require 'bus_scheme/web/client'
 require 'bus_scheme/web/resource'

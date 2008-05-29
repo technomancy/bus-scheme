@@ -3,7 +3,6 @@
 require 'rubygems'
 require 'hoe'
 require './lib/bus_scheme.rb'
-require 'rake/testtask'
 
 Hoe.new('bus-scheme', BusScheme::VERSION) do |p|
   p.rubyforge_name = 'bus-scheme'
@@ -23,7 +22,7 @@ end
 
 desc "Complexity statistics"
 task :flog do
-  system "flog lib/*rb"
+  system "flog lib/**/*rb"
 end
 
 desc "Show todo items"
@@ -65,5 +64,9 @@ task :scheme_test do
     end
   end
 end
+
+# can never keep these straight
+task :test_scheme => :scheme_test
+task :scheme => :scheme_test
 
 task :default => [:test, :scheme_test]
