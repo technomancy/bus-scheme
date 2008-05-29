@@ -16,6 +16,12 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_equal ")", string
   end
 
+  def test_parses_list
+    assert_parses_to "()", []
+    assert_parses_to "(hey)", [:hey.sym]
+    assert_parses_to "(hey there)", [:hey.sym, :there.sym]
+  end
+
   def test_tokenize
     assert_equal [:'(', :'+'.sym, 2, 2, :')'], BusScheme.tokenize("(+ 2 2)")
     assert_equal [:'(', :'+'.sym, 2, :'(', :'+'.sym, 22, 2, :')', :')'], BusScheme.tokenize("(+ 2 (+ 22 2))")
@@ -133,6 +139,8 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to "12 ;; comment", 12
     assert_parses_to "(+ 2;; this is a mid-sexp comment
 2)", [:+.sym, 2, 2]
+    assert_parses_to("(+ 2 2)
+                      ;; should be four", [:+.sym, 2, 2])
   end
 
   def test_requires_closed_lists
