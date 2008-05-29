@@ -1,8 +1,10 @@
 module BusScheme
-  define 'defresource', primitive {|*args| Web::Resource.new(*args)}
+  define 'defresource', primitive {|*args| Web::Resource.new(*args) }
+  define 'resources-list', primitive { BusScheme['resources'].values.to_list }
   module Web
     class Forbidden < BusSchemeError; end
-    
+
+    # TODO: way more of this stuff belongs in Scheme
     class Resource
       attr_reader :path, :contents
       @@default_headers = {'Content-Type' => 'text/html'}
@@ -58,6 +60,10 @@ module BusScheme
 
       def link(text)
         Xml.create [:a.sym, :href.sym, @path, text]
+      end
+
+      def inspect
+        "<Resource at \"#{@path}\">"
       end
       
       def self.not_found_handler

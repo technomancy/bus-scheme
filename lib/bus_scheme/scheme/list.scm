@@ -1,3 +1,10 @@
+(define select
+  (lambda (fn lst)
+    (if lst
+	(if (fn (car lst))
+	    (cons (car lst) (select fn (cdr lst)))
+	    (select fn (cdr lst))))))
+
 (define length (lambda (l)
    (if (null? l) 0 (+ 1 (length (cdr l))))))
 

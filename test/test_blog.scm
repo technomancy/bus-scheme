@@ -8,5 +8,5 @@
       (quote (p "this is my" (b "second") "post"))
       (now))
 
-(assert-equal ((http-get "http://localhost:2000/1") 'body)
-	      "This is my bus scheme blog")
+;; (assert-equal ((http-get "http://localhost:2000/1") 'body)
+;; 	      "This is my bus scheme blog")

@@ -87,6 +87,11 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to 3, "((hash (1 1) (2 2) (3 3)) 3)"
   end
 
+  def test_evals_string_ending_in_comment
+    assert_evals_to 3, "(+ 2 2)
+                        ;; should be four"
+  end
+
 #   def test_tail_call_optimization
 #     Timeout.timeout(1) do
 #       assert_nothing_raised { eval "((lambda (x) (x x)) (lambda (x) (x x)))" }
