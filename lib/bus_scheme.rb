@@ -3,6 +3,7 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'readline'
 
+require 'bus_scheme/sym'
 require 'bus_scheme/object_extensions'
 require 'bus_scheme/array_extensions'
 

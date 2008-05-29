@@ -1,18 +1,3 @@
-class Sym < String
-  attr_accessor :file, :line
-
-  def special_form
-    BusScheme[self].special_form
-  end
-  
-  def to_s
-    self
-  end
-  alias_method :inspect, :to_s
-  alias_method :sym, :to_s
-end
-
-
 class Object
   # Return self after evaling block
   # see http://www.ruby-forum.com/topic/131340
@@ -54,12 +39,6 @@ class String
   def rest
     return nil if self.length == 1
     self[1, self.length]
-  end
-end
-
-class Symbol
-  def sym
-    Sym.new(self.to_s)
   end
 end
 
