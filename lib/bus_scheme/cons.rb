@@ -80,7 +80,7 @@ module BusScheme
     include Callable
   end
 
-  def cons(car, cdr = nil)
+  def cons(car = nil, cdr = nil)
     Cons.new(car, cdr)
   end
   module_function :cons

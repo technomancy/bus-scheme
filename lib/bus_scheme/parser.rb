@@ -20,6 +20,8 @@ module BusScheme
 
   # Turn a list of tokens into a properly-nested array
   def parse_tokens(tokens)
+    # TODO: hacky; let's be smarter about this
+    return cons if tokens == [:'(', :')']
     token = tokens.shift
     if token == :'(' 
       parse_dots_into_cons(parse_list(tokens))
