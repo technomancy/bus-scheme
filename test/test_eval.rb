@@ -89,7 +89,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_evals_string_ending_in_comment
-    assert_evals_to 3, "(+ 2 2)
+    assert_evals_to 4, "(+ 2 2)
                         ;; should be four"
   end
 

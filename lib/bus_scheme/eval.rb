@@ -5,7 +5,7 @@ module BusScheme
   
   # Parse a string, then eval the result
   def eval_string(string)
-    eval(parse("(top-level #{string})"))
+    eval(parse("(top-level #{string}\n)"))
   end
 
   # Eval a form passed in as an array

@@ -83,12 +83,10 @@ For the source:
 Bus Scheme is currently missing pieces of functionality:
 
 === Parser
-* comments at the end of files cause parse errors
 * multiline strings
 * regular expressions
 
 === General
-* should get error evaling incomplete s-expressions
 * filter stacktrace
 * continuations
 * macros

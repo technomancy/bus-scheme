@@ -133,7 +133,6 @@ class BusSchemeParserTest < Test::Unit::TestCase
     assert_parses_to "'(+ 20 3)", [:quote.sym, [:+.sym, 20, 3]]
   end
 
-  #  have to change normalize_whitespace to not turn newlines into spaces for this to work
   def test_ignore_comments
     assert_parses_to ";; hello", nil
     assert_parses_to "12 ;; comment", 12
