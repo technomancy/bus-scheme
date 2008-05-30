@@ -17,6 +17,10 @@ module BusScheme
   def self.reset_stack
     @@stack = []
   end
+  
+  def trace=(tr)
+    @trace = tr
+  end
 end
 
 class BusScheme::Lambda
@@ -51,5 +55,13 @@ class Test::Unit::TestCase
   # remove symbols from all scopes
   def clear_symbols(*symbols)
     [BusScheme.current_scope, BusScheme::SYMBOL_TABLE].compact.map{ |scope| symbols.map{ |sym| scope.delete sym } }
+  end
+
+  # Run the provided block with tracing on
+  def trace &block
+    BusScheme.trace = true
+    block.call
+  rescue
+    BusScheme.trace = false
   end
 end
