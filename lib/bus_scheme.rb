@@ -13,6 +13,7 @@ require 'bus_scheme/cons'
 require 'bus_scheme/lambda'
 require 'bus_scheme/stack_frame'
 require 'bus_scheme/primitives'
+require 'bus_scheme/macros'
 
 module BusScheme
   VERSION = "0.7.7"

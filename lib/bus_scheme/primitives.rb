@@ -25,7 +25,8 @@ module BusScheme
   # TODO: test these
   define 'now', primitive { Time.now }
   define 'regex', primitive { |r| Regexp.new(Regexp.escape(r)) }
-
+  special_form 'hash', primitive { |*args| args.to_hash } # accepts an alist
+  
   define 'read', primitive { gets }
   define 'write', primitive { |obj| puts obj.inspect; 0 }
   define 'display', primitive { |obj| puts obj }
@@ -62,6 +63,4 @@ module BusScheme
   # TODO: once we have macros, this can be defined in scheme
   special_form 'and', primitive { |*args| args.all? { |x| eval(x) } }
   special_form 'or', primitive { |*args| args.any? { |x| eval(x) } }
-  special_form 'let', primitive { |defs, *body| Lambda.new(defs.map{ |d| d.car }, body).call(*defs.map{ |d| eval d.last }) }
-  special_form 'hash', primitive { |*args| args.to_hash } # accepts an alist
 end

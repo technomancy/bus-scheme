@@ -96,6 +96,7 @@ For the source:
 Bus Scheme is currently missing pieces of functionality:
 
 === Parser
+* Single-quote doesn't always work like (quote [...])
 * multiline strings
 * regular expressions
 
