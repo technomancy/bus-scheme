@@ -10,7 +10,7 @@ if defined? BusScheme::Web::Resource
     end
   end
 
-  class WebTest < Test::Unit::TestCase
+  class TestWeb < Test::Unit::TestCase
     def setup
       @response = nil
 

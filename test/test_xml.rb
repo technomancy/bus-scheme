@@ -5,7 +5,7 @@ require 'open-uri'
 begin
   require 'hpricot'
 
-  class XmlTest < Test::Unit::TestCase
+  class TestXml < Test::Unit::TestCase
     def test_single_cons
       assert_equal_xml "<html> </html>", "(xml (html))"
     end

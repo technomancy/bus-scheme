@@ -1,7 +1,7 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
-class CoreTest < Test::Unit::TestCase
+class TestCore < Test::Unit::TestCase
   def test_comparison
     assert_evals_to true, "(null? ())"
     assert_evals_to false, "(null? 43)"

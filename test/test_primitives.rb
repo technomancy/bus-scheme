@@ -1,7 +1,7 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
-class PrimitivesTest < Test::Unit::TestCase
+class TestPrimitives < Test::Unit::TestCase
   def test_test_framework
     assert_raises(AssertionFailed) { eval! "(assert (= 3 9))"}
     assert_raises(AssertionFailed) { eval! "(fail \"EPIC FAIL\")" }
@@ -45,6 +45,14 @@ class PrimitivesTest < Test::Unit::TestCase
   def test_boolean_short_circuit
     assert_evals_to false, "(and #f (assert #f))"
     assert_evals_to true, "(or #t (assert #f))"
+  end
+  
+  def test_inspect
+    assert_equal "()", Cons.new(nil, nil).inspect
+    assert_equal "(1)", [1].to_list.inspect
+    assert_equal "(1 . 1)", Cons.new(1, 1).inspect
+    assert_equal "(1 1 1)", Cons.new(1, Cons.new(1, Cons.new(1, nil))).inspect
+    assert_equal "(1 1 1 . 8)", Cons.new(1, Cons.new(1, Cons.new(1, 8))).inspect
   end
 
   def test_booleans

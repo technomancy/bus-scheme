@@ -1,7 +1,7 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
-class StackFrameTest < Test::Unit::TestCase
+class TestStackFrame < Test::Unit::TestCase
   def setup
     @parent = {:foo => "FOO", :baz => 'BAZ'}
     @h = StackFrame.new({:foo => 'foo', :bar => 'bar'},

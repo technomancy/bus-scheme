@@ -2,7 +2,7 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 require 'timeout'
 
-class BusSchemeEvalTest < Test::Unit::TestCase
+class TestEval < Test::Unit::TestCase
   def test_eval_empty_list
     assert BusScheme.eval_string('()'), "Empty list should be true"
     assert_evals_to true, "(if () #t #f)"

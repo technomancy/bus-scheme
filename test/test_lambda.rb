@@ -1,7 +1,7 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
-class BusSchemeLambdaTest < Test::Unit::TestCase
+class TestLambda < Test::Unit::TestCase
   def test_simple_lambda
     l = eval!("(lambda () (+ 1 1))")
     assert l.is_a?(Lambda)
@@ -68,19 +68,6 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   def test_implicit_begin
     assert_evals_to 3, "((lambda () (string->symbol \"hi\") (+ 2 2) (* 1 3)))"
   end
-
-  # TODO: reimplement let as a macro
-#   def test_let
-#     assert_evals_to 2, "(let ((n 2)) n)"
-#     assert_evals_to 5, "(let ((n 2) (m 3)) (+ n m))"
-#   end
-
-#   def test_shadowed_vars_dont_stay_in_scope
-#     assert_evals_to Cons.new(:a.sym, :b.sym), "(let ((f (let ((x (quote a)))
-#           (lambda (y) (cons x y)))))
-#  (let ((x (quote not-a)))
-#   (f (quote b))))"
-#   end
 
   def test_nested_function_calls_dont_affect_caller
     eval! "(define fib (lambda (x)

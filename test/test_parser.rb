@@ -1,7 +1,7 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
-class BusSchemeParserTest < Test::Unit::TestCase
+class TestParser < Test::Unit::TestCase
   def test_pop_token
     string = "(+ 2 2)"
     assert_equal :'(', BusScheme.pop_token(string)
