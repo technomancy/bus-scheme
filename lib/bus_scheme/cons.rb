@@ -42,15 +42,15 @@ module BusScheme
       @cdr.each(&block) if @cdr && @cdr.respond_to?(:each)
     end
     
-    def to_a(recursive=false)
-      if @cdr && (@cdr.respond_to? :to_a)
-        [(recursive ? [@car.to_a(true)] : [@car] ), @cdr.to_a]
+    def to_a(recursive = false)
+      if @car.nil? && @cdr.nil?
+        []
+      elsif @cdr.respond_to? :to_a
+        [@car] + @cdr.to_a
       elsif !@cdr.nil?
         [@car, @cdr]
-      elsif !@car.nil?
-        [@car]
       else
-        []
+        [@car]
       end
     end
 

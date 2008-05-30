@@ -19,6 +19,14 @@ class TestCons < Test::Unit::TestCase
     assert_equal [1], cons(1).to_a
     assert_equal [1,1], cons(1, 1).to_a
     assert_equal [1, 1, 1], cons(1, cons(1, cons(1))).to_a
-    assert_equal [[1], 1, 1], cons(cons(1), cons(1, cons(1))).to_a
+    assert_equal [cons(1), 1, 1], cons(cons(1), cons(1, cons(1))).to_a
+    # assert_equal [[1], 1, 1], cons(cons(1), cons(1, cons(1))).to_a(true) # TODO - make this work
+  end
+  
+  def test_eval_and_apply
+    assert BusScheme.eval(cons)
+    assert cons.to_a
+    assert cons.to_a.map! { |arg| eval(arg) }
+    assert BusScheme.apply(:begin.sym, cons)
   end
 end
