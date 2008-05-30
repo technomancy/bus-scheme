@@ -21,14 +21,12 @@ module BusScheme
 
   # Call a function with given args
   def apply(function_sym, args)
+    args = args.to_a
     function = eval(function_sym)
+    args.map!{ |arg| eval(arg) } unless function.special_form
     puts ' ' * stack.length + Cons.new(function_sym, args.sexp).inspect if (@trace ||= false)
 
-    function.call_as function_sym, if function.special_form
-                                     args
-                                   else
-                                     args.map(lambda{ |a| eval(a) })
-                                   end
+    function.call_as function_sym, *args
   end
 
   # Scoping methods:

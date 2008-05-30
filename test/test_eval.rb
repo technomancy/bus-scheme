@@ -2,11 +2,6 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 require 'timeout'
 
-module BusScheme
-  @trace = 1
-
-  end
-
 class BusSchemeEvalTest < Test::Unit::TestCase
   def test_eval_empty_list
     # assert BusScheme.eval(cons)
