@@ -10,7 +10,7 @@ module BusScheme
 
   # Eval a form passed in as an array
   def eval(form)
-    if (form.is_a?(Cons) or form.is_a?(Array)) and form.first
+    if (form.is_a?(Cons)) and form.first
       apply(form.first, form.rest)
     elsif form.is_a? Sym
       self[form.sym]
@@ -21,12 +21,11 @@ module BusScheme
 
   # Call a function with given args
   def apply(function_sym, args)
-    args = args.to_a
     function = eval(function_sym)
-    args.map!{ |arg| eval(arg) } unless function.special_form
-    puts ' ' * stack.length + Cons.new(function_sym, args.sexp).inspect if (@trace ||= false)
+    args = args.map { |arg| eval(arg) } unless function.special_form
+    puts ' ' * stack.length + Cons.new(function_sym, args).inspect if (@trace ||= false)
 
-    function.call_as function_sym, *args
+    function.call_as function_sym, args
   end
 
   # Scoping methods:

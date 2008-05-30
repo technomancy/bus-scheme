@@ -38,11 +38,11 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   end
 
   def test_blows_up_with_undefined_symbol
-    assert_raises(EvalError) { eval("undefined-symbol") }
+    assert_raises(EvalError) { eval!("undefined-symbol") }
   end
 
   def test_variable_substitution
-    eval "(define foo 7)"
+    eval! "(define foo 7)"
     assert_evals_to 7, :foo.sym
     assert_evals_to 21, [:*.sym, 3, :foo.sym]
   end
@@ -68,12 +68,12 @@ class BusSchemeEvalTest < Test::Unit::TestCase
 
   def test_eval_multiple_forms
     assert_raises(EvalError) do
-      BusScheme.eval_string "(+ 2 2) (undefined-symbol)"
+      eval! "(+ 2 2) (undefined-symbol)"
     end
   end
 
   def test_define_after_load
-    BusScheme.eval_string "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")
+    eval! "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")
 (define greeting \"hi\")"
     assert BusScheme.in_scope?(:greeting.sym)
   end

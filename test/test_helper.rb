@@ -1,8 +1,8 @@
-begin
-  require 'rubygems'
-  gem 'miniunit'
-rescue LoadError
-end
+# begin
+#   require 'rubygems'
+#   gem 'miniunit'
+# rescue LoadError
+# end
 
 $LOAD_PATH << File.dirname(__FILE__) + '/../lib/'
 require 'test/unit'
@@ -18,7 +18,7 @@ module BusScheme
     @@stack = []
   end
   
-  def trace=(tr)
+  def self.trace=(tr)
     @trace = tr
   end
 end
@@ -35,7 +35,7 @@ class Test::Unit::TestCase
   include BusScheme
 
   # convenience method that accepts string or form
-  def eval(form)
+  def eval!(form)
     begin
       if form.is_a?(String)
         BusScheme.eval_string(form)
@@ -49,7 +49,7 @@ class Test::Unit::TestCase
   end
 
   def assert_evals_to(expected, form)
-    assert_equal expected, eval(form)
+    assert_equal expected, eval!(form)
   end
 
   # remove symbols from all scopes
@@ -58,9 +58,9 @@ class Test::Unit::TestCase
   end
 
   # Run the provided block with tracing on
-  def trace &block
+  def trace
     BusScheme.trace = true
-    block.call
+    yield
   rescue
     BusScheme.trace = false
   end
