@@ -20,7 +20,7 @@ module BusScheme
   define 'cons', primitive { |*args| Cons.new(*args) }
   define 'list', primitive { |*members| members.to_list }
   define 'vector', primitive { |*members| members.to_a }
-  define 'map', primitive { |fn, list| list.map(lambda { |n| fn.call(n) }).sexp }
+  define 'map', primitive { |fn, list| list.map(lambda { |n| fn.call(cons(n)) }).sexp }
     
   # TODO: test these
   define 'now', primitive { Time.now }
@@ -51,14 +51,13 @@ module BusScheme
   # Primitives that can't be defined in terms of other forms:
   # TODO: hacky to coerce everything to sexps... won't work once we start using vectors
   special_form 'quote', primitive { |arg| arg.sexp }
-  special_form 'if', primitive { |q, yes, *no| eval(eval(q) ? yes : [:begin.sym] + no) }
+  special_form 'if', primitive { |q, yes, *no| eval(eval(q) ? yes : cons(:begin.sym, no.sexp)) }
   special_form 'begin', primitive { |*args| args.map{ |arg| eval(arg) }.last }
   special_form 'top-level', BusScheme[:begin.sym]
   special_form 'lambda', primitive { |args, *form| Lambda.new(args, form) }
   # TODO: define doesn't always create a top-level binding
   special_form 'define', primitive { |sym, value| BusScheme::SYMBOL_TABLE[sym] = eval(value); sym }
-  special_form 'set!', primitive { |sym, value| raise EvalError.new unless BusScheme.in_scope?(sym)
-    # TODO: set-able "places"
+  special_form 'set!', primitive { |sym, value| raise EvalError unless BusScheme.in_scope?(sym)
     BusScheme[sym.sym] = value }
 
   # TODO: once we have macros, this can be defined in scheme

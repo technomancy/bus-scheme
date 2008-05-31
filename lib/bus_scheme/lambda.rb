@@ -18,7 +18,7 @@ module BusScheme
       locals = if @formals.is_a? Sym # rest args
                  { @formals => args }
                else # regular arg list
-                 raise BusScheme::ArgumentError, "Wrong number of args:
+                 raise BusScheme::ArgumentError, "Wrong number of args: #{@called_as.inspect}
   expected #{@formals.size}, got #{args.size}
   #{BusScheme.stacktrace.join("\n")}" if @formals.length != args.length
                  # TODO: don't convert to an array first
@@ -30,7 +30,7 @@ module BusScheme
       BusScheme.stack.push @frame
       begin
         val = @body.map{ |form| BusScheme.eval(form) }.last
-      rescue => e
+      rescue => e # TODO: ensure?
         raise e
         BusScheme.stack.pop
       end

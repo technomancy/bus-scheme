@@ -3,12 +3,12 @@ require 'test_helper'
 
 class PrimitivesTest < Test::Unit::TestCase
   def test_test_framework
-    assert_raises(AssertionFailed) { eval "(assert (= 3 9))"}
-    assert_raises(AssertionFailed) { eval "(fail \"EPIC FAIL\")" }
+    assert_raises(AssertionFailed) { eval! "(assert (= 3 9))"}
+    assert_raises(AssertionFailed) { eval! "(fail \"EPIC FAIL\")" }
   end
 
   def test_load_file
-    eval "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")"
+    eval! "(load \"#{File.dirname(__FILE__)}/../examples/fib.scm\")"
     assert BusScheme[:fib.sym]
     assert_evals_to 5, "(+ (fib 3) (fib 4))"
     assert_evals_to 8, "(fib 6)"
@@ -17,23 +17,24 @@ class PrimitivesTest < Test::Unit::TestCase
 
   def test_load_path
     examples = File.dirname(__FILE__) + '/../examples/'
-    eval "(set! load-path (cons \"#{examples}\" load-path))"
-    eval "(load \"fib.scm\")"
+    eval! "(set! load-path (cons \"#{examples}\" load-path))"
+    eval! "(load \"fib.scm\")"
     assert BusScheme[:fib.sym]
     
     clear_symbols :fib.sym
     current = File.dirname(__FILE__)
-    eval "(set! load-path (cons \"#{current}\" load-path))"
-    eval "(load \"../examples/fib.scm\")"
+    eval! "(set! load-path (cons \"#{current}\" load-path))"
+    eval! "(load \"../examples/fib.scm\")"
     assert BusScheme[:fib.sym]
   end
 
   def test_set!
     clear_symbols(:foo.sym)
+    assert ! BusScheme.in_scope?(:foo.sym)
     # can only set! existing variables
-    assert_raises(BusScheme::EvalError) { eval "(set! foo 7)" }
-    eval "(define foo 3)"
-    eval "(set! foo 7)"
+    assert_raises(BusScheme::EvalError) { eval! "(set! foo 7)" }
+    eval! "(define foo 3)"
+    eval! "(set! foo 7)"
     assert_evals_to 7, :foo.sym
   end
 

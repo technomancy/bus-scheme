@@ -8,9 +8,10 @@
   (lambda (string to from) (send string (quote []) to from)))
 
 (define null?
-  (lambda (expr) (or 
-		  (= expr ()) ;; hacky?
-		  (= expr (ruby "nil")))))
+  (lambda (expr) (or
+	     ;; TODO: empty list isn't nil... not really
+	     (= expr ()) ;; hacky?
+	     (= expr (ruby "nil")))))
 
 (define >
   (lambda (x y) (send x '> y)))

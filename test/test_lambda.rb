@@ -69,17 +69,18 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     assert_evals_to 3, "((lambda () (string->symbol \"hi\") (+ 2 2) (* 1 3)))"
   end
 
-  def test_let
-    assert_evals_to 2, "(let ((n 2)) n)"
-    assert_evals_to 5, "(let ((n 2) (m 3)) (+ n m))"
-  end
+  # TODO: reimplement let as a macro
+#   def test_let
+#     assert_evals_to 2, "(let ((n 2)) n)"
+#     assert_evals_to 5, "(let ((n 2) (m 3)) (+ n m))"
+#   end
 
-  def test_shadowed_vars_dont_stay_in_scope
-    assert_evals_to Cons.new(:a.sym, :b.sym), "(let ((f (let ((x (quote a)))
-          (lambda (y) (cons x y)))))
- (let ((x (quote not-a)))
-  (f (quote b))))"
-  end
+#   def test_shadowed_vars_dont_stay_in_scope
+#     assert_evals_to Cons.new(:a.sym, :b.sym), "(let ((f (let ((x (quote a)))
+#           (lambda (y) (cons x y)))))
+#  (let ((x (quote not-a)))
+#   (f (quote b))))"
+#   end
 
   def test_nested_function_calls_dont_affect_caller
     eval! "(define fib (lambda (x)
@@ -88,6 +89,8 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
                  (+ (fib (- x 1)) (fib (- x 2))))))"
 
     assert BusScheme.in_scope?(:fib.sym)
+    assert_equal 1, BusScheme[:fib.sym].call(cons(2))
+    assert_equal 5, BusScheme[:fib.sym].call(cons(5))
     assert_evals_to 5, "(fib 5)"
   end
 
@@ -129,7 +132,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   end
 
   def test_lambdas_accept_list_of_args
-    BusScheme['foo'] = eval!("(lambda (a) (assert (isa? a \"Cons\")))")
+    BusScheme['foo'] = eval!("(lambda (a) (assert-equal a 1))")
     BusScheme['foo'].call(cons(1))
   end
 end
