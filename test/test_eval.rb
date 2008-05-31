@@ -4,11 +4,10 @@ require 'timeout'
 
 class BusSchemeEvalTest < Test::Unit::TestCase
   def test_eval_empty_list
-    # assert BusScheme.eval(cons)
-    
-    assert BusScheme.eval(cons('begin'.sym, cons))
-    # assert BusScheme.eval_string('()'), "Empty list should be true"
-    # assert_evals_to true, "(if () #t #f)"
+    assert BusScheme.eval(cons)
+#     assert BusScheme.eval(cons('begin'.sym, cons))
+#     assert BusScheme.eval_string('()'), "Empty list should be true"
+#     assert_evals_to true, "(if () #t #f)"
   end
 
   def test_eval_number
@@ -44,7 +43,7 @@ class BusSchemeEvalTest < Test::Unit::TestCase
   def test_variable_substitution
     eval! "(define foo 7)"
     assert_evals_to 7, :foo.sym
-    assert_evals_to 21, [:*.sym, 3, :foo.sym]
+    assert_evals_to 21, cons(:*.sym, cons(3, cons(:foo.sym)))
   end
 
   def test_single_quote
@@ -59,11 +58,6 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to [:a.sym, :b.sym].to_list, "(list 'a 'b)"
     assert_evals_to [:a.sym, :b.sym, :c.sym].to_list, "(list 'a 'b 'c)"
     assert_evals_to [:+.sym, 2, 3].to_list, "'(+ 2 3)"
-  end
-
-  def test_array_of_args_or_list_of_args
-    assert_evals_to 5, cons(:+.sym, cons(2, cons(3)))
-    assert_evals_to 5, cons(:+.sym, cons(2, cons(3)).to_a)
   end
 
   def test_eval_multiple_forms
@@ -82,9 +76,9 @@ class BusSchemeEvalTest < Test::Unit::TestCase
     assert_evals_to 3, "((list 1 2 3) 2)"
   end
 
-  def test_funcall_vector_means_nth
-    assert_evals_to 3, "((vector 1 2 3) 2)"
-  end
+#   def test_funcall_vector_means_nth
+#     assert_evals_to 3, "((vector 1 2 3) 2)"
+#  end
 
   def test_funcall_hash_means_lookup
     assert_evals_to 3, "((hash (1 1) (2 2) (3 3)) 3)"

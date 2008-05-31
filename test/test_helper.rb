@@ -61,7 +61,7 @@ class Test::Unit::TestCase
   def trace
     BusScheme.trace = true
     yield
-  rescue
+  ensure
     BusScheme.trace = false
   end
 end

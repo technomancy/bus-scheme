@@ -21,8 +21,9 @@ module Callable
     self.call(*args)
   end
 
-  def call(*args)
-    self.[](*args)
+  def call(arg)
+    arg = arg.car if arg.respond_to? :car # TODO: remove?
+    self[arg]
   end
 end
 

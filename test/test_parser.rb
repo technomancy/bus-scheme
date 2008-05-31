@@ -17,7 +17,7 @@ class BusSchemeParserTest < Test::Unit::TestCase
   end
 
   def test_parses_list
-    assert_parses_to "()", Cons.new(nil, nil)
+    assert_parses_to "()", cons
     assert_parses_to "(hey)", [:hey.sym]
     assert_parses_to "(hey there)", [:hey.sym, :there.sym]
   end
@@ -206,6 +206,19 @@ class BusSchemeParserTest < Test::Unit::TestCase
   def test_parser_saves_file_info
     tree = BusScheme.parse("(define foo 23)")
     assert_equal "(eval)", tree.cdr.car.file
+  end
+
+  def test_parses_empty_list_correctly
+    parse "1"
+    # want: cons(:lambda.sym, cons(cons, cons(1)))
+    tokens = [:'(', :lambda.sym, :'(', :')', 1, :')']
+    assert_equal tokens, tokenize("(lambda () 1)")
+    
+    list = parse_tokens [:'(', :lambda.sym, :'(', :')', 1, :')']
+    assert_equal [:lambda.sym, [], 1].to_list(true), list
+
+#     list = parse_list(tokenize("(lambda () 1)"))
+#     assert_equal [:lambda.sym, [], 1].to_list(true), list
   end
   
   private

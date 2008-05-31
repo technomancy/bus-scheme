@@ -77,6 +77,7 @@ module BusScheme
 
     # allows for (mylist 4) => (nth mylist 4)
     def call(nth)
+      nth = nth.car if nth.is_a? Cons # TODO: remove?
       nth == 0 ? @car : @cdr.call(nth - 1)
     end
     include Callable

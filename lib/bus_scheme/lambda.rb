@@ -49,7 +49,7 @@ module BusScheme
       @body = body
     end
 
-    def call(*args)
+    def call(args)
       BusScheme.stack.push StackFrame.new({}, BusScheme.current_scope, @called_as)
       begin
         val = @body.call(*args)

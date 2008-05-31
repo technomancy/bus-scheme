@@ -32,14 +32,20 @@ module BusScheme
   end
   
   # Nest a list from a 1-dimensional list of tokens
-  def parse_list(tokens)
+  def parse_list(tokens, level = 0)
+    # puts ' ' * level + tokens.inspect
     raise IncompleteError if tokens.empty?
-    return if (element = tokens.shift) == :')'
+    element = tokens.shift
 
     if element == :'('
-      cons(parse_list(tokens), parse_list(tokens))
+      car = parse_list(tokens, level + 2) || cons
+      cdr = parse_list(tokens, level + 2)
+      
+      cons(car, cdr)
+    elsif element == :')'
+      return
     else
-      cons(element, parse_list(tokens))
+      cons(element, parse_list(tokens, level + 2))
     end
   end
 
@@ -47,6 +53,8 @@ module BusScheme
   def parse_dots_into_cons(list)
     if(list && list.length > 2 && list.cdr.car == :'.')
       cons(:cons.sym, cons(list.car, cons(list.cdr.cdr.car)))
+    elsif list.car.nil?
+      cons(cons, list.cdr)
     else
       list
     end
