@@ -216,9 +216,6 @@ class BusSchemeParserTest < Test::Unit::TestCase
     
     list = parse_tokens [:'(', :lambda.sym, :'(', :')', 1, :')']
     assert_equal [:lambda.sym, [], 1].to_list(true), list
-
-#     list = parse_list(tokenize("(lambda () 1)"))
-#     assert_equal [:lambda.sym, [], 1].to_list(true), list
   end
   
   private

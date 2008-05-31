@@ -14,14 +14,15 @@ module BusScheme
     end
 
     # execute body with args bound to formals
-    def call(*args)
+    def call(args)
       locals = if @formals.is_a? Sym # rest args
-                 { @formals => args.to_list }
+                 { @formals => args }
                else # regular arg list
                  raise BusScheme::ArgumentError, "Wrong number of args:
   expected #{@formals.size}, got #{args.size}
   #{BusScheme.stacktrace.join("\n")}" if @formals.length != args.length
-                 @formals.to_a.zip(args).to_hash
+                 # TODO: don't convert to an array first
+                 @formals.to_a.zip(args.to_a).to_hash
                end
 
       @frame = StackFrame.new(locals, @enclosing_scope, @called_as)

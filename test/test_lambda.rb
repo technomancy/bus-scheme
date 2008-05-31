@@ -6,11 +6,11 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     l = eval!("(lambda () (+ 1 1))")
     assert l.is_a?(Lambda)
     assert_equal [[:+.sym, 1, 1].to_list], l.body
-    assert_equal 0, l.formals.length
+    assert_equal cons, l.formals
     
     eval!("(define foo (lambda () (+ 1 1)))")
     assert BusScheme[:foo.sym].is_a?(Lambda)
-    assert_evals_to 2, [:foo.sym]
+    assert_evals_to 2, cons(:foo.sym)
   end
 
   def test_lambda_with_arg
@@ -54,7 +54,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
     eval! "(define foo (lambda (xx) ((lambda (y) (+ xx y)) (* xx 2))))"
     assert foo = BusScheme[:foo.sym]
     
-    assert_evals_to 3, foo.call(1)
+    assert_evals_to 3, foo.call(cons(1))
     eval! "(define holder ((lambda (x) (lambda () x)) 2))"
     assert_evals_to 2, "(holder)"
   end
@@ -129,10 +129,7 @@ class BusSchemeLambdaTest < Test::Unit::TestCase
   end
 
   def test_lambdas_accept_list_of_args
-    BusScheme['prim'] = Primitive.new(lambda { |args| assert args.is_a?(Cons) })
-    BusScheme['prim'].call(cons(1))
-
-    apply(:prim.sym, cons(1, cons(2)))
-    # lamb = Lambda.new
+    BusScheme['foo'] = eval!("(lambda (a) (assert (isa? a \"Cons\")))")
+    BusScheme['foo'].call(cons(1))
   end
 end

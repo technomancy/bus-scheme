@@ -10,8 +10,8 @@ module BusScheme
 
   # Eval a form passed in as an array
   def eval(form)
-    if (form.is_a?(Cons)) and form.first
-      apply(form.first, form.rest)
+    if (form.is_a?(Cons)) and form.car
+      apply(form.car, form.cdr || cons)
     elsif form.is_a? Sym
       self[form.sym]
     else # well it must be a literal then
@@ -22,7 +22,7 @@ module BusScheme
   # Call a function with given args
   def apply(function_sym, args)
     function = eval(function_sym)
-    args = args.map { |arg| eval(arg) } unless function.special_form
+    args  = args.map { |arg| eval(arg) } unless function.special_form
     puts ' ' * stack.length + Cons.new(function_sym, args).inspect if (@trace ||= false)
 
     function.call_as function_sym, args
