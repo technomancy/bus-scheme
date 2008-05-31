@@ -21,9 +21,10 @@ module BusScheme
     end
 
     def ==(other)
-      other.is_a?(Cons) and
-        (empty? && other.empty? or
-         car == other.car && cdr == other.cdr)
+      return false unless other.is_a?(Cons)
+      return true  if empty? && other.empty?
+      return false if empty? != other.empty?
+      car == other.car && cdr == other.cdr
     end
 
     alias_method :first, :car
