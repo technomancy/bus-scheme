@@ -15,4 +15,6 @@
 (define char? (lambda (x) (and (isa? x "String")
 			  (= 1 (length x)))))
 
+(define empty? (lambda (x) (send x 'empty?)))
+
 ;;; TODO: port?

@@ -45,7 +45,7 @@ class String
   end
   
   def rest
-    return nil if self.length == 1
+    return '' if self.length == 1
     self[1, self.length]
   end
   
