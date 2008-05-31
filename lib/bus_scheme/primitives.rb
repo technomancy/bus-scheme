@@ -17,7 +17,7 @@ module BusScheme
   define '/', primitive { |x, y| x / y }
 
   define 'concat', primitive { |*args| args.join('') }
-  define 'cons', primitive { |*args| Cons.new(*args) }
+  define 'cons', primitive { |car, cdr| Cons.new(car, cdr) }
   define 'list', primitive { |*members| members.to_list }
   define 'vector', primitive { |*members| members.to_a }
   define 'map', primitive { |fn, list| list.map(lambda { |n| fn.call(cons(n)) }).sexp }

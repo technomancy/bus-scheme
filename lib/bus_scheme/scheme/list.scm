@@ -1,6 +1,6 @@
 (define select
   (lambda (fn lst)
-    (if lst
+    (if (not (null? lst))
 	(if (fn (car lst))
 	    (cons (car lst) (select fn (cdr lst)))
 	    (select fn (cdr lst))))))
