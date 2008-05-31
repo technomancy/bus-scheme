@@ -1,6 +1,6 @@
 module BusScheme
   class Cons
-    attr_accessor :car, :cdr
+    attr_writer :car, :cdr
 
     def car
       raise "Tried to access car of empty list." if empty?

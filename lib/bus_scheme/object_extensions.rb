@@ -14,6 +14,7 @@ class Object
   def special_form
     false
   end
+  undef_method :to_a if Object.respond_to? :to_a # this is deprecated anyway
 end
 
 # O HAI Booleans.
