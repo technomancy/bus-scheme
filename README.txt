@@ -31,6 +31,18 @@ $ bus foo.scm # load a file
 
 See http://technomancy.us/104 for a "Getting Started" tutorial.
 
+== Contributing
+
+If you're looking for stuff to do, try "rake todo"
+
+Patches are welcome especially if they were written while riding a
+bus. If your daily commute does not involve a bus but you want to
+submit a patch, we may be able to work something out regarding code
+written on trains, ferries, or perhaps even carpool lanes.
+
+Join the mailing list to ask questions and discuss:
+http://rubyforge.org/mail/?group_id=5094
+
 == What makes Bus Scheme different?
 
 Well, for starters it's implemented on the bus. No other Scheme
@@ -112,16 +124,6 @@ mostly) in the relevant test files.
 
 Bus Scheme should run on (at least) Ruby 1.8, Ruby 1.9, Rubinius,
 JRuby. Any support for Windows is entirely accidental.
-
-== Contributing
-
-Patches are welcome especially if they were written while riding a
-bus. If your daily commute does not involve a bus but you want to
-submit a patch, we may be able to work something out regarding code
-written on trains, ferries, or perhaps even carpool lanes.
-
-Join the mailing list to ask questions and discuss:
-http://rubyforge.org/mail/?group_id=5094
 
 == Bonus Fact
 
