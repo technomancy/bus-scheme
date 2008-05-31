@@ -30,11 +30,9 @@ module BusScheme
       BusScheme.stack.push @frame
       begin
         val = @body.map{ |form| BusScheme.eval(form) }.last
-      rescue => e # TODO: ensure?
-        raise e
+      ensure
         BusScheme.stack.pop
       end
-      BusScheme.stack.pop
       return val
     end
 
