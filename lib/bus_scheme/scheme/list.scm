@@ -6,7 +6,7 @@
 	    (select fn (cdr lst))))))
 
 (define length (lambda (l)
-   (if (null? l) 0 (+ 1 (length (cdr l))))))
+   (if (empty? l) 0 (+ 1 (length (cdr l))))))
 
 (define append
   (lambda (l1 l2)
