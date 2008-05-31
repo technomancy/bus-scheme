@@ -6,6 +6,7 @@ class Object
     return self
   end
 
+  # Most things are just themselves when converted to sexps
   def sexp(r = false)
     self
   end
@@ -13,6 +14,12 @@ class Object
   def special_form
     false
   end
+end
+
+# O HAI Booleans.
+unless defined? Rubinius # TODO: get rid of this conditional. =\
+  def true.inspect; '#t' end
+  def false.inspect; '#f' end
 end
 
 module Callable

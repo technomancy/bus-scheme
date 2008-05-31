@@ -10,7 +10,8 @@ module BusScheme
 
   # Eval a form passed in as an array
   def eval(form)
-    if (form.is_a?(Cons)) and form.car
+    # p form
+    if (form.is_a?(Cons)) and !form.empty?
       apply(form.car, form.cdr || cons)
     elsif form.is_a? Sym
       self[form.sym]

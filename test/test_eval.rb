@@ -4,10 +4,8 @@ require 'timeout'
 
 class BusSchemeEvalTest < Test::Unit::TestCase
   def test_eval_empty_list
-    assert BusScheme.eval(cons)
-#     assert BusScheme.eval(cons('begin'.sym, cons))
-#     assert BusScheme.eval_string('()'), "Empty list should be true"
-#     assert_evals_to true, "(if () #t #f)"
+    assert BusScheme.eval_string('()'), "Empty list should be true"
+    assert_evals_to true, "(if () #t #f)"
   end
 
   def test_eval_number

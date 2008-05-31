@@ -4,8 +4,7 @@ require 'test_helper'
 class CoreTest < Test::Unit::TestCase
   def test_comparison
     assert_evals_to true, "(null? ())"
-    # TODO: nil problems
-    # assert_evals_to false, "(null? 43)"
+    assert_evals_to false, "(null? 43)"
     assert_evals_to true, "(> 4 2)"
     assert_evals_to false, "(> 9 13)"
     assert_evals_to true, "(= 4 4)"

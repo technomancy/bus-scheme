@@ -7,32 +7,30 @@ begin
 
   class XmlTest < Test::Unit::TestCase
     def test_single_cons
-      assert_equal_xml "<html> </html>", eval("(xml (html))")
+      assert_equal_xml "<html> </html>", "(xml (html))"
     end
     
     def test_singly_nested_list
       assert_equal_xml("<html> <title> </title> </html>",
-                       eval("(xml (html (title)))"))
+                       "(xml (html (title)))")
     end
 
     def test_list_with_string
       assert_equal_xml("<html> <title> Hello </title> </html>",
-                       eval("(xml (html (title \"Hello\")))"))
+                       "(xml (html (title \"Hello\")))")
 
     end
 
     def test_list_with_symbol
       assert_equal_xml("<a href=\"http://bus-scheme.rubyforge.org\"> Bus Scheme</a>",
-                       eval("(xml (a href \"http://bus-scheme.rubyforge.org\" \"Bus Scheme\"))"))
+                       "(xml (a href \"http://bus-scheme.rubyforge.org\" \"Bus Scheme\"))")
     end
 
-    # TODO: NFI why this explodes!
     def test_list_with_symbol_and_child
       assert_equal_xml("<div id=\"container\"> <p> hi </p> </div>",
-                       eval("(xml (div id \"container\" (p \"hi\")))"))
+                       "(xml (div id \"container\" (p \"hi\")))")
     end
     
-    # TODO: no idea why this puts {} on stdout
     def test_splash_page_generation
       sexp = '(html
 		(head
@@ -54,13 +52,20 @@ begin
   <input type=\"submit\" value=\"Log in\" />
 </form>
 </div> </body> </html>"
-      assert_equal_xml xml_text, eval("(xml #{sexp})")
+      assert_equal_xml xml_text, "(xml #{sexp})"
     end
 
+    def test_extract_attributes
+      assert_equal({:foo.sym => 2, :bar.sym => 4},
+                   Xml.extract_attributes([:foo.sym, 2, :bar.sym, 4].sexp))
+    end
+    
     private
     def assert_equal_xml(expected, actual, message = nil)
       # TODO: whitespace handling could be better
-      assert_equal Hpricot(expected).to_s.gsub(/\s+/, ' ').strip, Hpricot(actual).to_s.gsub(/\s+/, ' ').strip, message
+      assert_equal(Hpricot(expected).to_s.gsub(/\s+/, ' ').strip,
+                   Hpricot(eval!(actual)).to_s.gsub(/\s+/, ' ').strip,
+                   message)
     end
   end
 
