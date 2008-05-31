@@ -2,13 +2,28 @@ module BusScheme
   class Cons
     attr_accessor :car, :cdr
 
+    def car
+      raise "Tried to access car of empty list." if empty?
+      @car
+    end
+
+    def cdr
+      raise "Tried to access cdr of empty list." if empty?
+      @cdr.nil? ? BusScheme.cons : @cdr
+    end
+
+    def empty?
+      @car.nil? and @cdr.nil?
+    end
+    
     def initialize(car, cdr)
       @car, @cdr = [car, cdr]
     end
 
     def ==(other)
-      other.respond_to?(:car) and @car == other.car and
-        other.respond_to?(:cdr) and @cdr == other.cdr
+      other.is_a?(Cons) and
+        (empty? && other.empty? or
+         car == other.car && cdr == other.cdr)
     end
 
     alias_method :first, :car
@@ -87,4 +102,6 @@ module BusScheme
     Cons.new(car, cdr)
   end
   module_function :cons
+
+  # TODO: use method_missing to handle stuff like caadadadar
 end

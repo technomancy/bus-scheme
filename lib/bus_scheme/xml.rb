@@ -7,10 +7,10 @@ module BusScheme
   module Xml
     module_function
     def create(args, builder = Builder::XmlMarkup.new(:indent => 2))
-      args = args.to_a # TODO: maybe keep them as lists?
-      tag_name = args.shift
+      tag_name, args = args.car, args.cdr
       attributes = extract_attributes(args)
-
+      attributes.size.times { args = args.cdr.cdr || []}
+      
       # puts "Sending #{tag_name} with args #{args.inspect}"
       builder.method_missing(tag_name, attributes) do
         args.each do |arg|
@@ -20,11 +20,12 @@ module BusScheme
       end
     end
 
-    def extract_attributes(args)
-      {}.affect do |attributes|
-        while !args.empty? and  args.first.is_a?(Sym) do
-          attributes[args.shift.to_sym] = args.shift
-        end
+    def extract_attributes(args, attributes = {})
+      if args.nil? or args.empty? or !args.car.is_a? Sym
+        attributes
+      else
+        extract_attributes(args.cdr.cdr,
+                           attributes.merge(args.car => args.cdr.car))
       end
     end
   end

@@ -2,12 +2,14 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
 class TestCons < Test::Unit::TestCase
-    def test_inspect
+  def test_inspect
     assert_equal "()", Cons.new(nil, nil).inspect
     assert_equal "(1)", [1].to_list.inspect
     assert_equal "(1 . 1)", Cons.new(1, 1).inspect
     assert_equal "(1 1 1)", Cons.new(1, Cons.new(1, Cons.new(1, nil))).inspect
     assert_equal "(1 1 1 . 8)", Cons.new(1, Cons.new(1, Cons.new(1, 8))).inspect
+    assert_equal "(#t #f)", cons(true, cons(false)).inspect
+    assert_equal "(#t . #f)", cons(true, false).inspect
   end
 
   def test_consing
@@ -20,7 +22,8 @@ class TestCons < Test::Unit::TestCase
     assert_equal [1,1], cons(1, 1).to_a
     assert_equal [1, 1, 1], cons(1, cons(1, cons(1))).to_a
     assert_equal [cons(1), 1, 1], cons(cons(1), cons(1, cons(1))).to_a
-    # assert_equal [[1], 1, 1], cons(cons(1), cons(1, cons(1))).to_a(true) # TODO - make this work
+    # TODO - make this work
+    # assert_equal [[1], 1, 1], cons(cons(1), cons(1, cons(1))).to_a(true)
   end
   
   def test_eval_and_apply
@@ -29,5 +32,12 @@ class TestCons < Test::Unit::TestCase
     assert cons.to_a.map! { |arg| eval(arg) }
     # TODO: cons is not nil
     # assert BusScheme.apply(:begin.sym, cons)
+  end
+
+  def test_cons_with_false_cell
+    assert_evals_to cons(true, false), "(cons #t #f)"
+    # TODO: fix
+    # assert_evals_to cons(true, cons(false)), "'(#t #f)"
+    # assert_evals_to cons(true, false), "'(#t . #f)"
   end
 end

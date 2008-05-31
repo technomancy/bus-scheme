@@ -52,7 +52,7 @@ module BusScheme
 
       def representation
         if @contents.is_a? Lambda
-          @contents.call(@env).to_html
+          @contents.call(BusScheme.cons(@env)).to_html
         else
           @contents.to_html
         end

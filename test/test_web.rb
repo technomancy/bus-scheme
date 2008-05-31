@@ -15,9 +15,9 @@ if defined? BusScheme::Web::Resource
       @response = nil
 
       @die_roboter = "User-agent: *\nAllow: *"
-      eval "(defresource \"/robots.txt\" \"#{@die_roboter}\")"
+      eval! "(defresource \"/robots.txt\" \"#{@die_roboter}\")"
       
-      eval '(define concourse-splash (quote (html
+      eval! '(define concourse-splash (quote (html
 		(head
 		 (title "Concourse"))
 		(body
@@ -28,9 +28,9 @@ if defined? BusScheme::Web::Resource
 			    (input type "text" name "email")
 			    (input type "password" name "password")
 			    (input type "submit" value "Log in")))))))'
-      eval '(defresource "/" concourse-splash)'
+      eval! '(defresource "/" concourse-splash)'
 
-      eval '(defresource "/time" (lambda (env) (send (now) (quote to_s))))'
+      eval! '(defresource "/time" (lambda (env) (send (now) (quote to_s))))'
     end
     
     def test_serves_string_resource
@@ -54,9 +54,9 @@ Welcome to Concourse!      </h1>
       <p>
 Concourse is ...      </p>
       <form action=\"/login\">
-        <input type=\"text\" name=\"email\">
+        <input name=\"email\" type=\"text\">
         </input>
-        <input type=\"password\" name=\"password\">
+        <input name=\"password\" type=\"password\">
         </input>
         <input type=\"submit\" value=\"Log in\">
         </input>
@@ -115,16 +115,16 @@ Concourse is ...      </p>
       assert_response_code 404
     end
 
-    def test_returns_forbidden_when_unauthorized
-    end
+#     def test_returns_forbidden_when_unauthorized
+#     end
 
-    def test_client
-      assert BusScheme['http-method'].body
-      eval "(define root-string \"This is the root of our HTTP!\")
-(defresource \"/\" root-string)
+#     def test_client
+#       assert BusScheme['http-method'].body
+#       eval! "(define root-string \"This is the root of our HTTP!\")
+# (defresource \"/\" root-string)
 
-(http-get \"http://localhost:2000/\")"
-    end
+# (http-get \"http://localhost:2000/\")"
+#     end
     private
     
     def get(path)

@@ -49,8 +49,7 @@ module BusScheme
   special_form 'unquote-splicing', primitive { }
 
   # Primitives that can't be defined in terms of other forms:
-  # TODO: hacky to coerce everything to sexps... won't work once we start using vectors
-  special_form 'quote', primitive { |arg| arg.sexp }
+  special_form 'quote', primitive { |arg| arg }
   special_form 'if', primitive { |q, yes, *no| eval(eval(q) ? yes : cons(:begin.sym, no.sexp)) }
   special_form 'begin', primitive { |*args| args.map{ |arg| eval(arg) }.last }
   special_form 'top-level', BusScheme[:begin.sym]
