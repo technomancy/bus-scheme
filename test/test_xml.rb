@@ -7,29 +7,29 @@ begin
 
   class XmlTest < Test::Unit::TestCase
     def test_single_cons
-      assert_equal_xml "<html> </html>", eval("(xml (html))")
+      assert_equal_xml "<html> </html>", eval_string("(xml (html))")
     end
     
     def test_singly_nested_list
       assert_equal_xml("<html> <title> </title> </html>",
-                       eval("(xml (html (title)))"))
+                       eval_string("(xml (html (title)))"))
     end
 
     def test_list_with_string
       assert_equal_xml("<html> <title> Hello </title> </html>",
-                       eval("(xml (html (title \"Hello\")))"))
+                       eval_string("(xml (html (title \"Hello\")))"))
 
     end
 
     def test_list_with_symbol
       assert_equal_xml("<a href=\"http://bus-scheme.rubyforge.org\"> Bus Scheme</a>",
-                       eval("(xml (a href \"http://bus-scheme.rubyforge.org\" \"Bus Scheme\"))"))
+                       eval_string("(xml (a href \"http://bus-scheme.rubyforge.org\" \"Bus Scheme\"))"))
     end
 
     # TODO: NFI why this explodes!
     def test_list_with_symbol_and_child
       assert_equal_xml("<div id=\"container\"> <p> hi </p> </div>",
-                       eval("(xml (div id \"container\" (p \"hi\")))"))
+                       eval_string("(xml (div id \"container\" (p \"hi\")))"))
     end
     
     # TODO: no idea why this puts {} on stdout
@@ -54,7 +54,7 @@ begin
   <input type=\"submit\" value=\"Log in\" />
 </form>
 </div> </body> </html>"
-      assert_equal_xml xml_text, eval("(xml #{sexp})")
+      assert_equal_xml xml_text, eval_string("(xml #{sexp})")
     end
 
     private
