@@ -64,7 +64,7 @@ begin
     def assert_equal_xml(expected, actual, message = nil)
       # TODO: whitespace handling could be better
       assert_equal(Hpricot(expected).to_s.gsub(/\s+/, ' ').strip,
-                   Hpricot(eval!(actual)).to_s.gsub(/\s+/, ' ').strip,
+                   Hpricot(eval_either(actual)).to_s.gsub(/\s+/, ' ').strip,
                    message)
     end
   end

@@ -10,14 +10,14 @@ if defined? BusScheme::Web::Resource
     end
   end
 
-  class TestWeb < Test::Unit::TestCase
+  class WebTest < Test::Unit::TestCase
     def setup
       @response = nil
 
       @die_roboter = "User-agent: *\nAllow: *"
-      eval! "(defresource \"/robots.txt\" \"#{@die_roboter}\")"
+      eval_either "(defresource \"/robots.txt\" \"#{@die_roboter}\")"
       
-      eval! '(define concourse-splash (quote (html
+      eval_either '(define concourse-splash (quote (html
 		(head
 		 (title "Concourse"))
 		(body
@@ -28,9 +28,9 @@ if defined? BusScheme::Web::Resource
 			    (input type "text" name "email")
 			    (input type "password" name "password")
 			    (input type "submit" value "Log in")))))))'
-      eval! '(defresource "/" concourse-splash)'
+      eval_either '(defresource "/" concourse-splash)'
 
-      eval! '(defresource "/time" (lambda (env) (send (now) (quote to_s))))'
+      eval_either '(defresource "/time" (lambda (env) (send (now) (quote to_s))))'
     end
     
     def test_serves_string_resource
@@ -120,7 +120,7 @@ Concourse is ...      </p>
 
 #     def test_client
 #       assert BusScheme['http-method'].body
-#       eval! "(define root-string \"This is the root of our HTTP!\")
+#       eval_either "(define root-string \"This is the root of our HTTP!\")
 # (defresource \"/\" root-string)
 
 # (http-get \"http://localhost:2000/\")"

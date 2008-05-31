@@ -35,7 +35,7 @@ class Test::Unit::TestCase
   include BusScheme
 
   # convenience method that accepts string or form
-  def eval!(form)
+  def eval_either(form)
     begin
       if form.is_a?(String)
         BusScheme.eval_string(form)
@@ -49,7 +49,7 @@ class Test::Unit::TestCase
   end
 
   def assert_evals_to(expected, form)
-    assert_equal expected, eval!(form)
+    assert_equal expected, eval_either(form)
   end
 
   # remove symbols from all scopes

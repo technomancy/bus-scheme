@@ -3,6 +3,7 @@ require 'test_helper'
 
 class TestMacros < Test::Unit::TestCase
   def test_let
+    assert BusScheme.in_scope?(:let.sym)
     assert_evals_to 2, "(let ((n 2)) n)"
     assert_evals_to 5, "(let ((n 2) (m 3)) (+ n m))"
     assert_evals_to 4, "(let ((x 2)
