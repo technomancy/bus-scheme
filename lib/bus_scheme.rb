@@ -62,6 +62,7 @@ module BusScheme
       eval_string File.read(add_load_path(filename))
       loaded_files.pop
     rescue
+      puts BusScheme.stacktrace.join("\n  ")
       loaded_files.pop
       raise
     end
