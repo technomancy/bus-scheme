@@ -118,13 +118,13 @@ Concourse is ...      </p>
 #     def test_returns_forbidden_when_unauthorized
 #     end
 
-#     def test_client
-#       assert BusScheme['http-method'].body
-#       eval! "(define root-string \"This is the root of our HTTP!\")
-# (defresource \"/\" root-string)
+    def test_client
+      assert BusScheme['http-method'].body
+      eval! "(define root-string \"This is the root of our HTTP!\")
+(defresource \"/\" root-string)
 
-# (http-get \"http://localhost:2000/\")"
-#     end
+(http-get \"http://localhost:2000/\")"
+    end
     private
     
     def get(path)
