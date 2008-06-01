@@ -5,8 +5,8 @@ require 'open-uri'
 if defined? BusScheme::Web::Resource
   module BusScheme
     module_function
-    def Web.web_server # need to expose this for MockRequest
-      @web_server
+    def Web.server # need to expose this for MockRequest
+      @server
     end
   end
 
@@ -144,7 +144,7 @@ Concourse is ...      </p>
     end
         
     def mock_request
-      Rack::MockRequest.new(BusScheme::Web.web_server)
+      Rack::MockRequest.new(BusScheme::Web.server)
     end
     
     def assert_response expected, message = nil
