@@ -2,8 +2,8 @@ require 'net/http'
 require 'uri'
 
 module BusScheme
-  define('http-get', primitive do |uri, options|
-           BusScheme['http-method'].call(['get', uri, options])
+  define('web-get', primitive do |uri, options|
+           BusScheme['http-method'].call(['get', uri, options])[:body.sym]
          end)
 
   define('http-post', primitive do |uri, options|

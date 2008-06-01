@@ -123,7 +123,7 @@ Concourse is ...      </p>
       eval! "(define root-string \"This is the root of our HTTP!\")
 (defresource \"/\" root-string)
 
-(http-get \"http://localhost:2000/\")"
+(web-get \"http://localhost:2000/\")"
     end
     private
     
