@@ -93,16 +93,31 @@ module BusScheme
 
     # allows for (mylist 4) => (nth mylist 4)
     def call(nth)
-      nth = nth.car if nth.is_a? Cons # TODO: remove?
+      # Allow lists to be called with an argument list or a fixnum arg
+      nth = nth.car if nth.is_a? Cons
       nth == 0 ? @car : @cdr.call(nth - 1)
     end
     include Callable
+
+    # support for methods like caddar
+    def method_missing(sym)
+      sym = sym.to_s
+      raise NoMethodError unless sym =~ /^c([ad]+)r/
+      case sym
+      when 'car'
+        car
+      when 'cdr'
+        cdr
+      when /^ca/
+        send(sym.sub('a', '')).car
+      when /^cd/
+        send(sym.sub('d', '')).cdr
+      end
+    end
   end
 
   def cons(car = nil, cdr = nil)
     Cons.new(car, cdr)
   end
   module_function :cons
-
-  # TODO: use method_missing to handle stuff like caadadadar
 end

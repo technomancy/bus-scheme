@@ -44,4 +44,11 @@ class TestCons < Test::Unit::TestCase
     # assert_evals_to cons(true, cons(false)), "'(#t #f)"
     # assert_evals_to cons(true, false), "'(#t . #f)"
   end
+
+  def test_caadar_stuff
+    list = (0 .. 9).to_a
+    assert_equal 2, list.to_list.caddr
+    list[3] = ['a', 'b', 'c']
+    assert_equal 'b', list.to_list.cadadddr
+  end
 end
