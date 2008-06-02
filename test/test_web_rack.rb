@@ -19,6 +19,12 @@ if defined? BusScheme::Web::Resource
       @simple_app = eval!(simple_lambda)
       eval! "(defwebapp \"/simple\" #{simple_lambda})"
       
+      # this app returns the SERVER_INFO from the env passed to it
+      # TODO: come up with a better method for easily returning these values
+      eval! '(defwebapp "/who-am-i" (lambda (env)
+                                            (cons "200"
+                                                  (cons (quote ("Content-Type" "text/html"))
+                                                        (env "PATH_INFO")))))'
     end
     
     def test_app_can_be_called
@@ -38,6 +44,13 @@ if defined? BusScheme::Web::Resource
     def test_returns_body
       get '/simple'
       assert_equal 'This is Simple', @response.body
+    end
+
+    def test_returning_environment_as_body
+      get '/who-am-i'
+      assert_equal "/who-am-i", @response.body
+      assert_equal 'text/html', @response.headers['Content-Type']
+      assert_response_code 200
     end
 
     private
