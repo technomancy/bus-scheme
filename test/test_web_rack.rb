@@ -13,9 +13,12 @@ if defined? BusScheme::Web::Resource
   class WebRackTest < Test::Unit::TestCase
     def setup
       @response = nil
-      app = '(lambda (env) (quote ("200" ("Content-Type" "text/plain") "This is Simple")))'
-      @simple_app = eval!(app) 
-      eval! "(defwebapp \"/simple\" #{app})"
+
+      # a very basic rack app in scheme registered at "/simple"
+      simple_lambda = '(lambda (env) (quote ("200" ("Content-Type" "text/plain") "This is Simple")))'
+      @simple_app = eval!(simple_lambda)
+      eval! "(defwebapp \"/simple\" #{simple_lambda})"
+      
     end
     
     def test_app_can_be_called
@@ -30,6 +33,11 @@ if defined? BusScheme::Web::Resource
     def test_returns_content_type
       get '/simple'
       assert_equal 'text/plain', @response.headers['Content-Type']
+    end
+    
+    def test_returns_body
+      get '/simple'
+      assert_equal 'This is Simple', @response.body
     end
 
     private
