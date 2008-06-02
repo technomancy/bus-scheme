@@ -40,9 +40,7 @@ if defined? BusScheme::Web::Resource
       # this app returns the SERVER_INFO from the env passed to it
       # TODO: come up with a better method for easily returning these values
       eval! '(defwebapp "/who-am-i" (lambda (env)
-                                            (cons "200"
-                                                  (cons (quote ("Content-Type" "text/html"))
-                                                        (env "PATH_INFO")))))'
+                                            (list "200" (quote ("Content-Type" "text/html")) (env "PATH_INFO"))))'
     end
     
     def test_serves_string_resource
