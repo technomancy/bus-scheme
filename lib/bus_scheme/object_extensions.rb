@@ -18,10 +18,8 @@ class Object
 end
 
 # O HAI Booleans.
-unless defined? Rubinius # TODO: get rid of this conditional. =\
-  def true.inspect; '#t' end
-  def false.inspect; '#f' end
-end
+class TrueClass; def inspect; '#t' end end
+class FalseClass; def inspect; '#f' end end
 
 module Callable
   # allows for (mylist 4) => mylist[4]

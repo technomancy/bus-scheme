@@ -42,6 +42,7 @@ module BusScheme
                input += "\n" + Readline.readline(INCOMPLETE_PROMPT)
                retry
              end
+             # TODO: persist readline history through sessions
              Readline::HISTORY.push(input)
              result
            rescue Interrupt

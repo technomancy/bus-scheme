@@ -103,11 +103,8 @@ module BusScheme
     def method_missing(sym)
       sym = sym.to_s
       raise NoMethodError unless sym =~ /^c([ad]+)r/
+      return send(sym) if sym.length == 3
       case sym
-      when 'car'
-        car
-      when 'cdr'
-        cdr
       when /^ca/
         send(sym.sub('a', '')).car
       when /^cd/
