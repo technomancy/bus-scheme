@@ -79,7 +79,7 @@ module BusScheme
     (@loaded_files ||= ["(eval)"])
   end
 
-  ['core.scm', 'test.scm', 'list.scm', 'predicates.scm'
+  ['core.scm', 'test.scm', 'list.scm', 'predicates.scm', 'macros.scm'
   ].each { |f| load(f) }
 end
 
