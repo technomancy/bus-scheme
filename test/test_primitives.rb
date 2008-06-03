@@ -1,5 +1,6 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
+require 'stringio'
 
 class PrimitivesTest < Test::Unit::TestCase
   def test_test_framework
@@ -45,6 +46,18 @@ class PrimitivesTest < Test::Unit::TestCase
   def test_boolean_short_circuit
     assert_evals_to false, "(and #f (assert #f))"
     assert_evals_to true, "(or #t (assert #f))"
+  end
+  
+  def test_read_with_filename_reads_file_into_a_string
+    filename = File.join(File.dirname(__FILE__), '..', 'COPYING')
+    assert_equal File.read(filename), eval!("(read \"#{filename}\")")
+  end
+
+  def test_read_without_filename_gets_from_stdin
+    $stdin = StringIO.new('gets test')
+    assert_equal 'gets test', eval!("(read)")
+  ensure
+    $stdin = STDIN
   end
 
   def test_booleans

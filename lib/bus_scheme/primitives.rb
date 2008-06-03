@@ -26,7 +26,8 @@ module BusScheme
   define 'now', primitive { Time.now }
   define 'regex', primitive { |r| Regexp.new(Regexp.escape(r)) }
 
-  define 'read', primitive { gets }
+  define 'read', primitive {|*args| args.empty? ? gets : File.read(args.first) }
+  # TODO: give read and write the same interface
   define 'write', primitive { |obj| puts obj.inspect; 0 }
   define 'display', primitive { |obj| puts obj }
   

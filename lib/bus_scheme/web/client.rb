@@ -2,13 +2,13 @@ require 'net/http'
 require 'uri'
 
 module BusScheme
-  define('http-get', primitive do |uri, options|
-           BusScheme['http-method'].call('get', uri, options)
+  define('web-get', primitive do |uri, options|
+           BusScheme['http-method'].call(['get', uri, options])[:body.sym]
          end)
 
   define('http-post', primitive do |uri, options|
            options ||= {}
-           BusScheme['http-method'].call('post', uri, options)
+           BusScheme['http-method'].call(['post', uri, options])
          end)
 
   # TODO: should we return a hash, or just the body? How do we offer

@@ -6,6 +6,7 @@ require 'bus_scheme/xml'
 require 'bus_scheme/web/client'
 require 'bus_scheme/web/resource'
 require 'bus_scheme/web/collection'
+require 'bus_scheme/web/rack_app'
 
 module BusScheme
   module Web
