@@ -12,6 +12,7 @@ Hoe.new('bus-scheme', BusScheme::VERSION) do |p|
   p.description = p.paragraphs_of('README.txt', 2..5).join("\n\n")
   p.url = 'http://bus-scheme.rubyforge.org'
   p.remote_rdoc_dir = ''
+  p.extra_rdoc_files = ["README.rdoc"]
 end
 
 desc "Code statistics"

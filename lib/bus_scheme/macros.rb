@@ -11,6 +11,9 @@ module BusScheme
       @rules = rules.to_list(true)
     end
 
+    def call(body)
+    end
+
     # Yeah, that's kind of the whole point.
     def special_form; true end
   end
