@@ -10,10 +10,9 @@ elsif ARGV.first == '-e' and ARGV.length == 2
 elsif ARGV.length == 1 and File.exist?(ARGV.first)
   puts BusScheme.eval_string("(load \"#{ARGV.first}\")")
 else
-  puts "Bus Scheme: a scheme interpreter written on the bus.
-Usage: bus [file | -e \"form\"]
+  abort 'Bus Scheme: a scheme interpreter written on the bus.
+Usage: bus [file | -e "(code to evaluate)"]
   Invoking with no arguments enters a REPL
   With one argument it loads that as a file
-  -e : evals a single form"
-  exit 1
+  -e : evals a single form'
 end
