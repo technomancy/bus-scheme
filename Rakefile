@@ -5,7 +5,6 @@ require 'hoe'
 require './lib/bus_scheme.rb'
 
 Hoe.new('bus-scheme', BusScheme::VERSION) do |p|
-  p.rubyforge_name = 'bus-scheme'
   p.author = 'Phil Hagelberg'
   p.email = 'technomancy@gmail.com'
   p.summary = 'Bus Scheme is a Scheme in Ruby, imlemented on the bus.'

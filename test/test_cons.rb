@@ -35,7 +35,7 @@ class TestCons < Test::Unit::TestCase
   end
   
   def test_equality_of_empty_list
-    assert_equal false, eval!("(= () '(1))")
+    assert_equal false, eval_either("(= () '(1))")
   end
 
   def test_cons_with_false_cell
