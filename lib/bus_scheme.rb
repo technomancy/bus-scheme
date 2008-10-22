@@ -22,7 +22,7 @@ module BusScheme
   INCOMPLETE_PROMPT = ' ... '
   BusScheme['load-path'.sym] = Cons.new("#{File.dirname(__FILE__)}/bus_scheme/scheme/",
                                         Cons.new(File.expand_path('.'), nil))
-  
+
   class BusSchemeError < StandardError; end
   class ParseError < BusSchemeError; end
   class EvalError < BusSchemeError; end

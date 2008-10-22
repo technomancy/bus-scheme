@@ -2,7 +2,7 @@ module BusScheme
   module_function # did not know about this until seeing it in Rubinius; handy!
   SYMBOL_TABLE = {} # top-level scope
   @@stack = []
-  
+
   # Parse a string, then eval the result
   def eval_string(string)
     eval(parse("(top-level #{string}\n)"))
@@ -37,7 +37,7 @@ module BusScheme
   def in_scope?(sym)
     current_scope.has_key?(sym) or SYMBOL_TABLE.has_key?(sym)
   end
-  
+
   def [](sym)
     raise EvalError.new("Undefined symbol: #{sym.inspect}") unless in_scope?(sym)
     current_scope[sym]

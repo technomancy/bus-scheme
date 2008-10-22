@@ -16,4 +16,4 @@
 (assert-equal (length "a") 1)
 
 (assert-equal (list 4 5 6)
- (select (lambda (n) (> n 3)) (list 1 2 3 4 5 6 1)))
+              (select (lambda (n) (> n 3)) (list 1 2 3 4 5 6 1)))

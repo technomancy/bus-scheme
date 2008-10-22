@@ -9,7 +9,7 @@ begin
     def test_single_cons
       assert_equal_xml "<html> </html>", "(xml (html))"
     end
-    
+
     def test_singly_nested_list
       assert_equal_xml("<html> <title> </title> </html>",
                        "(xml (html (title)))")
@@ -30,19 +30,19 @@ begin
       assert_equal_xml("<div id=\"container\"> <p> hi </p> </div>",
                        "(xml (div id \"container\" (p \"hi\")))")
     end
-    
+
     def test_splash_page_generation
       sexp = '(html
-		(head
-		 (title "Concourse"))
-		(body
-		 (div id "container"
-		      (h1 "Welcome to Concourse!")
-		      (p "Concourse is ...")
-		      (form action "/login"
-			    (input type "text" name "email")
-			    (input type "password" name "password")
-			    (input type "submit" value "Log in")))))'
+                (head
+                 (title "Concourse"))
+                (body
+                 (div id "container"
+                      (h1 "Welcome to Concourse!")
+                      (p "Concourse is ...")
+                      (form action "/login"
+                            (input type "text" name "email")
+                            (input type "password" name "password")
+                            (input type "submit" value "Log in")))))'
       xml_text = "<html> <head> <title> Concourse </title> </head>
 <body> <div id=\"container\"> <h1> Welcome to Concourse! </h1>
 <p> Concourse is ... </p>
@@ -59,7 +59,7 @@ begin
       assert_equal({:foo.sym => 2, :bar.sym => 4},
                    Xml.extract_attributes([:foo.sym, 2, :bar.sym, 4].sexp))
     end
-    
+
     private
     def assert_equal_xml(expected, actual, message = nil)
       # TODO: whitespace handling could be better

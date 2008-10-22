@@ -20,7 +20,7 @@ class TestPrimitives < Test::Unit::TestCase
     eval_either "(set! load-path (cons \"#{examples}\" load-path))"
     eval_either "(load \"fib.scm\")"
     assert BusScheme[:fib.sym]
-    
+
     clear_symbols :fib.sym
     current = File.dirname(__FILE__)
     eval_either "(set! load-path (cons \"#{current}\" load-path))"
@@ -46,7 +46,7 @@ class TestPrimitives < Test::Unit::TestCase
     assert_evals_to false, "(and #f (assert #f))"
     assert_evals_to true, "(or #t (assert #f))"
   end
-  
+
   def test_inspect
     assert_equal "()", Cons.new(nil, nil).inspect
     assert_equal "(1)", [1].to_list.inspect

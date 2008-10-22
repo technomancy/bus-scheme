@@ -9,7 +9,7 @@ module BusScheme
       attr_reader :path, :contents
       @@default_headers = {'Content-Type' => 'text/html'}
       BusScheme['resources'] = {}
-      
+
       def initialize(path, contents)
         @path, @contents = [path, contents]
         Resource[path] = self
@@ -65,7 +65,7 @@ module BusScheme
       def inspect
         "<Resource at \"#{@path}\">"
       end
-      
+
       def self.not_found_handler
         lambda { |e| [404, @@default_headers, "<h1>404 Not Found</h1>"] }
       end
@@ -79,7 +79,7 @@ module BusScheme
           BusScheme['resources'][path] or not_found_handler
         end
       end
-      
+
       def self.[]=(path, resource)
         BusScheme['resources'][path] = resource
       end

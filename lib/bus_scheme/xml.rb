@@ -3,14 +3,14 @@ require 'builder'
 
 module BusScheme
   special_form "xml", primitive { |args| Xml.create(args) }
-  
+
   module Xml
     module_function
     def create(args, builder = Builder::XmlMarkup.new(:indent => 2))
       tag_name, args = args.car, args.cdr
       attributes = extract_attributes(args)
       attributes.size.times { args = args.cdr.cdr || []}
-      
+
       # puts "Sending #{tag_name} with args #{args.inspect}"
       builder.method_missing(tag_name, attributes) do
         args.each do |arg|

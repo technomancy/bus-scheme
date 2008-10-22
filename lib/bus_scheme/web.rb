@@ -14,7 +14,7 @@ module BusScheme
       @server ||= lambda { |env| Resource[env].call(env) }
       @thread ||= Thread.new { Rack::Handler::Mongrel.run @server, :Port => port }
     end
-    
+
     def self.thread
       @thread
     end
@@ -24,6 +24,6 @@ module BusScheme
       [302, headers.merge({'location' => to}), '']
     end
   end
-  
+
   define 'webwait', primitive { Web.thread.join }
 end

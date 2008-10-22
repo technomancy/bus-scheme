@@ -3,7 +3,7 @@ module BusScheme
   class Lambda < Cons
     attr_reader :scope
     attr_accessor :special_form
-    
+
     # create new Lambda object
     def initialize(formals, body)
       @special_form = false
@@ -26,7 +26,7 @@ module BusScheme
                end
 
       @frame = StackFrame.new(locals, @enclosing_scope, @called_as)
-      
+
       BusScheme.stack.push @frame
       begin
         val = @body.map{ |form| BusScheme.eval(form) }.last
@@ -60,7 +60,7 @@ module BusScheme
       return val
     end
   end
-  
+
   def self.primitive(&block)
     Primitive.new(block)
   end

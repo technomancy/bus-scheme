@@ -7,7 +7,7 @@ class TestLambda < Test::Unit::TestCase
     assert l.is_a?(Lambda)
     assert_equal [[:+.sym, 1, 1].to_list], l.body
     assert l.formals.empty?
-    
+
     eval_either("(define foo (lambda () (+ 1 1)))")
     assert BusScheme[:foo.sym].is_a?(Lambda)
     assert_evals_to 2, cons(:foo.sym)
@@ -48,12 +48,12 @@ class TestLambda < Test::Unit::TestCase
       eval_either "((lambda (x) x))"
     end
   end
-  
+
   def test_lambda_closures
     assert_evals_to 3, "((lambda (x) ((lambda (y) 3) 1)) 1)"
     eval_either "(define foo (lambda (xx) ((lambda (y) (+ xx y)) (* xx 2))))"
     assert foo = BusScheme[:foo.sym]
-    
+
     assert_evals_to 3, foo.call(cons(1))
     eval_either "(define holder ((lambda (x) (lambda () x)) 2))"
     assert_evals_to 2, "(holder)"
@@ -71,8 +71,8 @@ class TestLambda < Test::Unit::TestCase
 
   def test_nested_function_calls_dont_affect_caller
     eval_either "(define fib (lambda (x)
-	      (if (< x 3)
-		  1
+              (if (< x 3)
+                  1
                  (+ (fib (- x 1)) (fib (- x 2))))))"
 
     assert BusScheme.in_scope?(:fib.sym)
@@ -89,7 +89,7 @@ class TestLambda < Test::Unit::TestCase
   def test_stacktrace
     eval_either '(load "test/tracer.scm")'
     assert_equal ["(eval):1 in top-level"], eval_either("(stacktrace)")
-    
+
     assert_equal(["test/tracer.scm:1 in f",
                   "test/tracer.scm:4 in g",
                   "(eval):1 in (anonymous)",

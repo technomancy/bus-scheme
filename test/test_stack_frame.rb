@@ -5,9 +5,9 @@ class TestStackFrame < Test::Unit::TestCase
   def setup
     @parent = {:foo => "FOO", :baz => 'BAZ'}
     @h = StackFrame.new({:foo => 'foo', :bar => 'bar'},
-                           @parent, eval("(lambda () 1)"))
+                        @parent, eval("(lambda () 1)"))
   end
-  
+
   def test_has_key?
     assert @h.has_key?(:foo)
     assert @h.has_key?(:bar)

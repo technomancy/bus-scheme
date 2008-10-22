@@ -16,7 +16,7 @@ class TestEval < Test::Unit::TestCase
     BusScheme.current_scope[:hi] = 'hi'
     assert BusScheme.current_scope[:hi]
   end
-  
+
   def test_eval_symbol
     BusScheme.current_scope[:hi.sym] = 13
     assert_evals_to 13, :hi.sym
@@ -74,9 +74,9 @@ class TestEval < Test::Unit::TestCase
     assert_evals_to 3, "((list 1 2 3) 2)"
   end
 
-#   def test_funcall_vector_means_nth
-#     assert_evals_to 3, "((vector 1 2 3) 2)"
-#  end
+  #   def test_funcall_vector_means_nth
+  #     assert_evals_to 3, "((vector 1 2 3) 2)"
+  #  end
 
   def test_funcall_hash_means_lookup
     assert_evals_to 3, "((hash (1 1) (2 2) (3 3)) 3)"
@@ -87,9 +87,9 @@ class TestEval < Test::Unit::TestCase
                         ;; should be four"
   end
 
-#   def test_tail_call_optimization
-#     Timeout.timeout(1) do
-#       assert_nothing_raised { eval "((lambda (x) (x x)) (lambda (x) (x x)))" }
-#     end
-#   end
+  #   def test_tail_call_optimization
+  #     Timeout.timeout(1) do
+  #       assert_nothing_raised { eval "((lambda (x) (x x)) (lambda (x) (x x)))" }
+  #     end
+  #   end
 end

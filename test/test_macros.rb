@@ -15,12 +15,12 @@ class TestMacros < Test::Unit::TestCase
                           (doubler x))"
   end
 
-#   def test_shadowed_vars_dont_stay_in_scope
-#     assert_evals_to Cons.new(:a.sym, :b.sym), "(let ((f (let ((x (quote a)))
-#           (lambda (y) (cons x y)))))
-#  (let ((x (quote not-a)))
-#   (f (quote b))))"
-#   end
+  #   def test_shadowed_vars_dont_stay_in_scope
+  #     assert_evals_to Cons.new(:a.sym, :b.sym), "(let ((f (let ((x (quote a)))
+  #           (lambda (y) (cons x y)))))
+  #  (let ((x (quote not-a)))
+  #   (f (quote b))))"
+  #   end
 
   def test_booleans
     eval "(assert-equal #t (and #t #t))

@@ -17,7 +17,7 @@ module BusScheme
   def self.reset_stack
     @@stack = []
   end
-  
+
   def self.trace=(tr)
     @trace = tr
   end

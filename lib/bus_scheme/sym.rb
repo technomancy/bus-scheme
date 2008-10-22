@@ -10,7 +10,7 @@ class Sym < String
   def special_form
     BusScheme[self].special_form
   end
-  
+
   def to_s
     self
   end

@@ -22,9 +22,9 @@ class Array
   end
 
   def flatten_non_recursive
-    [].affect { |flat| each{ |elt| elt.each{ |e| flat << e } } } 
+    [].affect { |flat| each{ |elt| elt.each{ |e| flat << e } } }
   end
-  
+
   alias_method :sexp, :to_list
   include Callable
 end

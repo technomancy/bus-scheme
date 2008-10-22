@@ -1,7 +1,7 @@
 module BusScheme
   class StackFrame < Hash
     attr_reader :called_as, :file, :line, :called_from
-    
+
     # takes a hash and a parent
     def initialize(locals, parent, called_as)
       @parent, @called_as = [parent, called_as]
@@ -14,13 +14,13 @@ module BusScheme
                      else
                        BusScheme.stack.last.called_as
                      end
-      
+
       locals.each { |k, v| immediate_set k, v }
     end
 
     alias_method :immediate_has_key?, :has_key?
     alias_method :immediate_set, :[]=
-    alias_method :immediate_lookup, :[]
+      alias_method :immediate_lookup, :[]
 
     # Just your regular hash stuff, only it takes the parent into account
     def has_key?(symbol)

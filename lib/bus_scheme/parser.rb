@@ -9,7 +9,7 @@ module BusScheme
     "tab" => "\t" ,
     "ht" => "\t"
   }
-  
+
   module_function
 
   # Turn an input string into an S-expression
@@ -23,14 +23,14 @@ module BusScheme
     # TODO: hacky; let's be smarter about this
     return cons if tokens == [:'(', :')']
     token = tokens.shift
-    if token == :'(' 
+    if token == :'('
       parse_dots_into_cons(parse_list(tokens))
     else
       raise ParseError unless tokens.empty?
       token # atom
     end
   end
-  
+
   # Nest a list from a 1-dimensional list of tokens
   def parse_list(tokens, level = 0)
     # puts ' ' * level + tokens.inspect
@@ -40,7 +40,7 @@ module BusScheme
     if element == :'('
       car = parse_list(tokens, level + 2) || cons
       cdr = parse_list(tokens, level + 2)
-      
+
       cons(car, cdr)
     elsif element == :')'
       return
@@ -60,17 +60,17 @@ module BusScheme
     end
   end
 
-#   # Try each key in CHARACTER_LITERALS, if no matches, assume single
-#   # character literal.
-#   def parse_character_literal(input, char)
-#     CHARACTER_LITERALS.each_key do |key|
-#       if input =~ Regexp.new("^#{key}")
-#         input.shift key.length
-#         return CHARACTER_LITERALS[key]
-#       end
-#     end
-#     return char
-#   end
+  #   # Try each key in CHARACTER_LITERALS, if no matches, assume single
+  #   # character literal.
+  #   def parse_character_literal(input, char)
+  #     CHARACTER_LITERALS.each_key do |key|
+  #       if input =~ Regexp.new("^#{key}")
+  #         input.shift key.length
+  #         return CHARACTER_LITERALS[key]
+  #       end
+  #     end
+  #     return char
+  #   end
 
   def parse_character_literal(input, char)
     # try each key in CHARACTER_LITERALS, if no matches, assume single

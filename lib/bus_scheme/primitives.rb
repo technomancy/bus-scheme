@@ -21,21 +21,21 @@ module BusScheme
   define 'list', primitive { |*members| members.to_list }
   define 'vector', primitive { |*members| members.to_a }
   define 'map', primitive { |fn, list| list.map(lambda { |n| fn.call(cons(n)) }).sexp }
-    
+
   # TODO: test these
   define 'now', primitive { Time.now }
   define 'regex', primitive { |r| Regexp.new(r) }
   special_form 'hash', primitive { |*args| args.to_hash } # accepts an alist
-  
+
   define 'read', primitive { gets }
   define 'write', primitive { |obj| puts obj.inspect; 0 }
   define 'display', primitive { |obj| puts obj }
-  
+
   define 'eval', primitive { |code| eval(code) }
   define 'stacktrace', primitive { BusScheme.stacktrace }
   define 'trace', primitive { @trace = !@trace }
   define 'fail', primitive { |message| raise AssertionFailed, "#{message}\n  #{BusScheme.stacktrace.join("\n  ")}" }
-  
+
   define 'ruby', primitive { |*code| Kernel.eval code.join('') }
   define 'send', primitive { |obj, message, *args| obj.send(message.to_sym, *args) }
 

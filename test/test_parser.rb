@@ -50,7 +50,7 @@ class TestParser < Test::Unit::TestCase
     $trace = true
     assert_parses_to "/hi/", /hi/
   end
-  
+
   def test_parse_dotted_cons
     assert_equal([:cons.sym, 22, 11].sexp,
                  BusScheme.parse_dots_into_cons([22, :'.', 11].sexp))
@@ -101,7 +101,7 @@ class TestParser < Test::Unit::TestCase
     assert_parses_to  "#(1 2)", [:vector.sym, 1, 2]
     assert_parses_to "#(1 (2 3 4))", [:vector.sym, 1, [2, 3, 4]]
   end
-  
+
   def test_floats
     assert_parses_to "44.9", 44.9
     assert_parses_to "0.22", 0.22
@@ -126,30 +126,30 @@ class TestParser < Test::Unit::TestCase
     assert_parses_to "+.22", 0.22
     assert_parses_to "+0.10", 0.1
   end
-  
+
   def test_boolean_literals
     assert_parses_to "#t", "#t"
     assert_parses_to "#f", "#f"
   end
 
-   def test_character_literals
-     # must escape ruby string with backslash
-     assert_parses_to "#\\e", "e"
-     assert_parses_to "#\\A", "A"
-     assert_parses_to "#\\(", "("
-     assert_parses_to "#\\space", ' '
-     assert_parses_to "#\\sp", ' '
-     assert_parses_to "#\\newline", "\n"
-     assert_parses_to "#\\nl", "\n"
-     assert_parses_to "#\\tab", "\t"
-     assert_parses_to "#\\ht", "\t"
-     # TODO - find ascii codes for these character literals
-     #\backspace	#\bs 
-     #\return	#\cr 
-     #\page	#\np 
-     #\null	#\nul 
-   end
-  
+  def test_character_literals
+    # must escape ruby string with backslash
+    assert_parses_to "#\\e", "e"
+    assert_parses_to "#\\A", "A"
+    assert_parses_to "#\\(", "("
+    assert_parses_to "#\\space", ' '
+    assert_parses_to "#\\sp", ' '
+    assert_parses_to "#\\newline", "\n"
+    assert_parses_to "#\\nl", "\n"
+    assert_parses_to "#\\tab", "\t"
+    assert_parses_to "#\\ht", "\t"
+    # TODO - find ascii codes for these character literals
+    #\backspace #\bs
+    #\return    #\cr
+    #\page      #\np
+    #\null      #\nul
+  end
+
   def test_quote
     assert_parses_to "'foo", [:quote.sym, :foo.sym]
     assert_equal([:'(', :quote.sym, :'(', :foo.sym,
@@ -173,7 +173,7 @@ class TestParser < Test::Unit::TestCase
     assert_raises(IncompleteError) { BusScheme.parse "(+ 2 2" }
     assert_raises(IncompleteError) { BusScheme.parse "(+ (* 3 4) 2 2" }
   end
-  
+
   def test_reject_bad_identifiers
     ["14kalt", "-bolt", ".ab3"].each do |identifier|
       assert_raises(ParseError, "#{identifier} should not be valid") { BusScheme.parse(identifier) }
@@ -187,7 +187,7 @@ class TestParser < Test::Unit::TestCase
       BusScheme.parse(identifier)
     end
   end
-  
+
   def test_parse_random_elisp_form_from_my_dot_emacs
     lisp = "(let ((system-specific-config
          (concat \"~/.emacs.d/\"
@@ -196,12 +196,12 @@ class TestParser < Test::Unit::TestCase
         (load system-specific-config)))"
     assert_parses_to(lisp,
                      [:let.sym, [[:'system-specific-config'.sym,
-                              [:concat.sym, "~/.emacs.d/",
-                               [:'shell-command-to-string'.sym, "hostname"]]]],
+                                  [:concat.sym, "~/.emacs.d/",
+                                   [:'shell-command-to-string'.sym, "hostname"]]]],
                       [:if.sym, [:'file-exists-p'.sym,
                                  :'system-specific-config'.sym],
                        [:load.sym, :'system-specific-config'.sym]]])
-   end
+  end
 
   def test_parser_saves_file_info
     tree = BusScheme.parse("(define foo 23)")
@@ -213,11 +213,11 @@ class TestParser < Test::Unit::TestCase
     # want: cons(:lambda.sym, cons(cons, cons(1)))
     tokens = [:'(', :lambda.sym, :'(', :')', 1, :')']
     assert_equal tokens, tokenize("(lambda () 1)")
-    
+
     list = parse_tokens [:'(', :lambda.sym, :'(', :')', 1, :')']
     assert_equal [:lambda.sym, [], 1].to_list(true), list
   end
-  
+
   private
 
   def assert_parses_to(actual_string, expected)

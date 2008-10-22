@@ -25,7 +25,7 @@ class TestCons < Test::Unit::TestCase
     # TODO - make this work
     # assert_equal [[1], 1, 1], cons(cons(1), cons(1, cons(1))).to_a(true)
   end
-  
+
   def test_eval_and_apply
     assert BusScheme.eval(cons)
     assert cons.to_a
@@ -33,7 +33,7 @@ class TestCons < Test::Unit::TestCase
     # TODO: cons is not nil
     # assert BusScheme.apply(:begin.sym, cons)
   end
-  
+
   def test_equality_of_empty_list
     assert_equal false, eval_either("(= () '(1))")
   end

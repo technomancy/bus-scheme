@@ -15,7 +15,7 @@ module BusScheme
     def empty?
       @car.nil? and @cdr.nil?
     end
-    
+
     def initialize(car, cdr)
       @car, @cdr = [car, cdr]
     end
@@ -47,7 +47,7 @@ module BusScheme
         @cdr
       end
     end
-    
+
     def map(mapper = nil, &block)
       mapper ||= block
       Cons.new(mapper.call(@car), @cdr ? @cdr.map(mapper) : @cdr)
@@ -57,7 +57,7 @@ module BusScheme
       yield @car
       @cdr.each(&block) if @cdr && @cdr.respond_to?(:each)
     end
-    
+
     def to_a(recursive = false)
       if @car.nil? && @cdr.nil?
         []
