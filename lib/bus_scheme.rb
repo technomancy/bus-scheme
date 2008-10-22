@@ -13,7 +13,7 @@ require 'bus_scheme/cons'
 require 'bus_scheme/lambda'
 require 'bus_scheme/stack_frame'
 require 'bus_scheme/primitives'
-require 'bus_scheme/macros'
+require 'bus_scheme/syntax'
 
 module BusScheme
   VERSION = "0.7.7"
@@ -79,7 +79,7 @@ module BusScheme
     (@loaded_files ||= ["(eval)"])
   end
 
-  ['core.scm', 'test.scm', 'list.scm', 'predicates.scm', 'macros.scm'
+  ['core.scm', 'test.scm', 'list.scm', 'predicates.scm', 'syntax.scm'
   ].each { |f| load(f) }
 end
 

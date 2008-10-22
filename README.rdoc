@@ -103,7 +103,7 @@ Bus Scheme is currently missing pieces of functionality:
 === General
 * filter stacktrace
 * continuations
-* macros
+* syntax rules
 
 Failing tests for some of these are already included (commented out,
 mostly) in the relevant test files.

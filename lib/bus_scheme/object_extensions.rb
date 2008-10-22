@@ -19,14 +19,13 @@ class TrueClass; def inspect; '#t' end end
 class FalseClass; def inspect; '#f' end end
 
 module Callable
-  # allows for (mylist 4) => mylist[4]
   def call_as(sym, *args)
     self.call(*args)
   end
 
-  def call(arg)
-    arg = arg.car if arg.respond_to? :car # TODO: remove?
-    self[arg]
+  # allows for (mylist 4) => mylist[4]
+  def call(args)
+    self[*args]
   end
 end
 

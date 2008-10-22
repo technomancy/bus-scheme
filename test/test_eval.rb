@@ -74,11 +74,12 @@ class TestEval < Test::Unit::TestCase
     assert_evals_to 3, "((list 1 2 3) 2)"
   end
 
-  #   def test_funcall_vector_means_nth
-  #     assert_evals_to 3, "((vector 1 2 3) 2)"
-  #  end
+  def test_funcall_vector_means_nth
+    assert_evals_to 3, "((vector 1 2 3) 2)"
+  end
 
   def test_funcall_hash_means_lookup
+    assert_evals_to 3, { 3 => 3 }.call(Cons.new(3, nil))
     assert_evals_to 3, "((hash (1 1) (2 2) (3 3)) 3)"
   end
 

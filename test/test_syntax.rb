@@ -1,7 +1,7 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
-class TestMacros < Test::Unit::TestCase
+class TestSyntax < Test::Unit::TestCase
   def test_let
     assert BusScheme.in_scope?(:let.sym)
     assert BusScheme[:let.sym].special_form

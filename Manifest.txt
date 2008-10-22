@@ -12,13 +12,13 @@ lib/bus_scheme/array_extensions.rb
 lib/bus_scheme/cons.rb
 lib/bus_scheme/eval.rb
 lib/bus_scheme/lambda.rb
-lib/bus_scheme/macros.rb
+lib/bus_scheme/syntax.rb
 lib/bus_scheme/object_extensions.rb
 lib/bus_scheme/parser.rb
 lib/bus_scheme/primitives.rb
 lib/bus_scheme/scheme/core.scm
 lib/bus_scheme/scheme/list.scm
-lib/bus_scheme/scheme/macros.scm
+lib/bus_scheme/scheme/syntax.scm
 lib/bus_scheme/scheme/predicates.scm
 lib/bus_scheme/scheme/test.scm
 lib/bus_scheme/stack_frame.rb
@@ -37,7 +37,7 @@ test/test_fib.scm
 test/test_helper.rb
 test/test_lambda.rb
 test/test_list_functions.scm
-test/test_macros.rb
+test/test_syntax.rb
 test/test_parser.rb
 test/test_predicates.scm
 test/test_primitives.rb
