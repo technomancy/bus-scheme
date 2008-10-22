@@ -26,5 +26,4 @@ module BusScheme
   end
   
   define 'webwait', primitive { Web.thread.join }
-  
 end

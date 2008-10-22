@@ -1,4 +1,4 @@
-**/*.rbc
+*.rbc
 pkg*
 doc*
 *~

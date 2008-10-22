@@ -24,7 +24,7 @@ module BusScheme
     
   # TODO: test these
   define 'now', primitive { Time.now }
-  define 'regex', primitive { |r| Regexp.new(Regexp.escape(r)) }
+  define 'regex', primitive { |r| Regexp.new(r) }
   special_form 'hash', primitive { |*args| args.to_hash } # accepts an alist
   
   define 'read', primitive { gets }

@@ -7,13 +7,10 @@ class Object
   end
 
   # Most things are just themselves when converted to sexps
-  def sexp(r = false)
-    self
-  end
-  
-  def special_form
-    false
-  end
+  def sexp(r = false); self end
+
+  def special_form; false end
+
   undef_method :to_a if Object.respond_to? :to_a # this is deprecated anyway
 end
 
@@ -39,19 +36,15 @@ class String
     Sym.new(self)
   end
 
-  def to_html
-    self
-  end
-  
+  def to_html; self end
+
   def rest
     return '' if self.length == 1
     self[1, self.length]
   end
-  
+
   def shift(chars=1)
-    retval = self[0 ... chars]
-    self[0 ... chars] = ''
-    retval
+    slice! 0 ... chars
   end
 end
 

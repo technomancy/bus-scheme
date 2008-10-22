@@ -5,7 +5,6 @@
 Unsupported:
 * Quasiquote, unquote, unquote-splice
 * Backslash in strings
-* Character literals
 * Alternate-base numbers
 * Alternate define lambda forms
 
