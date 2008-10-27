@@ -1,5 +1,4 @@
-$LOAD_PATH << File.dirname(__FILE__)
-require 'test_helper'
+require File.dirname(__FILE__) + '/test_helper'
 
 class TestPrimitives < Test::Unit::TestCase
   def test_test_framework
@@ -40,11 +39,6 @@ class TestPrimitives < Test::Unit::TestCase
 
   def test_vectors
     assert_evals_to [1, 2, 3], "#(1 2 3)"
-  end
-
-  def test_boolean_short_circuit
-    assert_evals_to false, "(and #f (assert #f))"
-    assert_evals_to true, "(or #t (assert #f))"
   end
 
   def test_inspect

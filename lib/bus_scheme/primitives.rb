@@ -59,8 +59,4 @@ module BusScheme
   special_form 'define', primitive { |sym, value| BusScheme::SYMBOL_TABLE[sym] = eval(value); sym }
   special_form 'set!', primitive { |sym, value| raise EvalError unless BusScheme.in_scope?(sym)
     BusScheme[sym.sym] = value }
-
-  # TODO: once we have syntax rules, this can be defined in scheme
-  special_form 'and', primitive { |*args| args.all? { |x| eval(x) } }
-  special_form 'or', primitive { |*args| args.any? { |x| eval(x) } }
 end

@@ -65,4 +65,3 @@ module BusScheme
     Primitive.new(block)
   end
 end
-

@@ -1,5 +1,5 @@
 module BusScheme
-  module_function # did not know about this until seeing it in Rubinius; handy!
+  module_function
   SYMBOL_TABLE = {} # top-level scope
   @@stack = []
 
