@@ -5,10 +5,9 @@ module BusScheme
     "space" => ' ',
     "sp" => ' ',
     "newline" => "\n",
-    "nl" => "\n" ,
-    "tab" => "\t" ,
-    "ht" => "\t"
-  }
+    "nl" => "\n",
+    "tab" => "\t",
+    "ht" => "\t" }
 
   module_function
 
@@ -120,6 +119,8 @@ module BusScheme
                       :')']
             when /\A(-?\+?[0-9]*\.[0-9]+)/ # float
               Regexp.last_match[1].to_f
+            when /\A(\.\.\.)/ # triple dot for syntax rules
+              :'...'
             when /\A(\.)/ # dot (for pair notation), comes after float to pick up any dots that float doesn't accept
               :'.'
             when /\A(-?[0-9]+)/ # integer
@@ -133,7 +134,6 @@ module BusScheme
             when /\A(\/(.*?)\/)/m # Regex
               Regexp.new(Regexp.escape(Regexp.last_match[2]))
             when /\A([^ \n\)]+)/ # symbols
-              # puts "#{Regexp.last_match[1]} - #{@@lines}"
               # cannot begin with a character that may begin a number
               sym = Regexp.last_match[1].sym
               sym.file, sym.line = [BusScheme.loaded_files.last, @@lines]
