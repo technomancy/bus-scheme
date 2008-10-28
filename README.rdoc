@@ -21,11 +21,11 @@ things that are intentionally different.
 
 == Usage
 
-$ bus # drop into the REPL
+  $ bus # drop into the REPL
 
-$ bus -e "(do some stuff)"
+  $ bus -e "(do some stuff)"
 
-$ bus foo.scm # load a file
+  $ bus foo.scm # load a file
 
 == Tutorial
 
@@ -60,7 +60,7 @@ their own "call behaviour" specified.
 
 === Web functionality
 
-Planned: Web and RESTful application development are part of the
+TODO: Web and RESTful application development are part of the
 package. Bus Scheme uses the Rack library to allow scheme programs to
 serve web applications. Representations of data can be easily
 translated between s-expressions, HTML, and JSON.
@@ -114,7 +114,6 @@ mostly) in the relevant test files.
 * string interpolation
 * escape sequences in strings
 * Ruby blocks inline?
-* XML literals?
 * optimize tail call recursion
 * compile to Rubinius bytecode
 * custom call behaviour
@@ -130,6 +129,6 @@ JRuby. Any support for Windows is entirely accidental.
 
 I haven't actually used a real Scheme yet. Everything I know about it
 I've gathered from reading The Little Schemer, watching the Structure
-and Interpretation of Computer Programs videos, and reading lots about
-Common Lisp and Emacs Lisp. If there are huge gaping flaws in the
-implementation, this is likely to be why.
+and Interpretation of Computer Programs videos, reading lots about
+Common Lisp, and writing lots of Emacs Lisp. If there are huge gaping
+flaws in the implementation, this is likely to be why.
