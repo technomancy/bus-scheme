@@ -10,6 +10,7 @@ class Object
   def sexp(r = false); self end
 
   def special_form; false end
+  def null?; false end
 
   undef_method :to_a if Object.respond_to? :to_a # this is deprecated anyway
 end

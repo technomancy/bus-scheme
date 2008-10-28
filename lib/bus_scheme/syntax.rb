@@ -27,11 +27,14 @@ module BusScheme
     end
 
     def matches?(rule, body)
-      if rule.empty? and body.empty?
+      if rule.null? and body.null?
         true
       elsif rule.is_a?(Sym) and !body.is_a?(Cons)
         true
-      elsif rule.empty? or body.empty?
+      elsif rule == '...'.sym or rule == Cons.new('...'.sym, nil)
+        # TODO: checking for both above doesn't feel right.
+        true
+      elsif rule.null? or body.null?
         false
       elsif rule.is_a?(Cons) and body.is_a?(Cons)
         matches?(rule.car, body.car) and

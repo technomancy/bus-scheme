@@ -120,7 +120,7 @@ module BusScheme
             when /\A(-?\+?[0-9]*\.[0-9]+)/ # float
               Regexp.last_match[1].to_f
             when /\A(\.\.\.)/ # triple dot for syntax rules
-              :'...'
+              :'...'.sym
             when /\A(\.)/ # dot (for pair notation), comes after float to pick up any dots that float doesn't accept
               :'.'
             when /\A(-?[0-9]+)/ # integer

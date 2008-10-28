@@ -14,10 +14,21 @@ class TestSyntax < Test::Unit::TestCase
                           ((_ e) symbol)
                           ((_ e1 e2) list)
                           ((_ e1 (e2)) nested-list)))')
-    assert_matching_rule 'empty', 'my-syntax', '()'
-    assert_matching_rule 'symbol', 'my-syntax', '(hi)'
-    assert_matching_rule 'list', 'my-syntax', '(hi there)'
-    assert_matching_rule 'nested-list', 'my-syntax', '(hi (there))'
+    assert_matching_rule 'empty', '()'
+    assert_matching_rule 'symbol', '(hi)'
+    assert_matching_rule 'list', '(hi there)'
+    assert_matching_rule 'nested-list', '(hi (there))'
+  end
+
+  def test_find_matching_rule_with_triple_dot
+    eval_either('(define-syntax my-syntax (syntax-rules ()
+                          ((_ e1 (e2) ...) nested)
+                          ((_ ((x v) ...)) let-style)
+                          ((_ ...) catch-all)))')
+    assert_matching_rule 'nested', '(hi (there) you fool)'
+    assert_matching_rule 'nested', '(hi (there))'
+    assert_matching_rule 'let-style', '(((n 3) n))'
+    assert_matching_rule 'catch-all', '(forty four point five)'
   end
 
   def test_let
@@ -57,8 +68,8 @@ class TestSyntax < Test::Unit::TestCase
     assert_evals_to false, "(and #f (assert #f))"
   end
 
-  def assert_matching_rule(expected, rule, value)
+  def assert_matching_rule(expected, value)
     assert_equal(expected.sym,
-                 BusScheme[rule.sym].transform(parse(value)))
+                 BusScheme['my-syntax'.sym].transform(parse(value)))
   end
 end

@@ -16,6 +16,8 @@ module BusScheme
       @car.nil? and @cdr.nil?
     end
 
+    alias_method :null?, :empty?
+
     def initialize(car, cdr)
       @car, @cdr = [car, cdr]
     end
