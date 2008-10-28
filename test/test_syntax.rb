@@ -2,10 +2,10 @@ require File.dirname(__FILE__) + '/test_helper'
 
 class TestSyntax < Test::Unit::TestCase
   def test_definition
-    assert_kind_of SyntaxRules, eval_either('(syntax-rules () ())')
+    assert_kind_of Transformer, eval_either('(syntax-rules () ())')
     assert_kind_of Primitive, BusScheme['define-syntax'.sym]
     eval_either('(define-syntax my-syntax (syntax-rules ()))')
-    assert_kind_of SyntaxRules, BusScheme['my-syntax'.sym]
+    assert_kind_of Transformer, BusScheme['my-syntax'.sym]
   end
 
   def test_find_matching_rule

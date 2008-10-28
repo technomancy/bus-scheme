@@ -1,15 +1,14 @@
 module BusScheme
   # Mwahahah
   special_form 'define-syntax', primitive { |keyword, transformer|
-    BusScheme::SYMBOL_TABLE[keyword.sym] =
-      BusScheme['syntax-rules'.sym].call([transformer])
-  }
+    BusScheme::SYMBOL_TABLE[keyword.sym] = eval(transformer); keyword.sym }
 
-  special_form 'syntax-rules', primitive { |rules| SyntaxRules.new(rules) }
+  special_form 'syntax-rules', primitive { |literals, *rules|
+    Transformer.new(literals, rules) }
 
-  class SyntaxRules
-    def initialize(rules)
-      @rules = rules.cdr.cdr
+  class Transformer
+    def initialize(literals, rules)
+      @rules = rules
     end
 
     def call(body)
@@ -27,6 +26,7 @@ module BusScheme
     end
 
     def matches?(rule, body)
+      # puts "Matching #{rule.inspect} with #{body.inspect}..."
       if rule.null? and body.null?
         true
       elsif rule.is_a?(Sym) and !body.is_a?(Cons)

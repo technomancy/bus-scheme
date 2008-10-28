@@ -27,7 +27,7 @@ class TestParser < Test::Unit::TestCase
     assert_equal([:'(', :'+'.sym, 2, :'(', :'+'.sym, 22, 2, :')', :')'],
                  BusScheme.tokenize("(+ 2 (+ 22 2))"))
     assert_equal([:'(', :plus.sym, 2, 2, :')'], BusScheme.tokenize('(plus 2 2)'))
-    assert_equal([:'(', :'...', :')'], BusScheme.tokenize('(...)'))
+    assert_equal([:'(', :'...'.sym, :')'], BusScheme.tokenize('(...)'))
   end
 
   def test_parse_numbers
