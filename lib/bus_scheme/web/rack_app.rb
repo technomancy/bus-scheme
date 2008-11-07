@@ -1,5 +1,4 @@
 module BusScheme
-
   define 'defwebapp', primitive {|*args| Web::App.new(*args) }
 
   module Web

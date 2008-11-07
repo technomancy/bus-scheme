@@ -16,12 +16,12 @@ module BusScheme
       require 'rack/handler/webrick'
       Handler = Rack::Handler::WEBrick # TODO: suppress stdout chatter
     end
-    
+
     def self.serve(port = 2000)
       @server ||= lambda { |env| Resource[env].call(env) }
       @thread ||= Thread.new { Handler.run @server, :Port => port }
     end
-    
+
     def self.thread
       @thread
     end
@@ -31,6 +31,6 @@ module BusScheme
       [302, headers.merge({'location' => to}), '']
     end
   end
-  
+
   define 'webwait', primitive { Web.thread.join }
 end
