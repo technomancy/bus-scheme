@@ -2,7 +2,7 @@ module BusScheme
   define 'defresource', primitive {|*args| Web::Resource.new(*args) }
   define 'resources-list', primitive { BusScheme['resources'].values.to_list }
   module Web
-    class Forbidden < BusSchemeError; end
+    class Forbidden < BusScheme::BusSchemeError; end
 
     # TODO: way more of this stuff belongs in Scheme
     class Resource

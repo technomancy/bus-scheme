@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'rack'
-require 'mongrel'
 
 require 'bus_scheme/xml'
 require 'bus_scheme/web/client'
@@ -10,10 +9,17 @@ require 'bus_scheme/web/rack_app'
 
 module BusScheme
   module Web
+    begin
+      require 'rack/handler/mongrel'
+      Handler = Rack::Handler::Mongrel
+    rescue ::LoadError # Maybe fall back to some others?
+      require 'rack/handler/webrick'
+      Handler = Rack::Handler::WEBrick # TODO: suppress stdout chatter
+    end
+    
     def self.serve(port = 2000)
-      # TODO: fallback to webrick if mongrel is not found
       @server ||= lambda { |env| Resource[env].call(env) }
-      @thread ||= Thread.new { Rack::Handler::Mongrel.run @server, :Port => port }
+      @thread ||= Thread.new { Handler.run @server, :Port => port }
     end
     
     def self.thread
@@ -27,5 +33,4 @@ module BusScheme
   end
   
   define 'webwait', primitive { Web.thread.join }
-  
 end

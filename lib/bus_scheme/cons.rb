@@ -70,10 +70,6 @@ module BusScheme
       end
     end
 
-    def empty?
-      @car.nil? && @cdr.nil?
-    end
-
     def inspect(open = '(', close = ')')
       return open + close if @car.nil? and @cdr.nil?
 
