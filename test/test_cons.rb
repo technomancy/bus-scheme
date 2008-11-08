@@ -40,8 +40,8 @@ class TestCons < Test::Unit::TestCase
 
   def test_cons_with_false_cell
     assert_evals_to cons(true, false), "(cons #t #f)"
+    assert_evals_to cons(true, cons(false)), "(list #t #f)"
     # TODO: fix
-    # assert_evals_to cons(true, cons(false)), "'(#t #f)"
     # assert_evals_to cons(true, false), "'(#t . #f)"
   end
 
