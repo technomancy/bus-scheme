@@ -43,11 +43,8 @@ module BusScheme
   define 'exit', primitive { exit }
   define 'quit', BusScheme['exit'.sym]
 
-
-  # TODO: write
-  special_form 'quasiquote', primitive { }
-  special_form 'unquote', primitive { }
-  special_form 'unquote-splicing', primitive { }
+  special_form 'quasiquote', primitive { |arg| quasiquote(arg) }
+  special_form 'qq', BusScheme['quasiquote'.sym]
 
   # Primitives that can't be defined in terms of other forms:
   special_form 'quote', primitive { |arg| arg }

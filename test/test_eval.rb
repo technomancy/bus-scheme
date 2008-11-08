@@ -87,6 +87,11 @@ class BusSchemeEvalTest < Test::Unit::TestCase
                         ;; should be four"
   end
 
+  def test_quasi_quote
+    assert_evals_to([:hey.sym, :there.sym, "dude"].to_list,
+                    '(qq (hey there (unquote (+ "du" "de"))))')
+  end
+
 #   def test_tail_call_optimization
 #     Timeout.timeout(1) do
 #       assert_nothing_raised { eval "((lambda (x) (x x)) (lambda (x) (x x)))" }

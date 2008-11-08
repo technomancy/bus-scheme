@@ -55,4 +55,16 @@ module BusScheme
   def stack
     @@stack
   end
+
+  # TODO: unquote-splicing
+  def quasiquote(arg)
+    if !arg.is_a? Cons or arg.empty?
+      arg
+    elsif arg.is_a? Cons and arg.car == 'unquote'.sym
+      eval(arg.cadr)
+    else
+      Cons.new(quasiquote(arg.car),
+               quasiquote(arg.cdr))
+    end
+  end
 end
